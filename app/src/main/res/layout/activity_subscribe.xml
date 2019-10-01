@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#A2A2A2"
+    tools:context=".SubscribeActivity">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="2">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:background="@color/colorAccent"
+        android:layout_weight="0.85"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="1.15">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img2"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#A4FFFFFF"/>
+    </RelativeLayout>
+
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:background="@android:drawable/alert_light_frame"
+            android:layout_weight="1.5">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="2.8"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:layout_weight="0.5"
+                    android:gravity="center|start"
+                    android:paddingLeft="15dp"
+                    android:text="Confirm The Order"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="13dp"
+                    android:fontFamily="@string/font_H1" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSubscribe"
+                android:layout_width="match_parent"
+                android:layout_height="0sp"
+                android:layout_weight="1.7" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:layout_weight="0.6"
+                    android:orientation="horizontal"
+                    android:background="@color/colorAccent"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/tvAddItem"
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.7"
+                        android:background="@drawable/ic_border3"
+                        android:gravity="center"
+                        android:text="Add Item"
+                        android:layout_margin="15dp"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="10dp"/>
+
+                    <LinearLayout
+                        android:layout_width="0sp"
+                        android:layout_weight="1.3"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center|start"
+                            android:paddingLeft="5dp"
+                            android:text="You Saved : rs 30/-"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="10dp"/>
+
+                        <TextView
+                            android:id="@+id/tvGrandTotal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center|start"
+                            android:paddingLeft="5dp"
+                            android:text="Total: rs 150/-"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="15dp"
+                             android:fontFamily="@string/font_H1" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="0.5"
+            android:background="@drawable/ic_border"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:weightSum="3"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center|start|top"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:gravity="center|start"
+                    android:weightSum="2"
+                    android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/monthName"
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:layout_weight="0.6"
+                    android:gravity="center"
+                    android:text="month"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="12sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0sp"
+                        android:layout_weight="1.4"
+                        android:gravity="center|top"
+                        android:text="@string/monthTitlePlaceholder"
+                        android:textSize="25sp"
+                        android:textColor="@color/colorAccent"
+                        android:fontFamily="@font/fontawesome_webfont"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="20sp"
+                        android:gravity="center"
+                        android:text="Choose One of the Week Days"
+                        android:textSize="10sp"
+                        android:textColor="@color/colorBlack"
+                        android:fontFamily="@font/fontawesome_webfont"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="75dp"
+                        android:orientation="horizontal"
+                        tools:listitem="@layout/layout_date" />
+                </LinearLayout>
+
+            </LinearLayout>
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <RadioButton
+                    android:layout_width="0sp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.2"
+                    android:text="@string/evr_three"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="10dp" />
+
+                <RadioButton
+                    android:layout_width="0sp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Every Week"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="10dp" />
+
+                <EditText
+                    android:id="@+id/tvDate"
+                    android:layout_width="0sp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.8"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/ic_border5"
+                    android:focusableInTouchMode="false"
+                    android:gravity="center"
+                    android:text="Date"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="13dp" />
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|bottom"
+                android:text="if you not comfortable with dates plz call us"
+                android:textColor="@color/colorBlack"
+                android:paddingLeft="15dp"
+                android:paddingBottom="5dp"
+                android:textSize="10dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:weightSum="2"
+            android:orientation="horizontal">
+
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="0sp"
+            android:layout_weight="1.1"
+            android:layout_height="match_parent"
+            app:mcv_selectionColor="@color/colorYellow"
+            app:mcv_selectionMode="none"
+            android:background="@color/colorAccent"
+            app:mcv_dateTextAppearance="@style/CustomDateTextAppearance"
+            app:mcv_firstDayOfWeek="sunday"
+            app:mcv_headerTextAppearance="@style/CustomHeaderAppearance"
+            app:mcv_titleAnimationOrientation="vertical"
+            app:mcv_weekDayTextAppearance="@style/CustomDateTextAppearance"
+            app:mcv_showOtherDates="decorated_disabled"/>
+
+            <LinearLayout
+                android:layout_width="0sp"
+                android:layout_weight="0.9"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:weightSum="5"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:layout_weight="1"
+                    android:weightSum="2"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="GST: "
+                        android:gravity="center|start"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="10dp"
+                          />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="12 "
+                        android:gravity="center|start"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="13dp"
+                          />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:layout_weight="1"
+                    android:weightSum="2"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Delivery Charge: "
+                        android:textColor="@color/colorAccent"
+                        android:textSize="10dp"
+                        android:gravity="center|start"
+                          />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Rs: 20 "
+                        android:gravity="center|start"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="13dp"
+                          />
+                </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvGrandTotal2"
+                        android:layout_width="match_parent"
+                        android:layout_height="0sp"
+                        android:layout_weight="1"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center|start"
+                        android:text=""
+                        android:textColor="@color/colorAccent"
+                        android:textSize="10dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="2"
+                    android:background="@color/colorAccent"
+                    android:fontFamily="@string/font_H1"
+                    android:gravity="center"
+                    android:text=" Proceed To Pay"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="13dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

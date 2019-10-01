@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="3"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/app_bar_main">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="530dp"
+                android:layout_marginTop="170dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img005" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="530dp"
+                android:layout_marginTop="170dp"
+                android:background="#A8D5D5D5"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/img002" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorYellow"/>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="100dp"
+                    app:cardBackgroundColor="#e9eae5">
+
+                    <TextView
+                        android:id="@+id/tvDailyOffers"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center|start|top"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="5dp"
+                        android:text="Offers..!"
+                        android:textColor="@color/colorAccent" />
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center|start"
+                    android:text="SALE"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvItems"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/tvOrderNow"
+                        android:layout_width="0sp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:minLines="2"
+                        android:layout_margin="5dp"
+                        android:paddingRight="15dp"
+                        android:paddingLeft="10dp"
+                        android:background="@drawable/ic_border4"
+                        android:text="One Time Trail"
+                        android:textColor="@color/colorBlack"/>
+
+                    <TextView
+                        android:id="@+id/tvSubscribe"
+                        android:layout_width="0sp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingRight="10dp"
+                        android:paddingLeft="10dp"
+                        android:layout_margin="5dp"
+                        android:minLines="2"
+                        android:background="@color/colorAccent"
+                        android:text="Subscribe"
+                        android:textColor="@color/colorBlack" />
+
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingRight="75dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/img3" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <LinearLayout
+                            android:layout_width="0sp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.2"
+                            android:gravity="start"
+                            android:weightSum="3"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="0sp"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/montserrat_bold"
+                                android:padding="5dp"
+                                android:gravity="start|center"
+                                android:text="How does it Work"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="15dp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="0sp"
+                                android:layout_weight="1.3"
+                                android:padding="5dp"
+                                android:paddingTop="25dp"
+                                android:text="1 Order by 11pm, get it by 7am."
+                                android:textColor="@color/colorWhite"
+                                android:textSize="12dp" />
+
+                            <TextView
+                                android:id="@+id/tvWebsite"
+                                android:layout_width="match_parent"
+                                android:layout_height="0sp"
+                                android:layout_weight="0.7"
+                                android:layout_marginLeft="5dp"
+                                android:gravity="center|start|bottom"
+                                android:text="www.awesomeegg.com"
+                                android:textColor="@color/colorBlack"
+                                android:paddingBottom="10dp"
+                                android:textSize="15dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+</RelativeLayout>

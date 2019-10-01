@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:layout_marginBottom="5dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:background="@drawable/ic_border"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <ImageView
+            android:id="@+id/ivImage"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
+            android:paddingLeft="2dp" />
+
+        <LinearLayout
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.4"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:weightSum="3">
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="match_parent"
+                android:layout_height="0sp"
+                android:layout_weight="1"
+                android:fontFamily="@string/font_H1"
+                android:text="Awesome Eggs"
+                android:gravity="start|center"
+                android:textColor="@color/colorAccent"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/tvQuantity"
+                android:layout_width="match_parent"
+                android:layout_height="0sp"
+                android:layout_weight="1"
+                android:fontFamily="@string/font_H1"
+                android:gravity="center|start"
+                android:text="@string/productQuantity"
+                android:textColor="#A8000000"
+                android:textSize="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0sp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <TextView
+                    android:id="@+id/tvListingPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/strikethrough_shape"
+                    android:gravity="start|center"
+                    android:text="₹"
+                    android:textColor="#A8000000"
+                    android:textSize="10dp" />
+
+                <TextView
+                    android:id="@+id/tvPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="start|center"
+                    android:paddingLeft="10dp"
+                    android:text=""
+                    android:textColor="@color/colorBlack"
+                    android:textSize="13dp" />
+
+                <TextView
+                    android:id="@+id/tvTotalCount1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center|start"
+                    android:text="0"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="10dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:weightSum="2">
+
+            <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
+                android:id="@+id/itemQty"
+                android:layout_width="match_parent"
+                android:layout_height="0sp"
+                android:layout_weight="1"
+                android:background="@drawable/ic_border3"
+                android:padding="1dp"
+                app:textColor="@color/colorAccent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0sp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1.15"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/tvTotalPrice"
+                    android:layout_width="0sp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center|start"
+                    android:paddingRight="5dp"
+                    android:text="\u20B9 0.0"
+                    android:textColor="@color/colorAccent" />
+
+                <TextView
+                    android:id="@+id/tvOrderNow"
+                    android:layout_width="0sp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/ic_border2"
+                    android:fontFamily="@string/font_H1"
+                    android:gravity="center"
+                    android:text="Order Now"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvSubscribe"
+                    android:layout_width="0sp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/ic_border2"
+                    android:fontFamily="@string/font_H1"
+                    android:gravity="center"
+                    android:paddingRight="5dp"
+                    android:text="Subscribe"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="10dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

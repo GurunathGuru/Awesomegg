@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "380419244149",
+    "firebase_url": "https://egg-pro.firebaseio.com",
+    "project_id": "egg-pro",
+    "storage_bucket": "egg-pro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:380419244149:android:ae1ce6a95864a9fad6b83c",
+        "android_client_info": {
+          "package_name": "com.integro.eggpro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "380419244149-7tt2lhj3nflcqokramk35310undkc0ks.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.integro.eggpro",
+            "certificate_hash": "ac460886aa933013ad85903b2e2f6eb536d03446"
+          }
+        },
+        {
+          "client_id": "380419244149-1n7i4hll9c9uve46nvub8k2oppg5j33c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCukT9BXtF3JIr3FsBDw-lNepxD4scuyls"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "380419244149-1n7i4hll9c9uve46nvub8k2oppg5j33c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
