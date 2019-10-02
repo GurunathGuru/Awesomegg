@@ -60,9 +60,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         final Products products = addItemArrayList.get(i);
 
         myViewHolder.tvName.setText(products.getProdName());
-        myViewHolder.tvPrice.setText("\u20B9 "+(products.getProdSellingPrice()*products.getProdQty()));
+        myViewHolder.tvPrice.setText("\u20B9 "+(products.getProdSellingPrice()));
         myViewHolder.tvQuantity.setText(context.getResources().getString(R.string.productQuantity,products.getProdQty()));
-        myViewHolder.tvListingPrice.setText(context.getResources().getString(R.string.productListingPrice,decimalFormat.format((products.getProdListingPrice()*products.getProdQty()))));
+        myViewHolder.tvListingPrice.setText(context.getResources().getString(R.string.productListingPrice,decimalFormat.format((products.getProdListingPrice()))));
         final Double price = Double.valueOf(products.getProdSellingPrice());
 
         Picasso.with(context)
@@ -75,7 +75,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             @Override
             public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
                 quantityChangedListener.onItermQuantityChanged(oldValue, newValue ,products);
-                myViewHolder.tvTotalPrice.setText("\u20B9 "+(newValue * (Double.valueOf(products.getProdSellingPrice()*products.getProdQty()))));
+                myViewHolder.tvTotalPrice.setText("\u20B9 "+(newValue * (Double.valueOf(products.getProdSellingPrice()))));
             }
         });
 

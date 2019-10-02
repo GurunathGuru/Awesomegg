@@ -26,6 +26,7 @@ import com.integro.eggpro.interfaces.OnDateSelected;
 import com.integro.eggpro.model.CustomCalender;
 import com.integro.eggpro.model.CustomDate;
 import com.integro.eggpro.model.Products;
+import com.integro.eggpro.utility.entity.CartItem;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
@@ -51,6 +52,9 @@ public class SubscribeActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TextView monthView;
     private CustomCalenderAdapter customCalenderAdapter = new CustomCalenderAdapter();
+
+    private ArrayList<CartItem> cartItems = new ArrayList<>();
+    
     private OnDateSelected onDateSelected = new OnDateSelected() {
         @Override
         public void onDateSelected(CustomDate date) {
@@ -94,8 +98,7 @@ public class SubscribeActivity extends AppCompatActivity {
         tvAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1=new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(intent1);
+                finish();
             }
         });
 

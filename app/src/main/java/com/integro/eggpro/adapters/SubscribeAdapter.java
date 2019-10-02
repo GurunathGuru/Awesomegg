@@ -45,12 +45,12 @@ public class SubscribeAdapter extends RecyclerView.Adapter<SubscribeAdapter.MyVi
         holder.tvName.setText(products.getProdName());
         holder.itemQty.setNumber(String.valueOf(products.getProdQty()));
         int num= Integer.parseInt(String.valueOf(products.getProdQty()));
-        holder.tvPrice.setText("\u20B9 "+(num * (Double.valueOf(products.getProdSellingPrice()*products.getProdQty()))));
+        holder.tvPrice.setText("\u20B9 "+(num * (Double.valueOf(products.getProdSellingPrice()))));
 
         holder.itemQty.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
             @Override
             public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
-                holder.tvPrice.setText("Rs: " + String.valueOf(products.getProdSellingPrice()*newValue*products.getProdQty()));
+                holder.tvPrice.setText("Rs: " + String.valueOf(products.getProdSellingPrice()*newValue));
                 Log.i(TAG, "onBindViewHolder: "+products.getProdQty());
             }
         });

@@ -30,6 +30,10 @@ android {
 }
 
 dependencies {
+
+    def lifecycle_version = "2.0.0"
+    def room_version = "2.2.0-rc01"
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //noinspection GradleCompatible
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -65,5 +69,13 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
 
     implementation 'com.github.MdFarhanRaja:SearchableSpinner:1.2'
+
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    annotationProcessor "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+
 }
 apply plugin: 'com.google.gms.google-services'
