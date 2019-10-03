@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -14,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,14 +27,17 @@ import com.integro.eggpro.apis.ApiService;
 import com.integro.eggpro.interfaces.QuantityChangedListener;
 import com.integro.eggpro.model.Products;
 import com.integro.eggpro.model.User;
+import com.integro.eggpro.utility.entity.Product;
+import com.integro.eggpro.utility.viewmodels.CartViewModel;
+import com.integro.eggpro.utility.viewmodels.ProductsViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.integro.eggpro.constants.GenralConstants.ARG_USER_DETAILS;
@@ -74,13 +78,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private double total = 0.0;
     private User user;
 
+    private ProductsViewModel productsViewModel;
+    private CartViewModel cartViewModel;
+
     //Listeners
     private QuantityChangedListener quantityChangedListener = new QuantityChangedListener() {
         @Override
-        public void onItermQuantityChanged(int oldValue, int newValue, Products products) {
-            int flag = -1;
+        public void onItermQuantityChanged(int oldValue, int newValue, Product product) {
+            /*int flag = -1;
             for (int i = 0; i < productsArrayList.size(); i++) {
-                if (productsArrayList.get(i).getId() == Integer.parseInt(String.valueOf(products.getId()))) {
+                if (productsArrayList.get(i).getId() == Integer.parseInt(String.valueOf(product.getId()))) {
                     flag = i;
                     break;
                 }
@@ -92,12 +99,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     productsArrayList.remove(flag);
                 }
             } else {
-                productsArrayList.add(new Products(products.getId(), products.getProdSellingPrice(),newValue, products.getProdName(), products.getProductImage()));
+                productsArrayList.add(new Products(product.getId(), product.getProdSellingPrice(), newValue, product.getProdName(), product.getProductImage()));
             }
             total = 0.0;
             for (int i = 0; i < productsArrayList.size(); i++) {
                 total += (productsArrayList.get(i).getProdSellingPrice() * 6 * productsArrayList.get(i).getProdQty());
-            }
+            }*/
         }
     };
 
@@ -105,6 +112,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        productsViewModel = ViewModelProviders.of(this).get(ProductsViewModel.class);
+        cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
 
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
@@ -121,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             user = (User) bundle.getSerializable(ARG_USER_DETAILS);
 
             if (bundle != null) {
-                tvName.setText(user.getName().substring(0, user.getName().length()).toUpperCase());
+                tvName.setText(user.getName().toUpperCase());
                 tvEmail.setText(user.getEmail());
                 tvPhone.setText(user.getMobile());
                 tvAddress.setText(user.getFloorNo() + "," + user.getFlatNo() + ",\n" + user.getApartmentId());
@@ -129,10 +139,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         apiService = ApiClient.getClient2().create(ApiService.class);
         rvItems.setLayoutManager(new LinearLayoutManager(this));
-        productAdapter = new ProductAdapter();
+        productAdapter = new ProductAdapter(this);
         rvItems.setAdapter(productAdapter);
 
-        getProducts();
+        initProducts();
 
         if (firebaseUser == null) {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
@@ -150,18 +160,61 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+    private void initProducts() {
+        productsViewModel.clearProducts();
+        cartViewModel.clearCart();
+        ApiClient.getClient2().create(ApiService.class).getAddItemList().enqueue(new retrofit2.Callback<ArrayList<Products>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Products>> call, Response<ArrayList<Products>> response) {
+                if (!response.isSuccessful()) {
+                    Log.i(TAG, "onResponse: Something Went Wrong response.isSuccessful()");
+                }
+                if (response.body() == null) {
+                    Log.i(TAG, "onResponse: something went Wrong response.body");
+                }
+                //Product(int id, String productImage, Double prodSellingPrice, String prodName, String prodDescription, int prodQty, int itemQty, Double prodListingPrice, int additionalDiscount, int prodStock)
+                for (int i =0; i<response.body().size(); i++) {
+                    productsViewModel.addProduct(new Product(
+                            response.body().get(i).getId(),
+                            response.body().get(i).getProductImage(),
+                            response.body().get(i).getProdSellingPrice(),
+                            response.body().get(i).getProdName(),
+                            response.body().get(i).getProdDescription(),
+                            response.body().get(i).getProdQty(),
+                            response.body().get(i).getProdListingPrice(),
+                            response.body().get(i).getAdditionalDiscount(),
+                            response.body().get(i).getProdStock(),
+                            0
+                    ));
+                    Log.i(TAG, "onResponse: " + response.body().get(i));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Products>> call, Throwable t) {
+                Log.i(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+    }
+
     @OnClick(R.id.tvSubscribe)
-    public void subscribe(){
+    public void subscribe() {
         Intent subscribeIntent = new Intent(MainActivity.this, SubscribeActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("CARTLIST", productsArrayList);
         subscribeIntent.putExtra("CARTLIST", bundle);
-        Log.i(TAG, "subscribe: "+productsArrayList);
+        Log.i(TAG, "subscribe: " + productsArrayList);
         startActivity(subscribeIntent);
     }
 
     public void getProducts() {
-        ApiClient.getClient2().create(ApiService.class).getAddItemList().enqueue(new Callback<ArrayList<Products>>() {
+        productsViewModel.getProducts().observe(this, new Observer<List<Product>>() {
+            @Override
+            public void onChanged(List<Product> products) {
+                Log.i(TAG, "onChanged: " + products.size());
+            }
+        });
+        /*ApiClient.getClient2().create(ApiService.class).getAddItemList().enqueue(new Callback<ArrayList<Products>>() {
             @Override
             public void onResponse(Call<ArrayList<Products>> call, Response<ArrayList<Products>> response) {
                 if (!response.isSuccessful()) {
@@ -182,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onFailure(Call<ArrayList<Products>> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "Error\n" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 
     @Override

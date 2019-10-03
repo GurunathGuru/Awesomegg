@@ -36,6 +36,14 @@ public class CustomCalenderAdapter extends RecyclerView.Adapter<CustomCalenderAd
         notifyDataSetChanged();
     }
 
+    public CustomDate getFirstDate() {
+        if (customDates.size()>0) {
+            return customDates.get(0);
+        }
+        else
+            return null;
+    }
+
     public void setOnDateSelected(OnDateSelected onDateSelected) {
         this.onDateSelected = onDateSelected;
     }

@@ -14,6 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,12 +30,15 @@ import com.integro.eggpro.model.CustomCalender;
 import com.integro.eggpro.model.CustomDate;
 import com.integro.eggpro.model.Products;
 import com.integro.eggpro.utility.entity.CartItem;
+import com.integro.eggpro.utility.viewmodels.CartViewModel;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,7 +59,13 @@ public class SubscribeActivity extends AppCompatActivity {
     private TextView monthView;
     private CustomCalenderAdapter customCalenderAdapter = new CustomCalenderAdapter();
 
+    private Double total=0.0;
+
     private ArrayList<CartItem> cartItems = new ArrayList<>();
+
+    private CartViewModel cartViewModel;
+
+    private DecimalFormat decimalFormat = new DecimalFormat("0.00");
     
     private OnDateSelected onDateSelected = new OnDateSelected() {
         @Override
@@ -85,12 +97,6 @@ public class SubscribeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscribe);
 
-        Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra("CARTLIST");
-
-        Log.i(TAG, "onCreate: "+bundle);
-        ArrayList<Products> products = (ArrayList<Products>) bundle.getSerializable("CARTLIST");
-
         tvAddItem=findViewById(R.id.tvAddItem);
         tvGrandTotal=findViewById(R.id.tvGrandTotal);
         tvGrandTotal2=findViewById(R.id.tvGrandTotal2);
@@ -103,7 +109,7 @@ public class SubscribeActivity extends AppCompatActivity {
         });
 
         rvSubscribe = findViewById(R.id.rvSubscribe);
-        adapter = new SubscribeAdapter(SubscribeActivity.this, products);
+        adapter = new SubscribeAdapter(this);
         rvSubscribe.setLayoutManager(new LinearLayoutManager(this));
         rvSubscribe.setAdapter(adapter);
         recyclerView = findViewById(R.id.recyclerView);
@@ -117,6 +123,8 @@ public class SubscribeActivity extends AppCompatActivity {
 
         calendarView = findViewById(R.id.calendarView);
         tvDate = findViewById(R.id.tvDate);
+
+        cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
 
       /* tvDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,7 +145,6 @@ public class SubscribeActivity extends AppCompatActivity {
             }
         })*/;
 
-        initializeCalendar();
         radioGroup = findViewById(R.id.radioGroup);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @SuppressLint("ResourceType")
@@ -154,14 +161,30 @@ public class SubscribeActivity extends AppCompatActivity {
                 }
             }
         });
+
+        cartViewModel.getCart().observe(this, new Observer<List<CartItem>>() {
+            @Override
+            public void onChanged(List<CartItem> cartItems) {
+                total = 0.0;
+                for (CartItem item: cartItems) {
+                    total += item.getItemQty()*item.getProdSellingPrice();
+                }
+                setTotalView();
+            }
+        });
+    }
+
+    private void setTotalView() {
+        tvGrandTotal.setText(getString(R.string.cardTotal,decimalFormat.format(total)));
     }
 
     @SuppressLint("WrongConstant")
     private Calendar initializeCalendar() {
         Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH,-365);
         Log.i(TAG, "initializeCalendar: ");
         calendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_NONE); // Removes onClick functionality
-        for (int i = 0; i < 365; i++) {
+        for (int i = 0; i < 1095; i++) {
             cal.add(Calendar.DAY_OF_MONTH, 1);
             calendarView.setDateSelected(CalendarDay.from(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH)), false);
         }
@@ -176,7 +199,7 @@ public class SubscribeActivity extends AppCompatActivity {
     public void everyThreeDays() {
         Log.i(TAG, "everyThreeDays: ");
         Calendar cal = initializeCalendar();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 121; i++) {
             cal.add(Calendar.DAY_OF_MONTH, 3);
             calendarView.setDateSelected(CalendarDay.from(cal.get(Calendar.YEAR),
                     cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH)), true);
@@ -186,7 +209,7 @@ public class SubscribeActivity extends AppCompatActivity {
     public void everySevenDays() {
         Calendar cal = initializeCalendar();
         Log.i(TAG, "everySevenDays: ");
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 52; i++) {
             cal.add(Calendar.DAY_OF_MONTH, 7);
             calendarView.setDateSelected(CalendarDay.from(cal.get(Calendar.YEAR),
                     cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH)), true);
@@ -230,6 +253,12 @@ public class SubscribeActivity extends AppCompatActivity {
                         customCalenderAdapter.setCustomDates(customDates);
                         customCalenderAdapter.initialize();
 
+                        if (customCalenderAdapter.getFirstDate() != null) {
+                            primaryCalendar = (Calendar) customCalenderAdapter.getFirstDate().getCalendar().clone();
+                            initializeCalendar();
+                        } else {
+
+                        }
                     }
 
                     @Override

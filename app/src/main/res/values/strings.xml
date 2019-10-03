@@ -26,4 +26,6 @@
     <string name="productQuantity">%1$d Eggs</string>
     <string name="productListingPrice">₹%1$s</string>
     <string name="monthTitlePlaceholder" >&#xf073;</string>
+    <string name="itemPrice">\u20B9 %1$s</string>
+    <string name="cardTotal">Total \u20B9 %1$s</string>
 </resources>

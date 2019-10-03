@@ -9,25 +9,55 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.integro.eggpro.R;
-import com.integro.eggpro.model.Products;
+import com.integro.eggpro.helpers.ParseObjects;
+import com.integro.eggpro.utility.entity.CartItem;
+import com.integro.eggpro.utility.entity.Product;
+import com.integro.eggpro.utility.viewmodels.CartViewModel;
+import com.integro.eggpro.utility.viewmodels.ProductsViewModel;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class SubscribeAdapter extends RecyclerView.Adapter<SubscribeAdapter.MyViewHoder> {
 
     Context context;
-    ArrayList<Products> productsArrayList;
+    ArrayList<CartItem> cart;
+    ArrayList<Product> productList;
 
-    public SubscribeAdapter(Context context, ArrayList<Products> productsArrayList) {
+    CartViewModel cartViewModel;
+    ProductsViewModel productsViewModel;
+
+    private DecimalFormat decimalFormat = new DecimalFormat("0.00");
+
+    public SubscribeAdapter(Context context) {
         this.context = context;
-        this.productsArrayList = productsArrayList;
+        FragmentActivity activity = (FragmentActivity) context;
+        cartViewModel = ViewModelProviders.of(activity).get(CartViewModel.class);
+        productsViewModel = ViewModelProviders.of(activity).get(ProductsViewModel.class);
+        cartViewModel.getCart().observe(activity, new Observer<List<CartItem>>() {
+            @Override
+            public void onChanged(List<CartItem> cartItems) {
+                cart = (ArrayList<CartItem>) cartItems;
+                notifyDataSetChanged();
+            }
+        });
+        productsViewModel.getProducts().observe(activity, new Observer<List<Product>>() {
+            @Override
+            public void onChanged(List<Product> products) {
+                productList = (ArrayList<Product>) products;
+            }
+        });
     }
 
     @NonNull
@@ -41,22 +71,29 @@ public class SubscribeAdapter extends RecyclerView.Adapter<SubscribeAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull MyViewHoder holder, int position) {
 
-        final Products products = productsArrayList.get(position);
-        holder.tvName.setText(products.getProdName());
-        holder.itemQty.setNumber(String.valueOf(products.getProdQty()));
-        int num= Integer.parseInt(String.valueOf(products.getProdQty()));
-        holder.tvPrice.setText("\u20B9 "+(num * (Double.valueOf(products.getProdSellingPrice()))));
+        final CartItem item = cart.get(position);
+
+        holder.tvName.setText(item.getProdName());
+        holder.itemQty.setNumber(String.valueOf(item.getItemQty()));
+        holder.tvPrice.setText(context.getResources().getString(R.string.itemPrice, decimalFormat.format((item.getProdSellingPrice() * item.getItemQty()))));
 
         holder.itemQty.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
             @Override
             public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
-                holder.tvPrice.setText("Rs: " + String.valueOf(products.getProdSellingPrice()*newValue));
-                Log.i(TAG, "onBindViewHolder: "+products.getProdQty());
+                item.setItemQty(newValue);
+                cartViewModel.updateItem(item);
+                Log.i(TAG, "onValueChange: " + item.toProduct());
+
+                productsViewModel.updateProduct(ParseObjects.toProduct(item));
+                if (newValue == 0) {
+                    cartViewModel.removeItem(item);
+                }
+                Log.i(TAG, "onBindViewHolder: " + item.getItemQty());
             }
         });
 
         Picasso.with(context)
-                .load(products.getProductImage())
+                .load(item.getProductImage())
                 .resize(60, 68)
                 .centerCrop()
                 .into(holder.ivImage);
@@ -64,7 +101,7 @@ public class SubscribeAdapter extends RecyclerView.Adapter<SubscribeAdapter.MyVi
 
     @Override
     public int getItemCount() {
-        return productsArrayList.size();
+        return cart.size();
     }
 
     public class MyViewHoder extends RecyclerView.ViewHolder {

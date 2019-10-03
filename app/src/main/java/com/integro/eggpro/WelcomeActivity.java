@@ -68,6 +68,6 @@ public class WelcomeActivity extends AppCompatActivity {
                     });
                 }
             }
-        },3000);
+        },1000);
         }
     }

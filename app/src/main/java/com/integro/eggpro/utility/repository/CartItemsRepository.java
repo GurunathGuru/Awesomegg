@@ -43,6 +43,10 @@ public class CartItemsRepository {
         new ClearCartAsyncTask(cartItemDao).execute();
     }
 
+    public LiveData<List<CartItem>> getCartData() {
+        return cart;
+    }
+
     private class InsertItemAsyncTask extends AsyncTask<CartItem, Void, Void> {
 
         private CartItemDao cartItemDao;
@@ -102,4 +106,5 @@ public class CartItemsRepository {
             return null;
         }
     }
+
 }

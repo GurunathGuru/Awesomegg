@@ -115,7 +115,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center|start"
                             android:paddingLeft="5dp"
-                            android:text="Total: rs 150/-"
+                            android:text=""
                             android:textColor="@color/colorWhite"
                             android:textSize="15dp"
                              android:fontFamily="@string/font_H1" />

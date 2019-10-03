@@ -2,6 +2,8 @@ package com.integro.eggpro.utility.database;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -9,11 +11,22 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.integro.eggpro.apis.ApiClient;
+import com.integro.eggpro.apis.ApiService;
+import com.integro.eggpro.model.Products;
 import com.integro.eggpro.utility.dao.CartItemDao;
+import com.integro.eggpro.utility.dao.ProductItemDao;
 import com.integro.eggpro.utility.entity.CartItem;
+import com.integro.eggpro.utility.entity.Product;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 @Database(
-        entities = CartItem.class,
+        entities = {CartItem.class, Product.class},
         version = 1
 )
 public abstract class IbEGGX extends RoomDatabase {
@@ -25,6 +38,7 @@ public abstract class IbEGGX extends RoomDatabase {
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
             new PopulateAsyncTask(instance).execute();
+            new PopulateProductsAsyncTask(instance).execute();
         }
     };
 
@@ -39,6 +53,7 @@ public abstract class IbEGGX extends RoomDatabase {
     }
 
     public abstract CartItemDao cartItemDao();
+    public abstract ProductItemDao productItemDao();
 
     private static class PopulateAsyncTask extends AsyncTask<Void, Void, Void> {
 
@@ -46,6 +61,22 @@ public abstract class IbEGGX extends RoomDatabase {
 
         private PopulateAsyncTask(IbEGGX db) {
             cartItemDao = db.cartItemDao();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
+        }
+    }
+
+    private static class PopulateProductsAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        private ProductItemDao productItemDao;
+
+        private static final String TAG = "PopulateProductsAsyncTa";
+
+        public PopulateProductsAsyncTask(IbEGGX db) {
+            productItemDao = db.productItemDao();
         }
 
         @Override

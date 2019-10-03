@@ -4,9 +4,9 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(
-        tableName = "cartItem"
+        tableName = "products"
 )
-public class CartItem {
+public class Product {
 
     @PrimaryKey
     private int id;
@@ -29,7 +29,7 @@ public class CartItem {
 
     private int itemQty;
 
-    public CartItem(int id, String productImage, Double prodSellingPrice, String prodName, String prodDescription, int prodQty, Double prodListingPrice, int additionalDiscount, int prodStock, int itemQty) {
+    public Product(int id, String productImage, Double prodSellingPrice, String prodName, String prodDescription, int prodQty, Double prodListingPrice, int additionalDiscount, int prodStock, int itemQty) {
         this.id = id;
         this.productImage = productImage;
         this.prodSellingPrice = prodSellingPrice;
@@ -39,10 +39,6 @@ public class CartItem {
         this.prodListingPrice = prodListingPrice;
         this.additionalDiscount = additionalDiscount;
         this.prodStock = prodStock;
-        this.itemQty = itemQty;
-    }
-
-    public void setItemQty(int itemQty) {
         this.itemQty = itemQty;
     }
 
@@ -86,19 +82,8 @@ public class CartItem {
         return itemQty;
     }
 
-    public Product toProduct() {
-        Product item = new Product(
-                this.id,
-                this.productImage,
-                this.prodSellingPrice,
-                this.prodName,
-                this.prodDescription,
-                this.prodQty,
-                this.prodListingPrice,
-                this.additionalDiscount,
-                this.prodStock,
-                this.itemQty
-        );
-        return item;
+    public void setItemQty(int itemQty) {
+        this.itemQty = itemQty;
     }
+
 }
