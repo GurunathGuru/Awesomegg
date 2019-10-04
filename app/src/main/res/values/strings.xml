@@ -18,7 +18,7 @@
     <string name="font_H2">Montserrat-ExtraLight.ttf</string>
     <string name="font_H3">Montserrat-Light.ttf</string>
     <string name="font_H4">Montserrat-Regular.ttf</string>
-    <string name="evr_three">Every 3 Days</string>
+    <string name="evr_fourteen">Every 14 Days</string>
     <string name="monthPlaceholder">%1$d/%2$d/%3$d</string>
     <string name="ibeggx">ibEGGX</string>
 
@@ -28,4 +28,6 @@
     <string name="monthTitlePlaceholder" >&#xf073;</string>
     <string name="itemPrice">\u20B9 %1$s</string>
     <string name="cardTotal">Total \u20B9 %1$s</string>
+    <string name="cardDiscountsTotal">Discounts \u20B9 %1$s</string>
+    <string name="cardSavedTotal">You Saved \u20B9 %1$s</string>
 </resources>

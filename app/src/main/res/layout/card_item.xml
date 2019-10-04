@@ -105,7 +105,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0sp"
                 android:layout_weight="1"
-                android:background="@drawable/ic_border3"
+                android:background="@drawable/ic_border4"
                 android:padding="1dp"
                 app:textColor="@color/colorAccent" />
 

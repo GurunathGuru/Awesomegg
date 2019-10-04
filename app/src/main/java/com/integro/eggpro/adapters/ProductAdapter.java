@@ -163,6 +163,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         TextView tvSubscribe;
         TextView tvName;
         TextView tvPrice;
+
         TextView tvTotalPrice;
         ImageView ivImage;
         TextView tvQuantity;
@@ -177,6 +178,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             tvSubscribe = itemView.findViewById(R.id.tvSubscribe);
             tvName = itemView.findViewById(R.id.tvName);
             tvPrice = itemView.findViewById(R.id.tvPrice);
+
             tvTotalPrice = itemView.findViewById(R.id.tvTotalPrice);
             ivImage = itemView.findViewById(R.id.ivImage);
             tvQuantity=itemView.findViewById(R.id.tvQuantity);

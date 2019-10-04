@@ -38,7 +38,7 @@
         android:paddingLeft="10dp"
         android:hint="enter your mobile number"
         android:inputType="phone"
-        android:background="@drawable/ic_border5"
+        android:background="@drawable/ic_border4"
         android:textSize="15dp"
         android:textColor="@color/colorWhite"
         android:fontFamily="@font/montserrat_extralight"

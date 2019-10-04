@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minLines="2"
-            android:background="@drawable/ic_border5"
+            android:background="@drawable/ic_border4"
             android:padding="5dp"
             android:textSize="15dp"
             android:layout_marginTop="10dp"
@@ -45,7 +45,7 @@
             android:padding="5dp"
             android:minLines="2"
             android:textSize="15dp"
-            android:background="@drawable/ic_border5"
+            android:background="@drawable/ic_border4"
             android:hint="Enter your Email Id"
             android:inputType="textEmailAddress" />
 
@@ -58,7 +58,7 @@
             android:padding="5dp"
             android:minLines="2"
             android:textSize="15dp"
-            android:background="@drawable/ic_border5"
+            android:background="@drawable/ic_border4"
             android:fontFamily="@font/montserrat_light"
             android:hint="Select your apartments" />
 
@@ -70,7 +70,7 @@
             android:padding="5dp"
             android:layout_marginTop="10dp"
             android:textSize="15dp"
-            android:background="@drawable/ic_border5"
+            android:background="@drawable/ic_border4"
             android:fontFamily="@font/montserrat_light"
             android:hint="Please Enter Your Apartment Block Number" />
 
@@ -82,7 +82,7 @@
             android:padding="5dp"
             android:layout_marginTop="10dp"
             android:textSize="15dp"
-            android:background="@drawable/ic_border5"
+            android:background="@drawable/ic_border4"
             android:fontFamily="@font/montserrat_light"
             android:hint="Please Enter Your Apartment Flat Number if Exist" />
 

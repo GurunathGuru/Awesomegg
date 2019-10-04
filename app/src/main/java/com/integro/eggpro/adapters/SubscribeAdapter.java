@@ -76,7 +76,6 @@ public class SubscribeAdapter extends RecyclerView.Adapter<SubscribeAdapter.MyVi
         holder.tvName.setText(item.getProdName());
         holder.itemQty.setNumber(String.valueOf(item.getItemQty()));
         holder.tvPrice.setText(context.getResources().getString(R.string.itemPrice, decimalFormat.format((item.getProdSellingPrice() * item.getItemQty()))));
-
         holder.itemQty.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
             @Override
             public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {

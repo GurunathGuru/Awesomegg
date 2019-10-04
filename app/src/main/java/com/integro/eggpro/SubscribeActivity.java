@@ -1,12 +1,11 @@
 package com.integro.eggpro;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -15,24 +14,25 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.integro.eggpro.adapters.CustomCalenderAdapter;
-import com.integro.eggpro.adapters.ProductAdapter;
 import com.integro.eggpro.adapters.SubscribeAdapter;
 import com.integro.eggpro.apis.ApiClient;
 import com.integro.eggpro.apis.ApiService;
 import com.integro.eggpro.interfaces.OnDateSelected;
 import com.integro.eggpro.model.CustomCalender;
 import com.integro.eggpro.model.CustomDate;
-import com.integro.eggpro.model.Products;
 import com.integro.eggpro.utility.entity.CartItem;
 import com.integro.eggpro.utility.viewmodels.CartViewModel;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.razorpay.Checkout;
+import com.razorpay.PaymentResultListener;
+
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -40,27 +40,32 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SubscribeActivity extends AppCompatActivity {
+public class SubscribeActivity extends AppCompatActivity implements PaymentResultListener {
     private static final String TAG = "SubscribeActivity";
     private DatePickerDialog picker;
     private RadioGroup radioGroup;
     private MaterialCalendarView calendarView;
     private EditText tvDate;
     private Calendar primaryCalendar = Calendar.getInstance();
-    private TextView tvGrandTotal,tvGrandTotal2,tvAddItem;
+    private TextView tvGrandTotal,tvGrandTotal2,tvGrandTotal3,tvGrandTotal4,tvAddItem;
     private RecyclerView rvSubscribe;
     private SubscribeAdapter adapter;
 
     private RecyclerView recyclerView;
     private TextView monthView;
+
     private CustomCalenderAdapter customCalenderAdapter = new CustomCalenderAdapter();
 
-    private Double total=0.0;
-
+    private Double total= null;
+    private Double discountTotal =null;
+    private Double savedPrice=null;
+    private Double finalPrice=null;
     private ArrayList<CartItem> cartItems = new ArrayList<>();
 
     private CartViewModel cartViewModel;
@@ -77,11 +82,11 @@ public class SubscribeActivity extends AppCompatActivity {
                 return;
             }
             RadioButton radioButton = findViewById(radioId);
-            if (radioButton.getText().toString().contentEquals(getString(R.string.evr_three))) {
+            if (radioButton.getText().toString().contentEquals(getString(R.string.evr_fourteen))) {
                 primaryCalendar.set(Calendar.YEAR, date.getCalendar().get(Calendar.YEAR));
                 primaryCalendar.set(Calendar.MONTH, date.getCalendar().get(Calendar.MONTH));
                 primaryCalendar.set(Calendar.DAY_OF_MONTH, date.getCalendar().get(Calendar.DAY_OF_MONTH));
-                everyThreeDays();
+                everyFourteenDays();
             } else {
                 primaryCalendar.set(Calendar.YEAR, date.getCalendar().get(Calendar.YEAR));
                 primaryCalendar.set(Calendar.MONTH, date.getCalendar().get(Calendar.MONTH));
@@ -96,10 +101,14 @@ public class SubscribeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscribe);
+        ButterKnife.bind(this);
+        Checkout.preload(getApplicationContext());
 
         tvAddItem=findViewById(R.id.tvAddItem);
         tvGrandTotal=findViewById(R.id.tvGrandTotal);
         tvGrandTotal2=findViewById(R.id.tvGrandTotal2);
+        tvGrandTotal3=findViewById(R.id.tvGrandTotal3);
+        tvGrandTotal4=findViewById(R.id.tvGrandTotal4);
 
         tvAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,26 +134,6 @@ public class SubscribeActivity extends AppCompatActivity {
         tvDate = findViewById(R.id.tvDate);
 
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
-
-      /* tvDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar cldr = Calendar.getInstance();
-                int day = cldr.get(Calendar.DAY_OF_MONTH);
-                int month = cldr.get(Calendar.MONTH);
-                int year = cldr.get(Calendar.YEAR);
-
-                picker = new DatePickerDialog(SubscribeActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            }
-                        }, year, month, day);
-                picker.show();
-                picker.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-            }
-        })*/;
-
         radioGroup = findViewById(R.id.radioGroup);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @SuppressLint("ResourceType")
@@ -153,8 +142,8 @@ public class SubscribeActivity extends AppCompatActivity {
                 RadioButton rb = group.findViewById(checkedId);
 
                 if (null != rb && checkedId > -1) {
-                    if (rb.getText().toString().contentEquals(getString(R.string.evr_three))) {
-                        everyThreeDays();
+                    if (rb.getText().toString().contentEquals(getString(R.string.evr_fourteen))) {
+                        everyFourteenDays();
                     } else {
                         everySevenDays();
                     }
@@ -166,8 +155,15 @@ public class SubscribeActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<CartItem> cartItems) {
                 total = 0.0;
+                discountTotal =0.00;
+
+                finalPrice=0.00;
                 for (CartItem item: cartItems) {
                     total += item.getItemQty()*item.getProdSellingPrice();
+                    discountTotal += item.getProdSellingPrice()*item.getAdditionalDiscount()/100*item.getItemQty();
+                    double discount = item.getProdSellingPrice()*item.getAdditionalDiscount()/100*item.getItemQty();
+                    savedPrice=item.getProdListingPrice()-(item.getProdSellingPrice() - discount);
+                    finalPrice=total- discountTotal;
                 }
                 setTotalView();
             }
@@ -176,6 +172,9 @@ public class SubscribeActivity extends AppCompatActivity {
 
     private void setTotalView() {
         tvGrandTotal.setText(getString(R.string.cardTotal,decimalFormat.format(total)));
+        tvGrandTotal2.setText(getString(R.string.cardDiscountsTotal,decimalFormat.format(discountTotal)));
+        tvGrandTotal3.setText(getString(R.string.cardTotal,decimalFormat.format(finalPrice)));
+        tvGrandTotal4.setText(getString(R.string.cardSavedTotal,decimalFormat.format(savedPrice)));
     }
 
     @SuppressLint("WrongConstant")
@@ -196,11 +195,11 @@ public class SubscribeActivity extends AppCompatActivity {
         return cal;
     }
 
-    public void everyThreeDays() {
-        Log.i(TAG, "everyThreeDays: ");
+    public void everyFourteenDays() {
+        Log.i(TAG, "everyFourteenDays: ");
         Calendar cal = initializeCalendar();
-        for (int i = 0; i < 121; i++) {
-            cal.add(Calendar.DAY_OF_MONTH, 3);
+        for (int i = 0; i < 26; i++) {
+            cal.add(Calendar.DAY_OF_MONTH, 14);
             calendarView.setDateSelected(CalendarDay.from(cal.get(Calendar.YEAR),
                     cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH)), true);
         }
@@ -257,7 +256,8 @@ public class SubscribeActivity extends AppCompatActivity {
                             primaryCalendar = (Calendar) customCalenderAdapter.getFirstDate().getCalendar().clone();
                             initializeCalendar();
                         } else {
-
+                            primaryCalendar = Calendar.getInstance();
+                            initializeCalendar();
                         }
                     }
 
@@ -271,5 +271,38 @@ public class SubscribeActivity extends AppCompatActivity {
 
     public void getDate(View view) {
         Toast.makeText(this, "" + customCalenderAdapter.getSelectedDate().getCalendar().getTime(), Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.payment)
+    public void makePayment() {
+        Toast.makeText(this, "on Makepayment", Toast.LENGTH_SHORT).show();
+        Checkout checkout =new Checkout();
+        checkout.setImage(R.mipmap.ic_launcher);
+        final Activity activity =this;
+        finalPrice = finalPrice*100;
+        int totalinpaisa = finalPrice.intValue();
+        try {
+            JSONObject  options = new JSONObject();
+            options.put("name","Integro Infotech");
+            options.put("description", "Reference No. #123456");
+            /*options.put("order_id", "order_9A33XWu170gUtm");*/
+            options.put("currency", "INR");
+            options.put("amount", totalinpaisa);
+
+            checkout.open(activity,options);
+        } catch (Exception e) {
+            Log.e(TAG, "Error in starting Razorpay Checkout", e);
+        }
+    }
+
+    @Override
+    public void onPaymentSuccess(String s) {
+        Toast.makeText(this, "Payment Success " + s, Toast.LENGTH_SHORT).show();
+        finalPrice = finalPrice/100;
+    }
+
+    @Override
+    public void onPaymentError(int i, String s) {
+        Toast.makeText(this, "" + i + " Payment Fail " + s, Toast.LENGTH_SHORT).show();
     }
 }

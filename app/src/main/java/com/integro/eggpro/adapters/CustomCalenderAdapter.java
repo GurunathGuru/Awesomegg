@@ -4,15 +4,18 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.integro.eggpro.R;
 import com.integro.eggpro.interfaces.OnDateSelected;
 import com.integro.eggpro.model.CustomDate;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class CustomCalenderAdapter extends RecyclerView.Adapter<CustomCalenderAdapter.CustomCalendarViewHolder>  {
@@ -20,8 +23,9 @@ public class CustomCalenderAdapter extends RecyclerView.Adapter<CustomCalenderAd
     private ArrayList<CustomDate> customDates = new ArrayList<>();
     private Context context;
     private int selected = -1;
-
     private OnDateSelected onDateSelected;
+
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE");
 
     public OnDateSelected getOnDateSelected() {
         return onDateSelected;
@@ -66,11 +70,12 @@ public class CustomCalenderAdapter extends RecyclerView.Adapter<CustomCalenderAd
         final CustomDate date = customDates.get(position);
         holder.date.setText(String.valueOf(date.getDate()));
         if (date.isSelected()) {
-            holder.date.setBackgroundColor(context.getResources().getColor(R.color.colorYellow));
+            holder.date.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.circle));
         } else {
-            holder.date.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary2));
+            holder.date.setBackgroundColor(context.getResources().getColor(R.color.colorWhite));
         }
-        holder.date.setOnClickListener(new View.OnClickListener() {
+        holder.day.setText(simpleDateFormat.format(date.getCalendar().getTime()));
+        holder.llDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (selected == -1) {
@@ -103,10 +108,15 @@ public class CustomCalenderAdapter extends RecyclerView.Adapter<CustomCalenderAd
     }
 
     public class CustomCalendarViewHolder extends RecyclerView.ViewHolder {
-        private TextView date;
+        private TextView date,day;
+        private LinearLayout llDate;
         public CustomCalendarViewHolder(@NonNull View itemView) {
             super(itemView);
             date = itemView.findViewById(R.id.date);
+            day = itemView.findViewById(R.id.day);
+            llDate = itemView.findViewById(R.id.llDate);
         }
     }
+
+
 }

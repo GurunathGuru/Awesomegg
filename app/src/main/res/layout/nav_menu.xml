@@ -1,82 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center|top"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/colorWhite"
-        android:layout_marginBottom="5dp">
+        android:layout_marginBottom="5dp"
+        app:cardBackgroundColor="@color/colorWhite">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:gravity="center"
-        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:gravity="center"
+            android:orientation="vertical">
 
-       <ImageView
-           android:layout_width="40dp"
-           android:layout_height="40dp"
-           android:src="@drawable/profile"/>
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/profile" />
 
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center|start"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:text="Name"
-            android:textColor="@color/colorBlack"
-            android:textSize="13.5dp"/>
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center|start"
+                android:text="Name"
+                android:textColor="@color/colorBlack"
+                android:textSize="13.5dp" />
 
-        <TextView
-            android:id="@+id/tvEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:gravity="center|start"
-            android:text="Email"
-            android:textColor="@color/colorBlack"
-            android:textSize="13.5dp" />
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:gravity="center|start"
+                android:text="Email"
+                android:textColor="@color/colorBlack"
+                android:textSize="13.5dp" />
 
-        <TextView
-            android:id="@+id/tvPhone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:gravity="center|start"
-            android:text="Phone"
-            android:textColor="@color/colorBlack"
-            android:textSize="13.5dp"/>
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tvPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:gravity="center|start"
+                android:text="Phone"
+                android:textColor="@color/colorBlack"
+                android:textSize="13.5dp" />
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="10dp">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
+            android:fontFamily="@font/opensans_light"
             android:gravity="center|start"
             android:text="Address: "
-            android:fontFamily="@font/opensans_light"
             android:textColor="@color/colorBlack"
             android:textSize="13.5dp" />
+
         <TextView
             android:id="@+id/tvAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
+            android:fontFamily="@font/montserrat_extralight"
             android:gravity="center|start"
             android:text=""
-            android:fontFamily="@font/montserrat_extralight"
             android:textColor="@color/colorBlack"
             android:textSize="12dp" />
     </LinearLayout>
@@ -84,105 +87,108 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5sp"
-        android:background="#B5B4B4B4"/>
+        android:background="#B5B4B4B4" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:orientation="vertical">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:gravity="center|start"
-        android:text="Plans "
-        android:minLines="2"
-        android:fontFamily="@font/opensans_light"
-        android:textColor="@color/colorBlack"
-        android:textSize="13.5dp"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5sp"
-        android:background="#B4B4B4"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:gravity="center|start"
-        android:text="Billing History: "
-        android:minLines="2"
-        android:fontFamily="@font/opensans_light"
-        android:textColor="@color/colorBlack"
-        android:textSize="13.5dp"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5sp"
-        android:background="#B4B4B4"/>
+        android:paddingRight="10dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:gravity="center|start"
-            android:text="My Orders: "
-            android:minLines="2"
             android:fontFamily="@font/opensans_light"
+            android:gravity="center|start"
+            android:minLines="2"
+            android:text="My Orders: "
             android:textColor="@color/colorBlack"
-            android:textSize="13.5dp"/>
+            android:textSize="13.5dp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5sp"
-            android:background="#B4B4B4"/>
+            android:background="#B4B4B4" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:gravity="center|start"
-        android:text="Contact us"
-        android:minLines="2"
-        android:fontFamily="@font/opensans_light"
-        android:textColor="@color/colorBlack"
-        android:textSize="13.5dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5sp"
-        android:background="#B4B4B4"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/opensans_light"
+                android:gravity="center|start"
+                android:minLines="2"
+                android:text="Wallet Balance: \u20B9"
+                android:textColor="@color/colorBlack"
+                android:textSize="13.5dp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:gravity="center|start"
-        android:text="About us"
-        android:minLines="2"
-        android:fontFamily="@font/opensans_light"
-        android:textColor="@color/colorBlack"
-        android:textSize="13.5dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/opensans_light"
+                android:gravity="center|start"
+                android:minLines="2"
+                android:paddingLeft="10dp"
+                android:text="0.00"
+                android:textColor="@color/colorBlack"
+                android:textSize="13.5dp" />
+        </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5sp"
-        android:background="#B4B4B4"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5sp"
+            android:background="#B4B4B4" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/opensans_light"
+            android:gravity="center|start"
+            android:minLines="2"
+            android:text="Contact us"
+            android:textColor="@color/colorBlack"
+            android:textSize="13.5dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5sp"
+            android:background="#B4B4B4" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/opensans_light"
+            android:gravity="center|start"
+            android:minLines="2"
+            android:text="About us"
+            android:textColor="@color/colorBlack"
+            android:textSize="13.5dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5sp"
+            android:background="#B4B4B4" />
 
         <TextView
             android:id="@+id/tvLogOut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
+            android:fontFamily="@font/opensans_light"
             android:gravity="center|start"
             android:minLines="2"
-            android:fontFamily="@font/opensans_light"
+            android:text="Log Out"
             android:textColor="@color/colorBlack"
-            android:textSize="13.5dp"
-            android:text="Log Out" />
+            android:textSize="13.5dp" />
     </LinearLayout>
 </LinearLayout>

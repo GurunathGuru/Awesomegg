@@ -1,18 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/llDate"
+    android:layout_width="50dp"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="#00000000"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/date"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/rounded_textview"
+        android:layout_width="25dp"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_light"
         android:gravity="center"
-        android:padding="10sp"
-        android:text=""
+        android:padding="5dp"
+        app:mcv_dateTextAppearance="@style/CustomDateTextAppearance"
+        app:mcv_firstDayOfWeek="sunday"
+        app:mcv_headerTextAppearance="@style/CustomHeaderAppearance"
+        app:mcv_selectionColor="@color/colorYellow"
+        app:mcv_selectionMode="none"
+        app:mcv_showOtherDates="decorated_disabled"
+        app:mcv_titleAnimationOrientation="vertical"
+        app:mcv_weekDayTextAppearance="@style/CustomDateTextAppearance"
         android:textColor="@color/colorAccent"
-        android:textSize="15sp" />
+        android:textSize="10dp" />
+
+    <TextView
+        android:id="@+id/day"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_light"
+        android:text="sun"
+        android:textColor="@color/colorAccent"
+        app:mcv_dateTextAppearance="@style/CustomDateTextAppearance"
+        app:mcv_firstDayOfWeek="sunday"
+        app:mcv_headerTextAppearance="@style/CustomHeaderAppearance"
+        app:mcv_selectionColor="@color/colorYellow"
+        app:mcv_selectionMode="none"
+        app:mcv_showOtherDates="decorated_disabled"
+        app:mcv_titleAnimationOrientation="vertical"
+        app:mcv_weekDayTextAppearance="@style/CustomDateTextAppearance"
+        android:gravity="center"
+        android:textSize="10dp" />
 </LinearLayout>
