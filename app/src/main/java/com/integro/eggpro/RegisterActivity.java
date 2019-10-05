@@ -79,7 +79,6 @@ public class RegisterActivity extends AppCompatActivity {
 
                 name = etName.getText().toString().trim();
                 email = etEmail.getText().toString().trim();
-
                 apartmentId = etSelectApartment.getText().toString().trim();
                 blockNo = etBlockNo.getText().toString().trim();
                 flatNo = etFlatNo.getText().toString().trim();

@@ -18,13 +18,17 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.integro.eggpro.adapters.CustomCalenderAdapter;
 import com.integro.eggpro.adapters.SubscribeAdapter;
 import com.integro.eggpro.apis.ApiClient;
 import com.integro.eggpro.apis.ApiService;
+import com.integro.eggpro.interfaces.CreateOrder;
 import com.integro.eggpro.interfaces.OnDateSelected;
 import com.integro.eggpro.model.CustomCalender;
 import com.integro.eggpro.model.CustomDate;
+import com.integro.eggpro.model.Order;
 import com.integro.eggpro.utility.entity.CartItem;
 import com.integro.eggpro.utility.viewmodels.CartViewModel;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -48,30 +52,29 @@ import retrofit2.Response;
 
 public class SubscribeActivity extends AppCompatActivity implements PaymentResultListener {
     private static final String TAG = "SubscribeActivity";
+    ArrayList<Order> placeOrderListArrayList;
     private DatePickerDialog picker;
     private RadioGroup radioGroup;
     private MaterialCalendarView calendarView;
     private EditText tvDate;
     private Calendar primaryCalendar = Calendar.getInstance();
-    private TextView tvGrandTotal,tvGrandTotal2,tvGrandTotal3,tvGrandTotal4,tvAddItem;
+    private TextView tvGrandTotal, tvGrandTotal2, tvGrandTotal3, tvGrandTotal4, tvAddItem;
     private RecyclerView rvSubscribe;
     private SubscribeAdapter adapter;
-
     private RecyclerView recyclerView;
     private TextView monthView;
-
     private CustomCalenderAdapter customCalenderAdapter = new CustomCalenderAdapter();
-
-    private Double total= null;
-    private Double discountTotal =null;
-    private Double savedPrice=null;
-    private Double finalPrice=null;
+    private Double total = null;
+    private Double discountTotal = null;
+    private Double savedPrice = null;
+    private Double finalPrice = null;
+    private ApiService apiService;
     private ArrayList<CartItem> cartItems = new ArrayList<>();
-
     private CartViewModel cartViewModel;
 
+    private Order order;
+
     private DecimalFormat decimalFormat = new DecimalFormat("0.00");
-    
     private OnDateSelected onDateSelected = new OnDateSelected() {
         @Override
         public void onDateSelected(CustomDate date) {
@@ -104,11 +107,11 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
         ButterKnife.bind(this);
         Checkout.preload(getApplicationContext());
 
-        tvAddItem=findViewById(R.id.tvAddItem);
-        tvGrandTotal=findViewById(R.id.tvGrandTotal);
-        tvGrandTotal2=findViewById(R.id.tvGrandTotal2);
-        tvGrandTotal3=findViewById(R.id.tvGrandTotal3);
-        tvGrandTotal4=findViewById(R.id.tvGrandTotal4);
+        tvAddItem = findViewById(R.id.tvAddItem);
+        tvGrandTotal = findViewById(R.id.tvGrandTotal);
+        tvGrandTotal2 = findViewById(R.id.tvGrandTotal2);
+        tvGrandTotal3 = findViewById(R.id.tvGrandTotal3);
+        tvGrandTotal4 = findViewById(R.id.tvGrandTotal4);
 
         tvAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,15 +158,15 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
             @Override
             public void onChanged(List<CartItem> cartItems) {
                 total = 0.0;
-                discountTotal =0.00;
+                discountTotal = 0.00;
 
-                finalPrice=0.00;
-                for (CartItem item: cartItems) {
-                    total += item.getItemQty()*item.getProdSellingPrice();
-                    discountTotal += item.getProdSellingPrice()*item.getAdditionalDiscount()/100*item.getItemQty();
-                    double discount = item.getProdSellingPrice()*item.getAdditionalDiscount()/100*item.getItemQty();
-                    savedPrice=item.getProdListingPrice()-(item.getProdSellingPrice() - discount);
-                    finalPrice=total- discountTotal;
+                finalPrice = 0.00;
+                for (CartItem item : cartItems) {
+                    total += item.getItemQty() * item.getProdSellingPrice();
+                    discountTotal += item.getProdSellingPrice() * item.getAdditionalDiscount() / 100 * item.getItemQty();
+                    double discount = item.getProdSellingPrice() * item.getAdditionalDiscount() / 100 * item.getItemQty();
+                    savedPrice = item.getProdListingPrice() - (item.getProdSellingPrice() - discount);
+                    finalPrice = total - discountTotal;
                 }
                 setTotalView();
             }
@@ -171,16 +174,16 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
     }
 
     private void setTotalView() {
-        tvGrandTotal.setText(getString(R.string.cardTotal,decimalFormat.format(total)));
-        tvGrandTotal2.setText(getString(R.string.cardDiscountsTotal,decimalFormat.format(discountTotal)));
-        tvGrandTotal3.setText(getString(R.string.cardTotal,decimalFormat.format(finalPrice)));
-        tvGrandTotal4.setText(getString(R.string.cardSavedTotal,decimalFormat.format(savedPrice)));
+        tvGrandTotal.setText(getString(R.string.cardTotal, decimalFormat.format(total)));
+        tvGrandTotal2.setText(getString(R.string.cardDiscountsTotal, decimalFormat.format(discountTotal)));
+        tvGrandTotal3.setText(getString(R.string.cardTotal, decimalFormat.format(finalPrice)));
+        tvGrandTotal4.setText(getString(R.string.cardSavedTotal, decimalFormat.format(savedPrice)));
     }
 
     @SuppressLint("WrongConstant")
     private Calendar initializeCalendar() {
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DAY_OF_MONTH,-365);
+        cal.add(Calendar.DAY_OF_MONTH, -365);
         Log.i(TAG, "initializeCalendar: ");
         calendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_NONE); // Removes onClick functionality
         for (int i = 0; i < 1095; i++) {
@@ -275,34 +278,96 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
 
     @OnClick(R.id.payment)
     public void makePayment() {
-        Toast.makeText(this, "on Makepayment", Toast.LENGTH_SHORT).show();
-        Checkout checkout =new Checkout();
-        checkout.setImage(R.mipmap.ic_launcher);
-        final Activity activity =this;
-        finalPrice = finalPrice*100;
-        int totalinpaisa = finalPrice.intValue();
-        try {
-            JSONObject  options = new JSONObject();
-            options.put("name","Integro Infotech");
-            options.put("description", "Reference No. #123456");
-            /*options.put("order_id", "order_9A33XWu170gUtm");*/
-            options.put("currency", "INR");
-            options.put("amount", totalinpaisa);
 
-            checkout.open(activity,options);
-        } catch (Exception e) {
-            Log.e(TAG, "Error in starting Razorpay Checkout", e);
-        }
+        getResponseList(createOrderCallbackListner);
+
     }
 
     @Override
     public void onPaymentSuccess(String s) {
         Toast.makeText(this, "Payment Success " + s, Toast.LENGTH_SHORT).show();
-        finalPrice = finalPrice/100;
+        finalPrice = finalPrice / 100;
     }
 
     @Override
     public void onPaymentError(int i, String s) {
         Toast.makeText(this, "" + i + " Payment Fail " + s, Toast.LENGTH_SHORT).show();
+    }
+
+    private void getResponseList(CreateOrder callback) {
+        if (order != null) {
+            procedeWithPayment();
+            return;
+        }
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+        Log.i(TAG, "getResponseList: "+ finalPrice);
+        int period = 1;
+        int frequecy = 7;
+        Double startDate = (primaryCalendar.getTimeInMillis()/1000.00);
+        int startDateTimeStamp = startDate.intValue();
+        String orderType = "Subscriprion";
+        Double orderPrice = finalPrice;
+
+        ApiClient.getClient2().create(ApiService.class).createOrder(
+                uid,
+                period,
+                frequecy,
+                startDateTimeStamp,
+                orderType,
+                orderPrice
+        ).enqueue(new Callback<Order>() {
+            @Override
+            public void onResponse(Call<Order> call, Response<Order> response) {
+                Log.i(TAG, "onResponse: " + response.body());
+                if (!response.isSuccessful()) {
+                    Toast.makeText(SubscribeActivity.this, "Something Not rignt", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (response.body() == null) {
+                    Toast.makeText(SubscribeActivity.this, "Something Not rignt", Toast.LENGTH_SHORT).show();
+                    callback.onOrderCreadted(null);
+                    return;
+                }
+                callback.onOrderCreadted(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Order> call, Throwable t) {
+                Toast.makeText(SubscribeActivity.this, "Something Not rignt" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                callback.onOrderCreadted(null);
+            }
+        });
+    }
+
+    private CreateOrder createOrderCallbackListner = new CreateOrder() {
+        @Override
+        public void onOrderCreadted(Order localOrder) {
+            if (localOrder == null) {
+                Toast.makeText(SubscribeActivity.this, "Something Not Right", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            order = localOrder;
+            procedeWithPayment();
+        }
+    };
+
+    public void procedeWithPayment() {
+        Checkout checkout = new Checkout();
+        checkout.setImage(R.mipmap.ic_launcher);
+        final Activity activity = SubscribeActivity.this;
+        finalPrice = finalPrice * 100;
+        int totalinpaisa = finalPrice.intValue();
+        try {
+            JSONObject options = new JSONObject();
+            options.put("name", "Integro Infotech");
+            options.put("description", "Reference No. #123456");
+            options.put("order_id", order.getOrderId());
+            options.put("currency", "INR");
+            options.put("amount", totalinpaisa);
+            checkout.open(activity, options);
+        } catch (Exception e) {
+            Log.e(TAG, "Error in starting Razorpay Checkout", e);
+        }
     }
 }

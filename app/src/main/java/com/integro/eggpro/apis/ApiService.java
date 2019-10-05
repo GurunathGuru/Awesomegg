@@ -2,6 +2,7 @@ package com.integro.eggpro.apis;
 
 import com.integro.eggpro.model.Apartments;
 import com.integro.eggpro.model.CustomCalender;
+import com.integro.eggpro.model.Order;
 import com.integro.eggpro.model.Products;
 import com.integro.eggpro.model.User;
 
@@ -43,4 +44,15 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("getServicableDates")
     Call<ArrayList<CustomCalender>> getCalender(@Field("apartmentName") String apartmentName);
+
+    @FormUrlEncoded
+    @POST("placeOrder")
+    Call<Order> createOrder(
+            @Field("uid") String uid,
+            @Field("period") int period,
+            @Field("frequecy") int frequecy,
+            @Field("startDate") Integer startDate,
+            @Field("orderType") String orderType,
+            @Field("orderPrice") Double orderPrice
+    );
 }
