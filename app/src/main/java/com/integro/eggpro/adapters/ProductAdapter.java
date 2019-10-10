@@ -36,14 +36,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
 
     public SubscribeClickListener clickListener;
     public QuantityChangedListener quantityChangedListener;
-
     private static final String TAG = "ProductAdapter";
-
     private ProductsViewModel productsViewModel;
     private CartViewModel cartViewModel;
-
     private DecimalFormat decimalFormat=new DecimalFormat("0.00");
-
     ArrayList<Product> productsList = new ArrayList<>();
     ArrayList<CartItem> cart = new ArrayList<>();
     private Context context;
@@ -137,13 +133,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                 }
             }
         });
-
-        myViewHolder.tvSubscribe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clickListener.onClickListener(product);
-            }
-        });
     }
 
     @Override
@@ -158,12 +147,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ElegantNumberButton itemQty;
-        //TextView tvTotalCount1;
-        TextView tvOrderNow;
-        TextView tvSubscribe;
         TextView tvName;
         TextView tvPrice;
-
         TextView tvTotalPrice;
         ImageView ivImage;
         TextView tvQuantity;
@@ -173,12 +158,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             itemQty = itemView.findViewById(R.id.itemQty);
-            //tvTotalCount1 = itemView.findViewById(R.id.tvTotalCount1);
-            tvOrderNow = itemView.findViewById(R.id.tvOrderNow);
-            tvSubscribe = itemView.findViewById(R.id.tvSubscribe);
             tvName = itemView.findViewById(R.id.tvName);
             tvPrice = itemView.findViewById(R.id.tvPrice);
-
             tvTotalPrice = itemView.findViewById(R.id.tvTotalPrice);
             ivImage = itemView.findViewById(R.id.ivImage);
             tvQuantity=itemView.findViewById(R.id.tvQuantity);

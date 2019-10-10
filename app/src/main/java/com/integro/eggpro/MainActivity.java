@@ -1,19 +1,26 @@
 package com.integro.eggpro;
 
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +31,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.integro.eggpro.adapters.ProductAdapter;
 import com.integro.eggpro.apis.ApiClient;
 import com.integro.eggpro.apis.ApiService;
-import com.integro.eggpro.interfaces.QuantityChangedListener;
 import com.integro.eggpro.model.Products;
 import com.integro.eggpro.model.User;
 import com.integro.eggpro.utility.entity.Product;
@@ -32,14 +38,15 @@ import com.integro.eggpro.utility.viewmodels.CartViewModel;
 import com.integro.eggpro.utility.viewmodels.ProductsViewModel;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.Manifest.permission.CALL_PHONE;
 import static com.integro.eggpro.constants.GenralConstants.ARG_USER_DETAILS;
 
 
@@ -68,6 +75,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.tvWallet)
+    TextView tvWallet;
+
     private ApiService apiService;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser firebaseUser = mAuth.getCurrentUser();
@@ -80,33 +90,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private ProductsViewModel productsViewModel;
     private CartViewModel cartViewModel;
-
-    //Listeners
-    private QuantityChangedListener quantityChangedListener = new QuantityChangedListener() {
-        @Override
-        public void onItermQuantityChanged(int oldValue, int newValue, Product product) {
-            /*int flag = -1;
-            for (int i = 0; i < productsArrayList.size(); i++) {
-                if (productsArrayList.get(i).getId() == Integer.parseInt(String.valueOf(product.getId()))) {
-                    flag = i;
-                    break;
-                }
-            }
-            if (flag >= 0) {
-                if (newValue > 0) {
-                    productsArrayList.get(flag).setProdQty(newValue);
-                } else {
-                    productsArrayList.remove(flag);
-                }
-            } else {
-                productsArrayList.add(new Products(product.getId(), product.getProdSellingPrice(), newValue, product.getProdName(), product.getProductImage()));
-            }
-            total = 0.0;
-            for (int i = 0; i < productsArrayList.size(); i++) {
-                total += (productsArrayList.get(i).getProdSellingPrice() * 6 * productsArrayList.get(i).getProdQty());
-            }*/
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,11 +136,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tvLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                finish();
+              confirmLogOut(v);
             }
         });
+
+        getCurrentBalance();
     }
 
     private void initProducts() {
@@ -173,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Log.i(TAG, "onResponse: something went Wrong response.body");
                 }
                 //Product(int id, String productImage, Double prodSellingPrice, String prodName, String prodDescription, int prodQty, int itemQty, Double prodListingPrice, int additionalDiscount, int prodStock)
-                for (int i =0; i<response.body().size(); i++) {
+                for (int i = 0; i < response.body().size(); i++) {
                     productsViewModel.addProduct(new Product(
                             response.body().get(i).getId(),
                             response.body().get(i).getProductImage(),
@@ -200,42 +183,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @OnClick(R.id.tvSubscribe)
     public void subscribe() {
         Intent subscribeIntent = new Intent(MainActivity.this, SubscribeActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("CARTLIST", productsArrayList);
-        subscribeIntent.putExtra("CARTLIST", bundle);
-        Log.i(TAG, "subscribe: " + productsArrayList);
         startActivity(subscribeIntent);
     }
+    @OnClick(R.id.tvOrderNow)
+    public void oneTimeOrder() {
+        Intent subscribeIntent = new Intent(MainActivity.this, OneTimeOrdersActivity.class);
+        startActivity(subscribeIntent);
+    }
+    @OnClick(R.id.tvMyOrders)
+    public void getMyOders() {
+        Intent intent=new Intent(getApplicationContext(),MyOrdersActivity.class);
+        startActivity(intent);
+    }
 
-    public void getProducts() {
-        productsViewModel.getProducts().observe(this, new Observer<List<Product>>() {
-            @Override
-            public void onChanged(List<Product> products) {
-                Log.i(TAG, "onChanged: " + products.size());
-            }
-        });
-        /*ApiClient.getClient2().create(ApiService.class).getAddItemList().enqueue(new Callback<ArrayList<Products>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Products>> call, Order<ArrayList<Products>> response) {
-                if (!response.isSuccessful()) {
-                    Log.d(TAG, "NoT Successful Request");
-                    return;
+    @OnClick(R.id.ivSupport)
+    public void support(){
+        try {
+            Intent my_callIntent = new Intent(Intent.ACTION_CALL);
+            my_callIntent.setData(Uri.parse("tel:+91 91480 50344"));
+            //here the word 'tel' is important for making a call...
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                startActivity(my_callIntent);
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(new String[]{CALL_PHONE}, 1);
                 }
-                if (response.body()== null) {
-                    Log.i(TAG, "onResponse: " + response.body());
-                    return;
-                }
-
-                productAdapter.setAddItemArrayList(response.body());
-                Log.i(TAG, "onResponse: " + response.body());
-                productAdapter.setQuantityChangedListener(quantityChangedListener);
             }
-
-            @Override
-            public void onFailure(Call<ArrayList<Products>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Error\n" + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });*/
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(getApplicationContext(), "Error in your phone call"+e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+    @OnClick(R.id.ivNotification)
+    public void notification(){
+        Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -252,4 +232,48 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         return false;
     }
+
+    public void getCurrentBalance() {
+        ApiClient.getClient2().create(ApiService.class).getCurrentBalance(firebaseUser.getUid()).enqueue(new Callback<Double>() {
+            @Override
+            public void onResponse(Call<Double> call, Response<Double> response) {
+                if (!response.isSuccessful()) {
+                    return;
+                }
+                if (response.body() == null) {
+                    return;
+                }
+
+                Log.i(TAG, "onResponse: " + response.body());
+                tvWallet.setText(String.valueOf(response.body()));
+            }
+
+            @Override
+            public void onFailure(Call<Double> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void confirmLogOut(View view) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Are you sure,you wanted to Log Out");
+        alertDialogBuilder.setPositiveButton("yes",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        finish();
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
 }

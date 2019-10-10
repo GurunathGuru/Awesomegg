@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="15dp"
@@ -87,10 +86,10 @@
             android:layout_weight="1"
             android:gravity="end"
             android:orientation="vertical"
-            android:padding="10dp"
+            android:padding="5dp"
             android:weightSum="2">
 
-            <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
+            <TextView
                 android:id="@+id/itemQty"
                 android:layout_width="match_parent"
                 android:layout_height="0sp"
@@ -98,7 +97,7 @@
                 android:background="@drawable/ic_border4"
                 android:padding="1dp"
                 android:layout_marginBottom="10dp"
-                app:textColor="@color/colorAccent" />
+                android:textColor="@color/colorAccent" />
 
             <TextView
                 android:id="@+id/tvTotalPrice"

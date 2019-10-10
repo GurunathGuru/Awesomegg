@@ -36,12 +36,14 @@
                     android:textSize="20dp" />
 
                 <ImageView
+                    android:id="@+id/ivSupport"
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
                     android:padding="15dp"
                     android:src="@drawable/support" />
                 
                 <ImageView
+                    android:id="@+id/ivNotification"
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
                     android:src="@drawable/notif"

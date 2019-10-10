@@ -82,7 +82,6 @@ public class SubscribeAdapter extends RecyclerView.Adapter<SubscribeAdapter.MyVi
                 item.setItemQty(newValue);
                 cartViewModel.updateItem(item);
                 Log.i(TAG, "onValueChange: " + item.toProduct());
-
                 productsViewModel.updateProduct(ParseObjects.toProduct(item));
                 if (newValue == 0) {
                     cartViewModel.removeItem(item);

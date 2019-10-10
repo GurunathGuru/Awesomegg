@@ -2,6 +2,7 @@ package com.integro.eggpro.apis;
 
 import com.integro.eggpro.model.Apartments;
 import com.integro.eggpro.model.CustomCalender;
+import com.integro.eggpro.model.MyOrderList;
 import com.integro.eggpro.model.Order;
 import com.integro.eggpro.model.Products;
 import com.integro.eggpro.model.User;
@@ -51,8 +52,32 @@ public interface ApiService {
             @Field("uid") String uid,
             @Field("period") int period,
             @Field("frequecy") int frequecy,
-            @Field("startDate") Integer startDate,
+            @Field("startDate") int startDate,
             @Field("orderType") String orderType,
-            @Field("orderPrice") Double orderPrice
+            @Field("orderPrice") Double orderPrice,
+            @Field("size") int size,
+            @Field("productId") ArrayList<Integer> productId,
+            @Field("itemQty") ArrayList<Integer> itemQty,
+            @Field("itemPrice") ArrayList<Double> itemPrice
     );
+
+    @FormUrlEncoded
+    @POST("getCurrentBalance")
+    Call<Double> getCurrentBalance(
+            @Field("uid") String uid);
+
+    @FormUrlEncoded
+    @POST("paymentComplete")
+    Call<Integer> paymentComplete(
+            @Field("uid") String uid,
+            @Field("orderId") String orderId,
+            @Field("id") int id,
+            @Field("paymentId") String paymentId,
+            @Field("amount") Double amount
+    );
+
+    @FormUrlEncoded
+    @POST("getOrders")
+    Call<ArrayList<MyOrderList>> getMyOrderList(
+            @Field("uid") String uid);
 }
