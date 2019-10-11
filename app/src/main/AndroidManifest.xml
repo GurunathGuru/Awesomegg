@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".OrderDetailsActivity"></activity>
+        <activity android:name=".WalletStatementActivity"/>
+        <activity android:name=".OrderDetailsActivity" />
         <activity android:name=".MyOrdersActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />

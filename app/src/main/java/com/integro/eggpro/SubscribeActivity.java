@@ -42,7 +42,9 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.BindViews;
@@ -72,9 +74,7 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
     private Double finalPrice = null;
     private CartViewModel cartViewModel;
 
-    private ArrayList<Integer> productId;
-    private ArrayList<Double> itemPrice;
-    private ArrayList<Integer> quantity;
+    private Map<String, String> params;
 
     private Order order;
     private DecimalFormat decimalFormat = new DecimalFormat("0.00");
@@ -176,9 +176,7 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
                 finalPrice = 0.00;
                 savedPrice = 0.00;
                 size = cartItems.size();
-                productId = new ArrayList<>();
-                itemPrice = new ArrayList<>();
-                quantity = new ArrayList<>();
+                params = new HashMap<>();
 
                 for (int i = 0; i < size; i++) {
                     CartItem item = cartItems.get(i);
@@ -187,10 +185,9 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
                     double discount = item.getProdSellingPrice() * item.getAdditionalDiscount() / 100 * item.getItemQty();
                     savedPrice = item.getProdListingPrice() - (item.getProdSellingPrice() - discount);
                     finalPrice = total - discountTotal;
-
-                    productId.add(item.getId());
-                    itemPrice.add(Double.valueOf(decimalFormat.format(item.getProdSellingPrice() - (item.getProdSellingPrice() * item.getAdditionalDiscount() / 100))));
-                    quantity.add(item.getItemQty());
+                    params.put("productId["+i+"]",String.valueOf(item.getId()));
+                    params.put("itemQty["+i+"]",String.valueOf(item.getItemQty()));
+                    params.put("itemPrice["+i+"]",decimalFormat.format(item.getProdSellingPrice() - (item.getProdSellingPrice() * item.getAdditionalDiscount() / 100)));
                 }
                 setTotalView();
             }
@@ -341,7 +338,6 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
         String orderType = "Subscriprion";
         Double orderPrice = finalPrice;
 
-
         ApiClient.getClient2().create(ApiService.class).createOrder(
                 uid,
                 period,
@@ -350,10 +346,7 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
                 orderType,
                 orderPrice,
                 size,
-                productId,
-                quantity,
-                itemPrice
-
+                params
         ).enqueue(new Callback<Order>() {
             @Override
             public void onResponse(Call<Order> call, Response<Order> response) {

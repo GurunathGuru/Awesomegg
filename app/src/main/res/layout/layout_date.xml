@@ -31,8 +31,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_light"
+        android:gravity="center"
         android:text="sun"
         android:textColor="@color/colorAccent"
+        android:textSize="10dp"
         app:mcv_dateTextAppearance="@style/CustomDateTextAppearance"
         app:mcv_firstDayOfWeek="sunday"
         app:mcv_headerTextAppearance="@style/CustomHeaderAppearance"
@@ -40,7 +42,5 @@
         app:mcv_selectionMode="none"
         app:mcv_showOtherDates="decorated_disabled"
         app:mcv_titleAnimationOrientation="vertical"
-        app:mcv_weekDayTextAppearance="@style/CustomDateTextAppearance"
-        android:gravity="center"
-        android:textSize="10dp" />
+        app:mcv_weekDayTextAppearance="@style/CustomDateTextAppearance" />
 </LinearLayout>

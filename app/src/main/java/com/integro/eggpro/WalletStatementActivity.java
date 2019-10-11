@@ -10,10 +10,12 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.integro.eggpro.adapters.MyOrdersAdapter;
+import com.integro.eggpro.adapters.WalletStatementAdapter;
 import com.integro.eggpro.apis.ApiClient;
 import com.integro.eggpro.apis.ApiService;
 import com.integro.eggpro.model.MyOrderList;
-import com.integro.eggpro.adapters.MyOrdersAdapter;
+import com.integro.eggpro.model.WalletStatement;
 
 import java.util.ArrayList;
 
@@ -23,13 +25,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MyOrdersActivity extends AppCompatActivity {
+public class WalletStatementActivity extends AppCompatActivity {
 
-    @BindView(R.id.rvMyOrders)
-    RecyclerView rvMyOrder;
+    @BindView(R.id.rvWallet)
+    RecyclerView rvWallet;
 
     private static final String TAG = "MyOrdersActivity";
-    MyOrdersAdapter myOrdersAdapter;
+    WalletStatementAdapter walletStatementAdapter;
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser firebaseUser = mAuth.getCurrentUser();
@@ -37,20 +39,20 @@ public class MyOrdersActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_orders);
+        setContentView(R.layout.activity_wallet_statement);
         ButterKnife.bind(this);
 
-        rvMyOrder.setLayoutManager(new LinearLayoutManager(MyOrdersActivity.this));
-        myOrdersAdapter = new MyOrdersAdapter(MyOrdersActivity.this);
-        rvMyOrder.setAdapter(myOrdersAdapter);
+        rvWallet.setLayoutManager(new LinearLayoutManager(WalletStatementActivity.this));
+        walletStatementAdapter = new WalletStatementAdapter(WalletStatementActivity.this);
+        rvWallet.setAdapter(walletStatementAdapter);
 
-        getMyOrdersList();
+        getWalletStatement();
     }
 
-    public void getMyOrdersList() {
-        ApiClient.getClient2().create(ApiService.class).getMyOrderList(firebaseUser.getUid()).enqueue(new Callback<ArrayList<MyOrderList>>() {
+    public void getWalletStatement() {
+        ApiClient.getClient2().create(ApiService.class).getWalletStatementList(firebaseUser.getUid()).enqueue(new Callback<ArrayList<WalletStatement>>() {
             @Override
-            public void onResponse(Call<ArrayList<MyOrderList>> call, Response<ArrayList<MyOrderList>> response) {
+            public void onResponse(Call<ArrayList<WalletStatement>> call, Response<ArrayList<WalletStatement>> response) {
                 if (!response.isSuccessful()) {
                     Log.i(TAG, "onResponse: " + response.errorBody());
                     return;
@@ -61,12 +63,12 @@ public class MyOrdersActivity extends AppCompatActivity {
                 }
                 Log.i(TAG, "onResponse: " + response.body());
 
-                    myOrdersAdapter.setOrderList(response.body());
+                walletStatementAdapter.setWalletStatements(response.body());
             }
 
             @Override
-            public void onFailure(Call<ArrayList<MyOrderList>> call, Throwable t) {
-                Toast.makeText(MyOrdersActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<ArrayList<WalletStatement>> call, Throwable t) {
+                Toast.makeText(WalletStatementActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

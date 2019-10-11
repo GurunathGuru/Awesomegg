@@ -6,11 +6,14 @@ import com.integro.eggpro.model.MyOrderList;
 import com.integro.eggpro.model.Order;
 import com.integro.eggpro.model.Products;
 import com.integro.eggpro.model.User;
+import com.integro.eggpro.model.WalletStatement;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
@@ -56,9 +59,7 @@ public interface ApiService {
             @Field("orderType") String orderType,
             @Field("orderPrice") Double orderPrice,
             @Field("size") int size,
-            @Field("productId") ArrayList<Integer> productId,
-            @Field("itemQty") ArrayList<Integer> itemQty,
-            @Field("itemPrice") ArrayList<Double> itemPrice
+            @FieldMap Map<String, String> param
     );
 
     @FormUrlEncoded
@@ -79,5 +80,10 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("getOrders")
     Call<ArrayList<MyOrderList>> getMyOrderList(
+            @Field("uid") String uid);
+
+    @FormUrlEncoded
+    @POST("getWalletStatement")
+    Call<ArrayList<WalletStatement>> getWalletStatementList(
             @Field("uid") String uid);
 }

@@ -78,16 +78,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @BindView(R.id.tvWallet)
     TextView tvWallet;
 
-    private ApiService apiService;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser firebaseUser = mAuth.getCurrentUser();
-    private ArrayList<Products> productsArrayList = new ArrayList<>();
-    private Call<Products> productsCall;
     private ProductAdapter productAdapter;
-
-    private double total = 0.0;
     private User user;
-
     private ProductsViewModel productsViewModel;
     private CartViewModel cartViewModel;
 
@@ -96,18 +90,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        productsViewModel = ViewModelProviders.of(this).get(ProductsViewModel.class);
-        cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
-
         ButterKnife.bind(this);
+
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        productsViewModel = ViewModelProviders.of(this).get(ProductsViewModel.class);
+        cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
 
         if (getIntent().hasExtra(ARG_USER_DETAILS)) {
             Bundle bundle = getIntent().getBundleExtra(ARG_USER_DETAILS);
@@ -120,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 tvAddress.setText(user.getFloorNo() + "," + user.getFlatNo() + ",\n" + user.getApartmentId());
             }
         }
-        apiService = ApiClient.getClient2().create(ApiService.class);
+        ApiClient.getClient2().create(ApiService.class);
         rvItems.setLayoutManager(new LinearLayoutManager(this));
         productAdapter = new ProductAdapter(this);
         rvItems.setAdapter(productAdapter);
@@ -132,13 +126,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
-
-        tvLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              confirmLogOut(v);
-            }
-        });
 
         getCurrentBalance();
     }
@@ -155,7 +142,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (response.body() == null) {
                     Log.i(TAG, "onResponse: something went Wrong response.body");
                 }
-                //Product(int id, String productImage, Double prodSellingPrice, String prodName, String prodDescription, int prodQty, int itemQty, Double prodListingPrice, int additionalDiscount, int prodStock)
                 for (int i = 0; i < response.body().size(); i++) {
                     productsViewModel.addProduct(new Product(
                             response.body().get(i).getId(),
@@ -178,44 +164,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Log.i(TAG, "onFailure: " + t.getMessage());
             }
         });
-    }
-
-    @OnClick(R.id.tvSubscribe)
-    public void subscribe() {
-        Intent subscribeIntent = new Intent(MainActivity.this, SubscribeActivity.class);
-        startActivity(subscribeIntent);
-    }
-    @OnClick(R.id.tvOrderNow)
-    public void oneTimeOrder() {
-        Intent subscribeIntent = new Intent(MainActivity.this, OneTimeOrdersActivity.class);
-        startActivity(subscribeIntent);
-    }
-    @OnClick(R.id.tvMyOrders)
-    public void getMyOders() {
-        Intent intent=new Intent(getApplicationContext(),MyOrdersActivity.class);
-        startActivity(intent);
-    }
-
-    @OnClick(R.id.ivSupport)
-    public void support(){
-        try {
-            Intent my_callIntent = new Intent(Intent.ACTION_CALL);
-            my_callIntent.setData(Uri.parse("tel:+91 91480 50344"));
-            //here the word 'tel' is important for making a call...
-            if (ContextCompat.checkSelfPermission(getApplicationContext(), CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                startActivity(my_callIntent);
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    requestPermissions(new String[]{CALL_PHONE}, 1);
-                }
-            }
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(getApplicationContext(), "Error in your phone call"+e.getMessage(), Toast.LENGTH_LONG).show();
-        }
-    }
-    @OnClick(R.id.ivNotification)
-    public void notification(){
-        Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -243,11 +191,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (response.body() == null) {
                     return;
                 }
-
                 Log.i(TAG, "onResponse: " + response.body());
                 tvWallet.setText(String.valueOf(response.body()));
             }
-
             @Override
             public void onFailure(Call<Double> call, Throwable t) {
 
@@ -255,17 +201,66 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    public void confirmLogOut(View view) {
+    @OnClick(R.id.tvSubscribe)
+    public void subscribe() {
+        Intent subscribeIntent = new Intent(MainActivity.this, SubscribeActivity.class);
+        startActivity(subscribeIntent);
+    }
+
+    @OnClick(R.id.tvOrderNow)
+    public void oneTimeOrder() {
+        Intent subscribeIntent = new Intent(MainActivity.this, OneTimeOrdersActivity.class);
+        startActivity(subscribeIntent);
+    }
+
+    @OnClick(R.id.tvMyOrders)
+    public void getMyOders() {
+        Intent intent = new Intent(getApplicationContext(), MyOrdersActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.ivSupport)
+    public void support() {
+        makeACall();
+    }
+
+    @OnClick(R.id.ivNotification)
+    public void notification() {
+        Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.llWallet)
+    public void getWalletStatement() {
+        Intent intent = new Intent(getApplicationContext(), WalletStatementActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.tvContactUs)
+    public void contactUs() {
+        makeACall();
+    }
+
+    @OnClick(R.id.tvAboutUs)
+    public void AboutUs() {
+        Toast.makeText(this, "coming Soon", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.tvLogOut)
+    public void logOut() {
+        confirmLogOut();
+    }
+
+    public void confirmLogOut() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Are you sure,you wanted to Log Out");
-        alertDialogBuilder.setPositiveButton("yes",new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                        finish();
-                    }
-                });
+        alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finish();
+            }
+        });
 
         alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -276,4 +271,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         alertDialog.show();
     }
 
+    public void makeACall() {
+        try {
+            Intent my_callIntent = new Intent(Intent.ACTION_CALL);
+            my_callIntent.setData(Uri.parse("tel:+91 91480 50344"));
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                startActivity(my_callIntent);
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(new String[]{CALL_PHONE}, 1);
+                }
+            }
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(getApplicationContext(), "Error in your phone call" + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
 }

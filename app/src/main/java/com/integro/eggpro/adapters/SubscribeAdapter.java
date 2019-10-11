@@ -113,7 +113,7 @@ public class SubscribeAdapter extends RecyclerView.Adapter<SubscribeAdapter.MyVi
             super(itemView);
             itemQty = itemView.findViewById(R.id.itemQty);
             tvName = itemView.findViewById(R.id.tvName);
-            tvPrice = itemView.findViewById(R.id.tvPrice);
+            tvPrice = itemView.findViewById(R.id.tvSellingPrice);
             ivImage = itemView.findViewById(R.id.ivImage);
         }
     }

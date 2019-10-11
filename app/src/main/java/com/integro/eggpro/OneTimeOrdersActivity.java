@@ -37,7 +37,9 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -87,6 +89,7 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
     private ArrayList<Double> itemPrice;
     private ArrayList<Integer> quantity;
     private int size;
+    private Map<String, String> params;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,15 +135,16 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
                 productId = new ArrayList<>();
                 itemPrice = new ArrayList<>();
                 quantity=new ArrayList<>();
+                params = new HashMap<>();
                 for (int i=0;i<size; i++) {
                     CartItem item = cartItems.get(i);
                     total += item.getItemQty() * item.getProdSellingPrice();
                     savedPrice = item.getProdListingPrice() - item.getProdSellingPrice();
                     finalPrice = total;
 
-                    productId.add(item.getId());
-                    itemPrice.add(Double.valueOf(decimalFormat.format(item.getProdSellingPrice()-(item.getProdSellingPrice()*item.getAdditionalDiscount()/100))));
-                    quantity.add(item.getItemQty());
+                    params.put("productId["+i+"]",String.valueOf(item.getId()));
+                    params.put("itemQty["+i+"]",String.valueOf(item.getItemQty()));
+                    params.put("itemPrice["+i+"]",decimalFormat.format(item.getProdSellingPrice()));
                 }
                 setTotalView();
             }
@@ -258,15 +262,13 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
                 orderType,
                 orderPrice,
                 size,
-                productId,
-                quantity,
-                itemPrice
+                params
         ).enqueue(new Callback<Order>() {
             @Override
             public void onResponse(Call<Order> call, Response<Order> response) {
                 Log.i(TAG, "onResponse: " + response.body());
                 if (!response.isSuccessful()) {
-                    Toast.makeText(OneTimeOrdersActivity.this, "Something Not rignt", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OneTimeOrdersActivity.this, "Add at least one item", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (response.body() == null) {

@@ -1,6 +1,5 @@
 package com.integro.eggpro.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,16 +11,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.integro.eggpro.R;
 import com.integro.eggpro.helpers.ParseObjects;
 import com.integro.eggpro.interfaces.QuantityChangedListener;
 import com.integro.eggpro.interfaces.SubscribeClickListener;
-import com.integro.eggpro.model.Products;
 import com.integro.eggpro.utility.entity.CartItem;
 import com.integro.eggpro.utility.entity.Product;
 import com.integro.eggpro.utility.viewmodels.CartViewModel;
@@ -103,10 +101,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         myViewHolder.itemQty.setNumber(""+product.getItemQty());
         final Double price = Double.valueOf(product.getProdSellingPrice());
 
-        Picasso.with(context)
+        Glide.with(context)
                 .load(product.getProductImage())
-                .resize(60, 68)
-                .centerCrop()
                 .into(myViewHolder.ivImage);
 
         myViewHolder.tvTotalPrice.setText(context.getResources().getString(R.string.itemPrice, decimalFormat.format((product.getProdSellingPrice() * product.getItemQty()))));
@@ -140,11 +136,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         return productsList.size();
     }
 
-    public void setAddItemArrayList(ArrayList<Product> products) {
-        this.productsList = products;
-        notifyDataSetChanged();
-    }
-
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ElegantNumberButton itemQty;
         TextView tvName;
@@ -159,7 +150,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             super(itemView);
             itemQty = itemView.findViewById(R.id.itemQty);
             tvName = itemView.findViewById(R.id.tvName);
-            tvPrice = itemView.findViewById(R.id.tvPrice);
+            tvPrice = itemView.findViewById(R.id.tvSellingPrice);
             tvTotalPrice = itemView.findViewById(R.id.tvTotalPrice);
             ivImage = itemView.findViewById(R.id.ivImage);
             tvQuantity=itemView.findViewById(R.id.tvQuantity);

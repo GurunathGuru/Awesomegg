@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="15dp"
-    android:layout_marginRight="15dp"
-    android:layout_marginBottom="5dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="5dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -19,7 +19,8 @@
             android:layout_width="0sp"
             android:layout_height="match_parent"
             android:layout_weight="0.6"
-            android:paddingLeft="2dp" />
+            android:scaleType="centerCrop"
+            android:layout_margin="1dp"/>
 
         <LinearLayout
             android:layout_width="0sp"
@@ -64,12 +65,12 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/strikethrough_shape"
                     android:gravity="start|center"
-                    android:text="₹"
+                    android:text=""
                     android:textColor="#A8000000"
                     android:textSize="10dp" />
 
                 <TextView
-                    android:id="@+id/tvPrice"
+                    android:id="@+id/tvSellingPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="start|center"
@@ -96,6 +97,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/ic_border4"
                 android:padding="1dp"
+                android:gravity="center"
                 android:layout_marginBottom="10dp"
                 android:textColor="@color/colorAccent" />
 
@@ -104,7 +106,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0sp"
                 android:layout_weight="1"
-                android:gravity="center|start"
+                android:gravity="center"
                 android:paddingRight="5dp"
                 android:text="\u20B9 0.0"
                 android:textColor="@color/colorAccent" />

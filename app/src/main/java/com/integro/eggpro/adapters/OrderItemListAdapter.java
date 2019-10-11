@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.integro.eggpro.R;
 import com.integro.eggpro.model.Items;
 
@@ -17,15 +18,16 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class OrderItemListAdapter extends RecyclerView.Adapter<OrderItemListAdapter.MyViewHolder> {
-    ArrayList<Items> arrayList =new ArrayList<>();
     Context context;
+    ArrayList<Items> items;
 
     DecimalFormat format =new DecimalFormat("0.00");
 
-    public OrderItemListAdapter(ArrayList<Items> arrayList, Context context) {
-        this.arrayList = arrayList;
-        this.context = context;
+    public OrderItemListAdapter(ArrayList<Items> items, Context context) {
+        this.items=items;
+        this.context=context;
     }
+
 
     @NonNull
     @Override
@@ -36,23 +38,27 @@ public class OrderItemListAdapter extends RecyclerView.Adapter<OrderItemListAdap
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.tvName.setText(arrayList.get(position).getProdName());
-        holder.tvPrice.setText(format.format(Double.valueOf(arrayList.get(position).getItemPrice())*Integer.parseInt(arrayList.get(position).getItemQty())));
-        holder.itemQty.setText(arrayList.get(position).getItemQty());
-        holder.tvTotalPrice.setText(arrayList.get(position).getItemPrice());
-        holder.tvQuantity.setText(arrayList.get(position).getProdQty());
-        holder.tvListingPrice.setText(arrayList.get(position).getProdListingPrice());
+        holder.tvName.setText(items.get(position).getProdName());
+        holder.tvSellingPrice.setText("\u20B9"+format.format(Double.valueOf(items.get(position).getProdSellingPrice())*Integer.parseInt(items.get(position).getItemQty())));
+        holder.itemQty.setText(items.get(position).getItemQty());
+        holder.tvTotalPrice.setText("\u20B9"+items.get(position).getProdSellingPrice());
+        holder.tvQuantity.setText(items.get(position).getProdQty());
+        holder.tvListingPrice.setText("\u20B9"+items.get(position).getProdListingPrice());
+
+        Glide.with(context).
+                load(items.get(position).getProductImage())
+                .into(holder.ivImage);
     }
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return items.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvName;
-        TextView tvPrice;
+        TextView tvSellingPrice;
         TextView itemQty;
         TextView tvTotalPrice;
         ImageView ivImage;
@@ -64,7 +70,7 @@ public class OrderItemListAdapter extends RecyclerView.Adapter<OrderItemListAdap
 
             itemQty = itemView.findViewById(R.id.itemQty);
             tvName = itemView.findViewById(R.id.tvName);
-            tvPrice = itemView.findViewById(R.id.tvPrice);
+            tvSellingPrice = itemView.findViewById(R.id.tvSellingPrice);
             tvTotalPrice = itemView.findViewById(R.id.tvTotalPrice);
             ivImage = itemView.findViewById(R.id.ivImage);
             tvQuantity=itemView.findViewById(R.id.tvQuantity);
