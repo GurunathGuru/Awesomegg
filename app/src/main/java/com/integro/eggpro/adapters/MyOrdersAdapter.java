@@ -12,9 +12,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.integro.eggpro.DeliveryStatusActivity;
 import com.integro.eggpro.OrderDetailsActivity;
 import com.integro.eggpro.R;
 import com.integro.eggpro.model.MyOrderList;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,11 +25,11 @@ import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.integro.eggpro.constants.GenralConstants.ITEM_LIST;
 
 public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyViewHolder> {
-
 
     private static final String TAG = "MyOrdersAdapter";
     Context context;
@@ -74,11 +77,20 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyView
         holder.orderType.setText(orderList.get(position).getOrderType());
         holder.orderPrice.setText("\u20B9" + orderList.get(position).getOrderPrice());
 
-        holder.llMyOder.setOnClickListener(new View.OnClickListener() {
+        holder.tvOrderDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, OrderDetailsActivity.class);
                 intent.putExtra(ITEM_LIST, orderList.get(position).getItems());
+                context.startActivity(intent);
+            }
+        });
+
+        holder.tvDeliveryStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DeliveryStatusActivity.class);
+                intent.putExtra(ITEM_LIST, orderList.get(position).getId());
                 context.startActivity(intent);
             }
         });
@@ -103,8 +115,14 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyView
         @BindView(R.id.orderPrice)
         TextView orderPrice;
 
-        @BindView(R.id.llMyOder)
-        LinearLayout llMyOder;
+        @BindView(R.id.tvOrderDetails)
+        TextView tvOrderDetails;
+
+        @BindView(R.id.tvDeliveryStatus)
+        TextView tvDeliveryStatus;
+
+        @BindView(R.id.tvRecharge)
+        TextView tvRecharge;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);

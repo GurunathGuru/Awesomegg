@@ -7,58 +7,57 @@
     app:cardCornerRadius="5dp">
 
     <LinearLayout
-        android:id="@+id/llMyOder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="80dp"
         android:orientation="vertical"
-        android:padding="10dp"
-        android:weightSum="3">
+        android:padding="5dp"
+        android:weightSum="4.5">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0sp"
-            android:layout_marginBottom="5dp"
-            android:layout_weight="1.5"
+            android:layout_weight="1"
             android:orientation="horizontal"
             android:weightSum="2">
 
             <LinearLayout
                 android:layout_width="0sp"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
                 <TextView
                     android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:text="Order Id:"
+                    android:layout_height="match_parent"
                     android:fontFamily="@font/opensans_light"
-                    android:textSize="13dp" />
+                    android:text="Order Id:"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="10dp" />
 
                 <TextView
                     android:id="@+id/orderId"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/opensans_bold"
-                    android:textSize="13dp" />
+                    android:textColor="@color/colorAccent"
+                    android:textSize="10dp" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/orderDate"
                 android:layout_width="0sp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:fontFamily="@font/opensans_light"
                 android:gravity="end"
-                android:textSize="13dp" />
+                android:textColor="@color/colorAccent"
+                android:textSize="10dp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0sp"
-            android:layout_marginBottom="5dp"
             android:layout_weight="1"
             android:orientation="horizontal"
             android:weightSum="2">
@@ -66,44 +65,88 @@
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
                 android:fontFamily="@font/opensans_light"
                 android:text="Order Type:"
-                android:textSize="13dp" />
+                android:textColor="@color/colorAccent"
+                android:textSize="10dp" />
 
             <TextView
                 android:id="@+id/orderType"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
                 android:fontFamily="@font/opensans_bold"
-                android:textSize="13dp" />
+                android:textColor="@color/colorAccent"
+                android:textSize="10dp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0sp"
-            android:layout_marginBottom="5dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
                 android:fontFamily="@font/opensans_light"
                 android:text="Order Price:"
-                android:textSize="13dp" />
+                android:textColor="@color/colorAccent"
+                android:textSize="10dp" />
 
             <TextView
                 android:id="@+id/orderPrice"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
                 android:layout_weight="1"
                 android:fontFamily="@font/opensans_bold"
-                android:textSize="13dp" />
+                android:textColor="@color/colorAccent"
+                android:textSize="10dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="1.5"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                android:id="@+id/tvOrderDetails"
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@color/colorAccent"
+                android:fontFamily="@font/opensans_bold"
+                android:gravity="center"
+                android:text="Order Details"
+                android:textColor="@color/colorWhite"
+                android:textSize="10dp" />
+
+            <TextView
+                android:id="@+id/tvDeliveryStatus"
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@color/colorAccent"
+                android:fontFamily="@font/opensans_bold"
+                android:gravity="center"
+                android:text="Delivery Status"
+                android:textColor="@color/colorWhite"
+                android:textSize="10dp" />
+
+            <TextView
+                android:id="@+id/tvRecharge"
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorAccent"
+                android:fontFamily="@font/opensans_bold"
+                android:gravity="center"
+                android:text="Recharge "
+                android:textColor="@color/colorWhite"
+                android:textSize="10dp" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -95,11 +95,11 @@
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1.3"
-                    android:fontFamily="@string/font_H1"
+                    android:fontFamily="@font/montserrat_bold"
                     android:gravity="center|start"
                     android:text=""
                     android:textColor="@color/colorWhite"
-                    android:textSize="13dp" />
+                    android:textSize="15dp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -247,6 +247,7 @@
                 android:layout_height="30dp"
                 android:gravity="center|start"
                 android:text=""
+                android:fontFamily="@font/montserrat_bold"
                 android:paddingLeft="130dp"
                 android:textColor="@color/colorAccent"
                 android:textSize="15dp" />

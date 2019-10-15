@@ -2,6 +2,7 @@ package com.integro.eggpro.apis;
 
 import com.integro.eggpro.model.Apartments;
 import com.integro.eggpro.model.CustomCalender;
+import com.integro.eggpro.model.DeliveryStatus;
 import com.integro.eggpro.model.MyOrderList;
 import com.integro.eggpro.model.Order;
 import com.integro.eggpro.model.Products;
@@ -86,4 +87,10 @@ public interface ApiService {
     @POST("getWalletStatement")
     Call<ArrayList<WalletStatement>> getWalletStatementList(
             @Field("uid") String uid);
+
+    @FormUrlEncoded
+    @POST("getDeliveryTimeline")
+    Call<ArrayList<DeliveryStatus>> getDeliveryStatus(
+            @Field("uid") String uid,
+            @Field("orderId")String orderId );
 }

@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.integro.eggpro.R;
 import com.integro.eggpro.helpers.ParseObjects;
@@ -90,10 +91,8 @@ public class SubscribeAdapter extends RecyclerView.Adapter<SubscribeAdapter.MyVi
             }
         });
 
-        Picasso.with(context)
+        Glide.with(context)
                 .load(item.getProductImage())
-                .resize(60, 68)
-                .centerCrop()
                 .into(holder.ivImage);
     }
 

@@ -331,8 +331,8 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
         Log.i(TAG, "getResponseList: " + finalPrice);
-        int period = 0;
-        int frequecy = 1;
+        int period = 1;
+        int frequecy = 7;
         Double startDate = (primaryCalendar.getTimeInMillis() / 1000.00);
         int startDateTimeStamp = startDate.intValue();
         String orderType = "Subscriprion";

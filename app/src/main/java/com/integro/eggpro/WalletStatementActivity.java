@@ -29,12 +29,10 @@ public class WalletStatementActivity extends AppCompatActivity {
 
     @BindView(R.id.rvWallet)
     RecyclerView rvWallet;
-
-    private static final String TAG = "MyOrdersActivity";
-    WalletStatementAdapter walletStatementAdapter;
-
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser firebaseUser = mAuth.getCurrentUser();
+    private static final String TAG = "MyOrdersActivity";
+    WalletStatementAdapter walletStatementAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

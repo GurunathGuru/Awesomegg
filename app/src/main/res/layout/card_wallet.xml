@@ -31,7 +31,8 @@
                     android:layout_weight="1.5"
                     android:fontFamily="@font/montserrat_bold"
                     android:gravity="center|start"
-                    android:textSize="13dp" />
+                    android:textColor="@color/colorAccent"
+                    android:textSize="10dp" />
 
 
                 <TextView
@@ -57,6 +58,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/montserrat_light"
                     android:gravity="center|start"
+                    android:textColor="@color/colorAccent"
                     android:textSize="10dp" />
 
                 <TextView
@@ -66,6 +68,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/montserrat_light"
                     android:gravity="center|end"
+                    android:textColor="@color/colorAccent"
                     android:textSize="10dp" />
             </LinearLayout>
         </LinearLayout>

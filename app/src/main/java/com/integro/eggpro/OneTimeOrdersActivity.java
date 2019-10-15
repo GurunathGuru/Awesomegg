@@ -52,7 +52,7 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
     private static final String TAG = "OneTimeOrdersActivity";
     private TextView tvGrandTotal, tvDiscountPrice, tvTotalPrice, tvSavedPrice, tvAddItem;
     private RecyclerView rvOneTime;
-    private TextView monthView,tvProceedToPay;
+    private TextView monthView, tvProceedToPay;
     private EditText tvDate;
     private RecyclerView recyclerView;
     private Calendar primaryCalendar = Calendar.getInstance();
@@ -130,21 +130,21 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
             public void onChanged(List<CartItem> cartItems) {
                 total = 0.0;
                 finalPrice = 0.00;
-                savedPrice=0.00;
-                size=cartItems.size();
+                savedPrice = 0.00;
+                size = cartItems.size();
                 productId = new ArrayList<>();
                 itemPrice = new ArrayList<>();
-                quantity=new ArrayList<>();
+                quantity = new ArrayList<>();
                 params = new HashMap<>();
-                for (int i=0;i<size; i++) {
+                for (int i = 0; i < size; i++) {
                     CartItem item = cartItems.get(i);
                     total += item.getItemQty() * item.getProdSellingPrice();
                     savedPrice = item.getProdListingPrice() - item.getProdSellingPrice();
                     finalPrice = total;
 
-                    params.put("productId["+i+"]",String.valueOf(item.getId()));
-                    params.put("itemQty["+i+"]",String.valueOf(item.getItemQty()));
-                    params.put("itemPrice["+i+"]",decimalFormat.format(item.getProdSellingPrice()));
+                    params.put("productId[" + i + "]", String.valueOf(item.getId()));
+                    params.put("itemQty[" + i + "]", String.valueOf(item.getItemQty()));
+                    params.put("itemPrice[" + i + "]", decimalFormat.format(item.getProdSellingPrice()));
                 }
                 setTotalView();
             }
@@ -247,8 +247,8 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
         Log.i(TAG, "getResponseList: " + finalPrice);
-        int period = 1;
-        int frequecy = 7;
+        int period = 0;
+        int frequecy = 1;
 
         Double startDate = (primaryCalendar.getTimeInMillis() / 1000.00);
         int startDateTimeStamp = startDate.intValue();

@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
     android:layout_marginTop="5dp"
+    android:layout_marginRight="10dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -12,45 +12,53 @@
         android:layout_height="75dp"
         android:background="@drawable/ic_border"
         android:orientation="horizontal"
-        android:weightSum="3">
+        android:weightSum="2">
 
         <ImageView
             android:id="@+id/ivImage"
             android:layout_width="0sp"
             android:layout_height="match_parent"
-            android:layout_weight="0.6"
-            android:scaleType="centerCrop"
-            android:layout_margin="1dp"/>
+            android:layout_margin="1dp"
+            android:layout_weight="0.4"
+            android:scaleType="centerCrop" />
 
         <LinearLayout
             android:layout_width="0sp"
             android:layout_height="match_parent"
-            android:layout_weight="1.4"
+            android:layout_weight="1.6"
+            android:gravity="end"
             android:orientation="vertical"
-            android:paddingLeft="10dp"
+            android:padding="5dp"
             android:weightSum="3">
 
-            <TextView
-                android:id="@+id/tvName"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0sp"
                 android:layout_weight="1"
-                android:fontFamily="@string/font_H1"
-                android:gravity="start|center"
-                android:text="Awesome Eggs"
-                android:textColor="@color/colorAccent"
-                android:textSize="15dp" />
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-            <TextView
-                android:id="@+id/tvQuantity"
-                android:layout_width="match_parent"
-                android:layout_height="0sp"
-                android:layout_weight="1"
-                android:fontFamily="@string/font_H1"
-                android:gravity="center|start"
-                android:text="@string/productQuantity"
-                android:textColor="#A8000000"
-                android:textSize="10dp" />
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="0sp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:fontFamily="@string/font_H1"
+                    android:gravity="start|center"
+                    android:text="Awesome Eggs"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/itemQty"
+                    android:layout_width="0sp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/ic_border4"
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:textColor="@color/colorAccent" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -60,58 +68,64 @@
                 android:weightSum="3">
 
                 <TextView
-                    android:id="@+id/tvListingPrice"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tvQuantity"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/strikethrough_shape"
-                    android:gravity="start|center"
-                    android:text=""
+                    android:layout_weight="1"
+                    android:fontFamily="@string/font_H1"
+                    android:gravity="center|start"
+                    android:text="@string/productQuantity"
                     android:textColor="#A8000000"
                     android:textSize="10dp" />
 
-                <TextView
-                    android:id="@+id/tvSellingPrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="start|center"
-                    android:paddingLeft="10dp"
-                    android:text=""
-                    android:textColor="@color/colorBlack"
-                    android:textSize="13dp" />
             </LinearLayout>
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="0sp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="end"
-            android:orientation="vertical"
-            android:padding="5dp"
-            android:weightSum="2">
-
-            <TextView
-                android:id="@+id/itemQty"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0sp"
                 android:layout_weight="1"
-                android:background="@drawable/ic_border4"
-                android:padding="1dp"
-                android:gravity="center"
-                android:layout_marginBottom="10dp"
-                android:textColor="@color/colorAccent" />
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-            <TextView
-                android:id="@+id/tvTotalPrice"
-                android:layout_width="match_parent"
-                android:layout_height="0sp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:paddingRight="5dp"
-                android:textSize="15dp"
-                android:fontFamily="@font/montserrat_bold"
-                android:text="\u20B9 0.0"
-                android:textColor="@color/colorAccent" />
+                <LinearLayout
+                    android:layout_width="0sp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/tvListingPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/strikethrough_shape"
+                        android:gravity="start|center"
+                        android:text=""
+                        android:textSize="10dp" />
+
+                    <TextView
+                        android:id="@+id/tvSellingPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="start|center"
+                        android:paddingLeft="10dp"
+                        android:text=""
+                        android:textColor="@color/colorBlack"
+                        android:textSize="13dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvTotalPrice"
+                    android:layout_width="0sp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:gravity="center|end"
+                    android:paddingRight="15dp"
+                    android:text="\u20B9 0.0"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15dp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
