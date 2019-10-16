@@ -52,7 +52,7 @@ public class DeliveryStatusAdapter extends RecyclerView.Adapter<DeliveryStatusAd
         if (deliveryStatus.get(position).getStatus().equals("Order Delivered")){
             holder.tvStatus.setTextColor((Color.parseColor("#5BB100")));
         }else {
-            holder.tvStatus.setTextColor((Color.parseColor("#ff4881")));
+            holder.tvStatus.setTextColor((Color.parseColor("#000000")));
         }
         holder.tvStatus.setText(deliveryStatus.get(position).getStatus());
         Log.i(TAG, "onBindViewHolder: "+deliveryStatus.get(position).getId());

@@ -32,7 +32,6 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/opensans_light"
                     android:text="Order Id:"
-                    android:textColor="@color/colorAccent"
                     android:textSize="10dp" />
 
                 <TextView
@@ -40,7 +39,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/opensans_bold"
-                    android:textColor="@color/colorAccent"
                     android:textSize="10dp" />
             </LinearLayout>
 
@@ -51,7 +49,6 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/opensans_light"
                 android:gravity="end"
-                android:textColor="@color/colorAccent"
                 android:textSize="10dp" />
         </LinearLayout>
 
@@ -67,7 +64,6 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/opensans_light"
                 android:text="Order Type:"
-                android:textColor="@color/colorAccent"
                 android:textSize="10dp" />
 
             <TextView
@@ -75,7 +71,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/opensans_bold"
-                android:textColor="@color/colorAccent"
                 android:textSize="10dp" />
         </LinearLayout>
 
@@ -90,7 +85,6 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/opensans_light"
                 android:text="Order Price:"
-                android:textColor="@color/colorAccent"
                 android:textSize="10dp" />
 
             <TextView
@@ -99,7 +93,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:fontFamily="@font/opensans_bold"
-                android:textColor="@color/colorAccent"
                 android:textSize="10dp" />
         </LinearLayout>
 
@@ -116,11 +109,11 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
-                android:background="@color/colorAccent"
+                android:textColor="@color/colorAccent"
+                android:background="@drawable/ic_border5"
                 android:fontFamily="@font/opensans_bold"
                 android:gravity="center"
                 android:text="Order Details"
-                android:textColor="@color/colorWhite"
                 android:textSize="10dp" />
 
             <TextView
@@ -129,11 +122,11 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
-                android:background="@color/colorAccent"
+                android:textColor="@color/colorAccent"
+                android:background="@drawable/ic_border5"
                 android:fontFamily="@font/opensans_bold"
                 android:gravity="center"
                 android:text="Delivery Status"
-                android:textColor="@color/colorWhite"
                 android:textSize="10dp" />
 
             <TextView
@@ -141,11 +134,11 @@
                 android:layout_width="0sp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/colorAccent"
+                android:textColor="@color/colorAccent"
+                android:background="@drawable/ic_border5"
                 android:fontFamily="@font/opensans_bold"
                 android:gravity="center"
                 android:text="Recharge "
-                android:textColor="@color/colorWhite"
                 android:textSize="10dp" />
         </LinearLayout>
     </LinearLayout>

@@ -48,7 +48,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
 
         cartViewModel = ViewModelProviders.of(activity).get(CartViewModel.class);
         productsViewModel = ViewModelProviders.of(activity).get(ProductsViewModel.class);
-
         productsViewModel.getProducts().observe(activity, new Observer<List<Product>>() {
             @Override
             public void onChanged(List<Product> products) {

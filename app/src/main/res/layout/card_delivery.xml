@@ -66,7 +66,7 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/opensans_light"
                     android:text="Quantity: "
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorBlack"
                     android:textSize="10dp" />
 
                 <TextView
@@ -75,7 +75,7 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/opensans_light"
                     android:gravity="end"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorBlack"
                     android:textSize="10dp" />
             </LinearLayout>
 
@@ -90,7 +90,7 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/opensans_light"
                     android:text="Status: "
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorBlack"
                     android:textSize="10dp" />
 
                 <TextView
@@ -99,7 +99,7 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/opensans_light"
                     android:gravity="end"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorBlack"
                     android:textSize="10dp" />
             </LinearLayout>
         </LinearLayout>

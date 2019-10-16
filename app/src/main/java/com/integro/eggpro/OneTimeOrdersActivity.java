@@ -115,7 +115,7 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
         adapter = new SubscribeAdapter(this);
         rvOneTime.setLayoutManager(new LinearLayoutManager(this));
         rvOneTime.setAdapter(adapter);
-        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.rvCalender);
         monthView = findViewById(R.id.monthName);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);

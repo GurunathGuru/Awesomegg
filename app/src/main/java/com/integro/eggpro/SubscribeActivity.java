@@ -46,7 +46,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -65,7 +64,7 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
     private TextView tvGrandTotal, tvDiscountPrice, tvTotalPrice, tvSavedPrice, tvAddItem;
     private RecyclerView rvSubscribe;
     private SubscribeAdapter adapter;
-    private RecyclerView recyclerView;
+    private RecyclerView rvCalender;
     private TextView monthView;
     private CustomCalenderAdapter customCalenderAdapter = new CustomCalenderAdapter();
     private Double total = null;
@@ -134,17 +133,19 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
             }
         });
 
-        rvSubscribe = findViewById(R.id.rvSubscribe);
-        adapter = new SubscribeAdapter(this);
-        rvSubscribe.setLayoutManager(new LinearLayoutManager(this));
-        rvSubscribe.setAdapter(adapter);
-        recyclerView = findViewById(R.id.recyclerView);
         monthView = findViewById(R.id.monthName);
+        rvSubscribe = findViewById(R.id.rvSubscribe);
+        rvSubscribe.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new SubscribeAdapter(this);
+        rvSubscribe.setAdapter(adapter);
+
+        rvCalender = findViewById(R.id.rvCalender);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(customCalenderAdapter);
+        rvCalender.setLayoutManager(linearLayoutManager);
         customCalenderAdapter.setOnDateSelected(onDateSelected);
+        rvCalender.setAdapter(customCalenderAdapter);
+
         loadDates();
 
         calendarView = findViewById(R.id.calendarView);
@@ -157,7 +158,6 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton   rb = group.findViewById(checkedId);
-
                 if (null != rb && checkedId > -1) {
                     if (rb.getText().toString().contentEquals(getString(R.string.evr_fourteen))) {
                         everyFourteenDays();
