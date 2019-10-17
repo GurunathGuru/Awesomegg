@@ -55,38 +55,41 @@ import retrofit2.Response;
 
 public class SubscribeActivity extends AppCompatActivity implements PaymentResultListener {
     private static final String TAG = "SubscribeActivity";
-    private RadioGroup radioGroup;
-    @BindViews({R.id.sevenDays,R.id.fourteenDays})
+    @BindViews({R.id.sevenDays, R.id.fourteenDays})
     List<RadioButton> radioButtons;
+    int radioId;
+    RadioButton radioButton;
+    int frequncy = 4;
+    private RadioGroup radioGroup;
     private MaterialCalendarView calendarView;
     private EditText tvDate;
     private Calendar primaryCalendar = Calendar.getInstance();
-    private TextView tvGrandTotal, tvDiscountPrice, tvTotalPrice, tvSavedPrice, tvAddItem;
+    private TextView tvGrandTotal, tvDiscountPrice, tvTotalPrice, tvTotalPrice2, tvSavedPrice, tvAddItem, monthView;
     private RecyclerView rvSubscribe;
     private SubscribeAdapter adapter;
     private RecyclerView rvCalender;
-    private TextView monthView;
     private CustomCalenderAdapter customCalenderAdapter = new CustomCalenderAdapter();
     private Double total = null;
     private Double discountTotal = 0.00;
     private Double savedPrice = null;
     private Double finalPrice = null;
     private CartViewModel cartViewModel;
-
     private Map<String, String> params;
-
     private Order order;
     private DecimalFormat decimalFormat = new DecimalFormat("0.00");
+
+    private ArrayList<CartItem> cart = new ArrayList<>();
+
     private OnDateSelected onDateSelected = new OnDateSelected() {
         @Override
         public void onDateSelected(CustomDate date) {
             monthView.setText(new SimpleDateFormat("MMM").format(date.getCalendar().getTime()));
-            int radioId = radioGroup.getCheckedRadioButtonId();
+            radioId = radioGroup.getCheckedRadioButtonId();
             if (radioId < 0) {
                 Toast.makeText(SubscribeActivity.this, "Select any option", Toast.LENGTH_SHORT).show();
                 return;
             }
-            RadioButton radioButton = findViewById(radioId);
+            radioButton = findViewById(radioId);
             if (radioButton.getText().toString().contentEquals(getString(R.string.evr_fourteen))) {
                 primaryCalendar.set(Calendar.YEAR, date.getCalendar().get(Calendar.YEAR));
                 primaryCalendar.set(Calendar.MONTH, date.getCalendar().get(Calendar.MONTH));
@@ -124,7 +127,10 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
         tvGrandTotal = findViewById(R.id.tvGrandTotal);
         tvDiscountPrice = findViewById(R.id.tvDiscountPrice);
         tvTotalPrice = findViewById(R.id.tvTotalPrice);
+        tvTotalPrice2 = findViewById(R.id.tvTotalPrice2);
         tvSavedPrice = findViewById(R.id.tvSavedPrice);
+
+        radioButtons.get(0).setChecked(true);
 
         tvAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,54 +158,62 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
         tvDate = findViewById(R.id.tvDate);
 
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
+        cartViewModel.getCart().observe(this, new Observer<List<CartItem>>() {
+            @Override
+            public void onChanged(List<CartItem> cartItems) {
+                cart = new ArrayList<>(cartItems);
+                calculateTotal();
+            }
+        });
+
         radioGroup = findViewById(R.id.radioGroup);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @SuppressLint("ResourceType")
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton   rb = group.findViewById(checkedId);
+                RadioButton rb = group.findViewById(checkedId);
                 if (null != rb && checkedId > -1) {
                     if (rb.getText().toString().contentEquals(getString(R.string.evr_fourteen))) {
+                        frequncy = 2;
                         everyFourteenDays();
                     } else {
+                        frequncy = 4;
                         everySevenDays();
                     }
                 }
             }
         });
+    }
 
-        cartViewModel.getCart().observe(this, new Observer<List<CartItem>>() {
-            @Override
-            public void onChanged(List<CartItem> cartItems) {
-                total = 0.0;
-                discountTotal = 0.00;
-                finalPrice = 0.00;
-                savedPrice = 0.00;
-                size = cartItems.size();
-                params = new HashMap<>();
+    private void calculateTotal() {
+        total = 0.0;
+        discountTotal = 0.00;
+        finalPrice = 0.00;
+        savedPrice = 0.00;
+        size = cart.size();
+        params = new HashMap<>();
 
-                for (int i = 0; i < size; i++) {
-                    CartItem item = cartItems.get(i);
-                    total += item.getItemQty() * item.getProdSellingPrice();
-                    discountTotal += item.getProdSellingPrice() * item.getAdditionalDiscount() / 100 * item.getItemQty();
-                    double discount = item.getProdSellingPrice() * item.getAdditionalDiscount() / 100 * item.getItemQty();
-                    savedPrice = item.getProdListingPrice() - (item.getProdSellingPrice() - discount);
-                    finalPrice = total - discountTotal;
-                    params.put("productId["+i+"]",String.valueOf(item.getId()));
-                    params.put("itemQty["+i+"]",String.valueOf(item.getItemQty()));
-                    params.put("itemPrice["+i+"]",decimalFormat.format(item.getProdSellingPrice() - (item.getProdSellingPrice() * item.getAdditionalDiscount() / 100)));
-                }
-                setTotalView();
-            }
-        });
+        for (int i = 0; i < size; i++) {
+            CartItem item = cart.get(i);
+            total += item.getItemQty() * item.getProdSellingPrice();
+            discountTotal += item.getProdSellingPrice() * item.getAdditionalDiscount() / 100 * item.getItemQty();
+            double discount = item.getProdSellingPrice() * item.getAdditionalDiscount() / 100 * item.getItemQty();
+            savedPrice = item.getProdListingPrice() - (item.getProdSellingPrice() - discount);
+            finalPrice = (total - discountTotal) * frequncy;
+            params.put("productId[" + i + "]", String.valueOf(item.getId()));
+            params.put("itemQty[" + i + "]", String.valueOf(item.getItemQty()));
+            params.put("itemPrice[" + i + "]", decimalFormat.format(item.getProdSellingPrice() - (item.getProdSellingPrice() * item.getAdditionalDiscount() / 100)));
+        }
+        setTotalView();
     }
 
     @SuppressLint("StringFormatMatches")
     private void setTotalView() {
         tvGrandTotal.setText(getString(R.string.cardTotal, decimalFormat.format(total)));
         tvDiscountPrice.setText(getString(R.string.cardDiscountsTotal, decimalFormat.format(discountTotal)));
-        tvTotalPrice.setText(getString(R.string.cardTotal, decimalFormat.format(finalPrice)));
         tvSavedPrice.setText(getString(R.string.cardSavedTotal, decimalFormat.format(savedPrice)));
+        tvTotalPrice.setText(getString(R.string.cardTotal, decimalFormat.format(total - discountTotal) + "/ O"));
+        tvTotalPrice2.setText(getString(R.string.cardTotal, decimalFormat.format(finalPrice) + "/mo"));
     }
 
     @SuppressLint("WrongConstant")
@@ -212,14 +226,10 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
             cal.add(Calendar.DAY_OF_MONTH, 1);
             calendarView.setDateSelected(CalendarDay.from(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH)), false);
         }
-
         cal = (Calendar) primaryCalendar.clone();
-
         tvDate.setText(getString(R.string.monthPlaceholder, cal.get(Calendar.DAY_OF_MONTH),
                 cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR)));
-
         cal = (Calendar) primaryCalendar.clone();
-
         calendarView.setDateSelected(CalendarDay.from(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH)), true);
         return cal;
     }
@@ -232,6 +242,7 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
             calendarView.setDateSelected(CalendarDay.from(cal.get(Calendar.YEAR),
                     cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH)), true);
         }
+        calculateTotal();
     }
 
     public void everySevenDays() {
@@ -243,6 +254,7 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
                     cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH)), true);
             Log.i(TAG, "everySevenDays: " + cal.get(Calendar.YEAR));
         }
+        calculateTotal();
     }
 
     @Override
@@ -304,9 +316,9 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
 
     @OnClick(R.id.tvProceedToPay)
     public void makePayment() {
-        if (radioButtons.get(0).isChecked()|| radioButtons.get(1).isChecked()){
+        if (radioButtons.get(0).isChecked() || radioButtons.get(1).isChecked()) {
             getResponseList(createOrderCallbackListner);
-        }else {
+        } else {
             Toast.makeText(this, "Not selected any option", Toast.LENGTH_SHORT).show();
         }
     }

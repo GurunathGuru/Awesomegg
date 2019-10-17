@@ -31,7 +31,8 @@ public interface ApiService {
     @POST("isRegistered")
     Call<User> isRegistered(
             @Field("uid") String uid,
-            @Field("mobile") String mobile
+            @Field("mobile") String mobile,
+            @Field("fcmTag") String fcmTag
     );
 
     @FormUrlEncoded

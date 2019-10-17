@@ -1,7 +1,9 @@
 package com.integro.eggpro;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -29,9 +31,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.integro.eggpro.constants.GenralConstants.ARG_USER_DETAILS;
+import static com.integro.eggpro.constants.GenralConstants.FCMTAG;
+import static com.integro.eggpro.constants.GenralConstants.PREFERENCE;
+import static com.integro.eggpro.constants.GenralConstants.PREFERENCE_PRIVATE;
 
 public class OtpActivity extends AppCompatActivity {
 
+    private static final String TAG = "OtpActivity";
     private String mVerificationId;
     private PinView pinView;
     private FirebaseAuth mAuth;
@@ -114,8 +120,13 @@ public class OtpActivity extends AppCompatActivity {
     }
 
     private void checkIfRegistered() {
+        SharedPreferences prefs = getSharedPreferences(PREFERENCE, PREFERENCE_PRIVATE);
+        String token = prefs.getString(FCMTAG,"");
+        Log.i(TAG, "onCreate: setFcmTag: gurunath token "+token);
+
+
         FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
-        ApiClient.getClient2().create(ApiService.class).isRegistered(user.getUid(),user.getPhoneNumber()).enqueue(new Callback<User>() {
+        ApiClient.getClient2().create(ApiService.class).isRegistered(user.getUid(),user.getPhoneNumber(),token).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (!response.isSuccessful()){
