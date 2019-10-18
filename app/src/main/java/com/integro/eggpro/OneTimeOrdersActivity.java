@@ -323,8 +323,7 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
                             return;
                         }
                         Toast.makeText(OneTimeOrdersActivity.this, "Order Placed", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
+                        setResult(RESULT_OK);
                         finish();
                     }
 

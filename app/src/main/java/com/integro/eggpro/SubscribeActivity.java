@@ -2,7 +2,6 @@ package com.integro.eggpro;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +28,7 @@ import com.integro.eggpro.interfaces.OnDateSelected;
 import com.integro.eggpro.model.CustomCalender;
 import com.integro.eggpro.model.CustomDate;
 import com.integro.eggpro.model.Order;
+import com.integro.eggpro.model.User;
 import com.integro.eggpro.utility.entity.CartItem;
 import com.integro.eggpro.utility.viewmodels.CartViewModel;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -46,6 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -53,10 +54,34 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.integro.eggpro.constants.GenralConstants.RESULT_FAILED;
+
 public class SubscribeActivity extends AppCompatActivity implements PaymentResultListener {
     private static final String TAG = "SubscribeActivity";
     @BindViews({R.id.sevenDays, R.id.fourteenDays})
     List<RadioButton> radioButtons;
+
+    @BindView(R.id.tvAddItem)
+    TextView tvAddItem;
+
+    @BindView(R.id.tvGrandTotal)
+    TextView tvGrandTotal;
+    @BindView(R.id.tvDiscountPrice)
+    TextView tvDiscountPrice;
+    @BindView(R.id.tvTotalPrice)
+    TextView tvTotalPrice;
+    @BindView(R.id.tvTotalPrice2)
+    TextView tvTotalPrice2;
+    @BindView(R.id.tvSavedPrice)
+    TextView tvSavedPrice;
+    @BindView(R.id.monthName)
+    TextView monthView;
+
+    @BindView(R.id.rvSubscribe)
+    RecyclerView rvSubscribe;
+    @BindView(R.id.rvCalender)
+    RecyclerView rvCalender;
+
     int radioId;
     RadioButton radioButton;
     int frequncy = 4;
@@ -64,10 +89,9 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
     private MaterialCalendarView calendarView;
     private EditText tvDate;
     private Calendar primaryCalendar = Calendar.getInstance();
-    private TextView tvGrandTotal, tvDiscountPrice, tvTotalPrice, tvTotalPrice2, tvSavedPrice, tvAddItem, monthView;
-    private RecyclerView rvSubscribe;
+
     private SubscribeAdapter adapter;
-    private RecyclerView rvCalender;
+
     private CustomCalenderAdapter customCalenderAdapter = new CustomCalenderAdapter();
     private Double total = null;
     private Double discountTotal = 0.00;
@@ -77,13 +101,28 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
     private Map<String, String> params;
     private Order order;
     private DecimalFormat decimalFormat = new DecimalFormat("0.00");
-
+    private User user;
     private ArrayList<CartItem> cart = new ArrayList<>();
-
+    private CreateOrder createOrderCallbackListner = new CreateOrder() {
+        @Override
+        public void onOrderCreated(Order localOrder) {
+            if (localOrder == null) {
+                Toast.makeText(SubscribeActivity.this, "Something Not Right", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            order = localOrder;
+            procedeWithPayment();
+        }
+    };
+    private int size;
     private OnDateSelected onDateSelected = new OnDateSelected() {
         @Override
         public void onDateSelected(CustomDate date) {
+
+            Log.i(TAG, "onDateSelected: ");
+
             monthView.setText(new SimpleDateFormat("MMM").format(date.getCalendar().getTime()));
+
             radioId = radioGroup.getCheckedRadioButtonId();
             if (radioId < 0) {
                 Toast.makeText(SubscribeActivity.this, "Select any option", Toast.LENGTH_SHORT).show();
@@ -103,18 +142,6 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
             }
         }
     };
-    private CreateOrder createOrderCallbackListner = new CreateOrder() {
-        @Override
-        public void onOrderCreated(Order localOrder) {
-            if (localOrder == null) {
-                Toast.makeText(SubscribeActivity.this, "Something Not Right", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            order = localOrder;
-            procedeWithPayment();
-        }
-    };
-    private int size;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,12 +150,6 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
         ButterKnife.bind(this);
         Checkout.preload(getApplicationContext());
 
-        tvAddItem = findViewById(R.id.tvAddItem);
-        tvGrandTotal = findViewById(R.id.tvGrandTotal);
-        tvDiscountPrice = findViewById(R.id.tvDiscountPrice);
-        tvTotalPrice = findViewById(R.id.tvTotalPrice);
-        tvTotalPrice2 = findViewById(R.id.tvTotalPrice2);
-        tvSavedPrice = findViewById(R.id.tvSavedPrice);
 
         radioButtons.get(0).setChecked(true);
 
@@ -139,18 +160,19 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
             }
         });
 
-        monthView = findViewById(R.id.monthName);
-        rvSubscribe = findViewById(R.id.rvSubscribe);
+
         rvSubscribe.setLayoutManager(new LinearLayoutManager(this));
         adapter = new SubscribeAdapter(this);
         rvSubscribe.setAdapter(adapter);
 
-        rvCalender = findViewById(R.id.rvCalender);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+
         rvCalender.setLayoutManager(linearLayoutManager);
-        customCalenderAdapter.setOnDateSelected(onDateSelected);
         rvCalender.setAdapter(customCalenderAdapter);
+        customCalenderAdapter.setOnDateSelected(onDateSelected);
+
 
         loadDates();
 
@@ -171,6 +193,7 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
             @SuppressLint("ResourceType")
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+                Log.i(TAG, "onCheckedChanged: ");
                 RadioButton rb = group.findViewById(checkedId);
                 if (null != rb && checkedId > -1) {
                     if (rb.getText().toString().contentEquals(getString(R.string.evr_fourteen))) {
@@ -212,7 +235,7 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
         tvGrandTotal.setText(getString(R.string.cardTotal, decimalFormat.format(total)));
         tvDiscountPrice.setText(getString(R.string.cardDiscountsTotal, decimalFormat.format(discountTotal)));
         tvSavedPrice.setText(getString(R.string.cardSavedTotal, decimalFormat.format(savedPrice)));
-        tvTotalPrice.setText(getString(R.string.cardTotal, decimalFormat.format(total - discountTotal) + "/ O"));
+        tvTotalPrice.setText(getString(R.string.cardTotal, decimalFormat.format(total - discountTotal) + "/ or"));
         tvTotalPrice2.setText(getString(R.string.cardTotal, decimalFormat.format(finalPrice) + "/mo"));
     }
 
@@ -231,6 +254,7 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
                 cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR)));
         cal = (Calendar) primaryCalendar.clone();
         calendarView.setDateSelected(CalendarDay.from(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH)), true);
+        Log.i(TAG, "initializeCalendar: " + cal.getTime());
         return cal;
     }
 
@@ -294,12 +318,15 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
                         customCalenderAdapter.initialize();
 
                         if (customCalenderAdapter.getFirstDate() != null) {
+                            Log.i(TAG, "onResponse: " + customCalenderAdapter.getFirstDate());
                             primaryCalendar = (Calendar) customCalenderAdapter.getFirstDate().getCalendar().clone();
+                            Log.i(TAG, "PRIMARY Calendar onResponse: " + primaryCalendar.getTime());
                             initializeCalendar();
                         } else {
                             primaryCalendar = Calendar.getInstance();
                             initializeCalendar();
                         }
+                        monthView.setText(new SimpleDateFormat("MMM").format(primaryCalendar.getTime()));
                     }
 
                     @Override
@@ -333,6 +360,10 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
     @Override
     public void onPaymentError(int i, String s) {
         Toast.makeText(this, "" + i + " Payment Fail " + s, Toast.LENGTH_SHORT).show();
+        Log.i(TAG, "onPaymentError: " + s + ", code: " + i);
+        setResult(RESULT_FAILED);
+        finish();
+
     }
 
     private void getResponseList(CreateOrder callback) {
@@ -392,8 +423,8 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
         int totalinpaisa = finalPrice.intValue();
         try {
             JSONObject options = new JSONObject();
-            options.put("name", "Integro Infotech");
-            options.put("description", "Reference No. #123456");
+            options.put("name", "AWESOMEGG");
+            options.put("description", "Reference No. " + order.getId());
             options.put("order_id", order.getOrderId());
             options.put("currency", "INR");
             options.put("amount", totalinpaisa);
@@ -420,8 +451,7 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
                             return;
                         }
                         Toast.makeText(SubscribeActivity.this, "Order Placed", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
+                        setResult(RESULT_OK);
                         finish();
                     }
 
@@ -431,4 +461,6 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
                     }
                 });
     }
+
+
 }

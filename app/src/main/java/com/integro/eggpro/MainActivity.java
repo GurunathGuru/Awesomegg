@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -26,8 +27,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.integro.eggpro.adapters.ProductAdapter;
 import com.integro.eggpro.apis.ApiClient;
 import com.integro.eggpro.apis.ApiService;
@@ -48,6 +51,8 @@ import retrofit2.Response;
 
 import static android.Manifest.permission.CALL_PHONE;
 import static com.integro.eggpro.constants.GenralConstants.ARG_USER_DETAILS;
+import static com.integro.eggpro.constants.GenralConstants.REQUEST_CODE;
+import static com.integro.eggpro.constants.GenralConstants.RESULT_FAILED;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -100,13 +105,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
+        FirebaseMessaging.getInstance().subscribeToTopic("com.integro.eggpro.update");
+        FirebaseMessaging.getInstance().subscribeToTopic("com.integro.eggpro.offers");
+        FirebaseMessaging.getInstance().subscribeToTopic("com.integro.eggpro.others");
+
         productsViewModel = ViewModelProviders.of(this).get(ProductsViewModel.class);
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
 
         if (getIntent().hasExtra(ARG_USER_DETAILS)) {
             Bundle bundle = getIntent().getBundleExtra(ARG_USER_DETAILS);
             user = (User) bundle.getSerializable(ARG_USER_DETAILS);
-
             if (bundle != null) {
                 tvName.setText(user.getName().toUpperCase());
                 tvEmail.setText(user.getEmail());
@@ -204,13 +212,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @OnClick(R.id.tvSubscribe)
     public void subscribe() {
         Intent subscribeIntent = new Intent(MainActivity.this, SubscribeActivity.class);
-        startActivity(subscribeIntent);
+        startActivityForResult(subscribeIntent,REQUEST_CODE);
     }
 
     @OnClick(R.id.tvOrderNow)
     public void oneTimeOrder() {
-        Intent subscribeIntent = new Intent(MainActivity.this, OneTimeOrdersActivity.class);
-        startActivity(subscribeIntent);
+        Intent oneTimeOrderIntent = new Intent(MainActivity.this, OneTimeOrdersActivity.class);
+        startActivityForResult(oneTimeOrderIntent,REQUEST_CODE );
     }
 
     @OnClick(R.id.tvMyOrders)
@@ -284,6 +292,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         } catch (ActivityNotFoundException e) {
             Toast.makeText(getApplicationContext(), "Error in your phone call" + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if((requestCode==REQUEST_CODE)&& resultCode==RESULT_OK) {
+            initProducts();
+            getCurrentBalance();
+        }else if((requestCode==REQUEST_CODE) && (resultCode==RESULT_FAILED)) {
+            initProducts();
+            getCurrentBalance();
         }
     }
 }

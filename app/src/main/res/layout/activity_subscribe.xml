@@ -60,7 +60,7 @@
                 android:gravity="center|start"
                 android:paddingLeft="15dp"
                 android:text="Confirm The Order"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/colorBlack"
                 android:textSize="15dp" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -86,7 +86,7 @@
                     android:background="@drawable/ic_border3"
                     android:gravity="center"
                     android:text="Add Item"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorBlack"
                     android:textSize="13dp" />
 
 
@@ -131,7 +131,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="Every 7 Days"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorBlack"
                     android:textSize="10dp" />
 
                 <RadioButton
@@ -140,7 +140,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1.2"
                     android:text="@string/evr_fourteen"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorBlack"
                     android:textSize="10dp" />
 
                 <EditText
@@ -153,7 +153,7 @@
                     android:focusableInTouchMode="false"
                     android:gravity="center"
                     android:text="Date"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorBlack"
                     android:textSize="13dp" />
             </RadioGroup>
 
@@ -249,7 +249,7 @@
                 app:mcv_dateTextAppearance="@style/CustomDateTextAppearance"
                 app:mcv_firstDayOfWeek="sunday"
                 app:mcv_headerTextAppearance="@style/CustomHeaderAppearance"
-                app:mcv_selectionColor="@color/colorYellow"
+                app:mcv_selectionColor="@color/colorWhite"
                 app:mcv_selectionMode="none"
                 app:mcv_showOtherDates="decorated_disabled"
                 app:mcv_titleAnimationOrientation="vertical"
@@ -293,7 +293,7 @@
                     android:gravity="center|start"
                     android:text=""
                     android:fontFamily="@font/opensans_light"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorBlack"
                     android:textSize="14dp" />
 
                 <TextView
@@ -305,7 +305,7 @@
                     android:gravity="center|start"
                     android:text=""
                     android:fontFamily="@font/opensans_bold"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorBlack"
                     android:textSize="14dp" />
 
                 <TextView
@@ -317,7 +317,7 @@
                     android:fontFamily="@string/font_H1"
                     android:gravity="center"
                     android:text=" Proceed To Pay"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/colorBlack"
                     android:textSize="13dp" />
             </LinearLayout>
         </LinearLayout>

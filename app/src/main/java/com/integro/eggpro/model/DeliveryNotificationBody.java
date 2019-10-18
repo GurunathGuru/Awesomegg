@@ -9,12 +9,9 @@ public class DeliveryNotificationBody implements Serializable {
     private String message;
     private String orderId;
 
-    private ItemList items;
-
-    public DeliveryNotificationBody(String message, String orderId,String items) {
+    public DeliveryNotificationBody(String message, String orderId) {
         this.message = message;
         this.orderId = orderId;
-        this.items=new Gson().fromJson(items,ItemList.class );
     }
 
     public String getMessage() {
@@ -23,10 +20,6 @@ public class DeliveryNotificationBody implements Serializable {
 
     public String getOrderId() {
         return orderId;
-    }
-
-    public ItemList getItems() {
-        return items;
     }
 }
 

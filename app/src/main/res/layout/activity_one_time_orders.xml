@@ -60,7 +60,7 @@
                 android:gravity="center|start"
                 android:paddingLeft="15dp"
                 android:text="Confirm The Order"
-                android:textColor="@color/colorAccent"
+                 android:textColor="@color/colorBlack"
                 android:textSize="15dp" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -86,7 +86,7 @@
                     android:background="@drawable/ic_border3"
                     android:gravity="center"
                     android:text="Add Item"
-                    android:textColor="@color/colorAccent"
+                     android:textColor="@color/colorBlack"
                     android:textSize="13dp" />
 
                 <TextView
@@ -128,7 +128,7 @@
                     android:gravity="center"
                     android:text="One Time Order"
                     android:fontFamily="@font/montserrat_bold"
-                    android:textColor="@color/colorAccent"
+                     android:textColor="@color/colorBlack"
                     android:textSize="13sp" />
 
                 <EditText
@@ -141,7 +141,7 @@
                     android:gravity="center"
                     android:layout_margin="1dp"
                     android:text="Date"
-                    android:textColor="@color/colorAccent"
+                     android:textColor="@color/colorBlack"
                     android:textSize="13dp" />
             </LinearLayout>
 
@@ -249,7 +249,7 @@
                 android:text=""
                 android:fontFamily="@font/montserrat_bold"
                 android:paddingLeft="130dp"
-                android:textColor="@color/colorAccent"
+                 android:textColor="@color/colorBlack"
                 android:textSize="15dp" />
 
             <TextView

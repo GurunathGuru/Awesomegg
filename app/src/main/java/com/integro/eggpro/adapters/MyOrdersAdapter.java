@@ -31,6 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.integro.eggpro.constants.GenralConstants.ITEM_LIST;
+import static com.integro.eggpro.constants.GenralConstants.ORDER_ID;
 
 public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyViewHolder> {
 
@@ -105,7 +106,7 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyView
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, DeliveryStatusActivity.class);
-                intent.putExtra(ITEM_LIST, orderList.get(position).getId());
+                intent.putExtra(ORDER_ID, orderList.get(position).getId());
                 context.startActivity(intent);
             }
         });

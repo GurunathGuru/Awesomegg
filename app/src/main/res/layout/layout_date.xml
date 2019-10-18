@@ -23,7 +23,7 @@
         app:mcv_showOtherDates="decorated_disabled"
         app:mcv_titleAnimationOrientation="vertical"
         app:mcv_weekDayTextAppearance="@style/CustomDateTextAppearance"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorBlack"
         android:textSize="10dp" />
 
     <TextView
@@ -33,7 +33,7 @@
         android:fontFamily="@font/montserrat_light"
         android:gravity="center"
         android:text="sun"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorBlack"
         android:textSize="10dp"
         app:mcv_dateTextAppearance="@style/CustomDateTextAppearance"
         app:mcv_firstDayOfWeek="sunday"

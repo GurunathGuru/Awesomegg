@@ -25,6 +25,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.integro.eggpro.constants.GenralConstants.ITEM_LIST;
+import static com.integro.eggpro.constants.GenralConstants.ORDER_ID;
 
 public class DeliveryStatusActivity extends AppCompatActivity {
 
@@ -46,7 +47,7 @@ public class DeliveryStatusActivity extends AppCompatActivity {
         setContentView(R.layout.activity_delivery_status);
         ButterKnife.bind(this);
 
-        orderId = (String) getIntent().getSerializableExtra(ITEM_LIST);
+        orderId = (String) getIntent().getSerializableExtra(ORDER_ID);
         Log.i(TAG, "onCreate: orderId "+orderId);
         uid=firebaseUser.getUid();
         Log.i(TAG, "onCreate: uid "+uid);

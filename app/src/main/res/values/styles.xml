@@ -7,12 +7,12 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:fontFamily">@font/montserrat_regular</item>
+        <item name="android:fontFamily">@font/montserrat_light</item>
     </style>
 
     <style name="CustomHeaderAppearance" parent="TextAppearance.AppCompat.Body1">
         <item name="android:textSize">10dp</item>
-        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColor">@color/colorBlack</item>
         <item name="android:fontFamily">@font/montserrat_light</item>
     </style>
 
@@ -25,7 +25,7 @@
 
     <style name="CustomDateTextAppearance" parent="TextAppearance.AppCompat.Body1">
         <item name="android:textSize">10dp</item>
-        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColor">@color/colorBlack</item>
         <item name="android:fontFamily">@font/montserrat_light</item>
     </style>
 

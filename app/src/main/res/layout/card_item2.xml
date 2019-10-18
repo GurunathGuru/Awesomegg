@@ -54,7 +54,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/ic_border3"
                 android:padding="1dp"
-                app:textColor="@color/colorAccent" />
+                app:textColor="@color/colorBlack" />
 
         </LinearLayout>
 
@@ -76,7 +76,7 @@
                 android:layout_margin="15dp"
                 android:background="@drawable/ic_border7"
                 android:text="Price: "
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/colorBlack"
                 android:textSize="13dp"
                 android:fontFamily="@string/font_H1" />
         </LinearLayout>

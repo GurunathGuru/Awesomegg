@@ -76,7 +76,6 @@ public class CustomCalenderAdapter extends RecyclerView.Adapter<CustomCalenderAd
         }
         holder.day.setText(simpleDateFormat.format(date.getCalendar().getTime()));
 
-
         holder.llDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
