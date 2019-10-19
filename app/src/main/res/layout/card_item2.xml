@@ -76,7 +76,7 @@
                 android:layout_margin="15dp"
                 android:background="@drawable/ic_border7"
                 android:text="Price: "
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorWhite"
                 android:textSize="13dp"
                 android:fontFamily="@string/font_H1" />
         </LinearLayout>

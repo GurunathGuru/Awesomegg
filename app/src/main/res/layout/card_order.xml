@@ -32,14 +32,14 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/opensans_light"
                     android:text="Order Id:"
-                    android:textSize="10dp" />
+                    android:textSize="10sp" />
 
                 <TextView
                     android:id="@+id/orderId"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/opensans_bold"
-                    android:textSize="10dp" />
+                    android:textSize="10sp" />
             </LinearLayout>
 
             <TextView
@@ -49,7 +49,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/opensans_light"
                 android:gravity="end"
-                android:textSize="10dp" />
+                android:textSize="10sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -64,14 +64,14 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/opensans_light"
                 android:text="Order Type:"
-                android:textSize="10dp" />
+                android:textSize="10sp" />
 
             <TextView
                 android:id="@+id/orderType"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/opensans_bold"
-                android:textSize="10dp" />
+                android:textSize="10sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -85,7 +85,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/opensans_light"
                 android:text="Order Price:"
-                android:textSize="10dp" />
+                android:textSize="10sp" />
 
             <TextView
                 android:id="@+id/orderPrice"
@@ -93,7 +93,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:fontFamily="@font/opensans_bold"
-                android:textSize="10dp" />
+                android:textSize="10sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -114,7 +114,7 @@
                 android:fontFamily="@font/opensans_bold"
                 android:gravity="center"
                 android:text="Order Details"
-                android:textSize="10dp" />
+                android:textSize="10sp" />
 
             <TextView
                 android:id="@+id/tvDeliveryStatus"
@@ -127,7 +127,7 @@
                 android:fontFamily="@font/opensans_bold"
                 android:gravity="center"
                 android:text="Delivery Status"
-                android:textSize="10dp" />
+                android:textSize="10sp" />
 
             <TextView
                 android:id="@+id/tvRecharge"
@@ -140,7 +140,7 @@
                 android:gravity="center"
                 android:text="Recharge "
                 android:visibility="gone"
-                android:textSize="10dp" />
+                android:textSize="10sp" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
