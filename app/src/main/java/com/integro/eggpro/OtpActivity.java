@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +27,9 @@ import com.integro.eggpro.model.User;
 
 import java.util.concurrent.TimeUnit;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,6 +45,11 @@ public class OtpActivity extends AppCompatActivity {
     private String mVerificationId;
     private PinView pinView;
     private FirebaseAuth mAuth;
+    private TextView tvSignIn;
+    private String mobile ="";
+
+    @BindView(R.id.tvResendOTP)
+    TextView tvResendOTP;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
         @Override
         public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
@@ -53,7 +62,7 @@ public class OtpActivity extends AppCompatActivity {
 
         @Override
         public void onVerificationFailed(FirebaseException e) {
-            Toast.makeText(OtpActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            tvResendOTP.setEnabled(true);
         }
 
         @Override
@@ -67,17 +76,19 @@ public class OtpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp);
+        ButterKnife.bind(this);
 
         mAuth = FirebaseAuth.getInstance();
         pinView = findViewById(R.id.pinView);
         Intent intent = getIntent();
-        String mobile = intent.getStringExtra("mobile");
+        mobile = intent.getStringExtra("mobile");
         sendVerificationCode(mobile);
 
-        findViewById(R.id.tvSignIn).setOnClickListener(new View.OnClickListener() {
+        tvSignIn=findViewById(R.id.tvSignIn);
+        tvSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String code = pinView.getText().toString().trim();
+                String code = pinView.getText().toString();
                 if (code.isEmpty() || code.length() < 6) {
                     pinView.setError("Enter valid code");
                     pinView.requestFocus();
@@ -89,9 +100,10 @@ public class OtpActivity extends AppCompatActivity {
     }
 
     private void sendVerificationCode(String mobile) {
+        tvResendOTP.setEnabled(false);
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 "+91" + mobile,
-                60,
+                30,
                 TimeUnit.SECONDS,
                 TaskExecutors.MAIN_THREAD,
                 mCallbacks);
@@ -102,10 +114,20 @@ public class OtpActivity extends AppCompatActivity {
         signInWithPhoneAuthCredential(credential);
     }
 
+    @OnClick(R.id.tvResendOTP)
+    public void reSend(){
+        if (mobile!=""){
+        sendVerificationCode(mobile);
+        }else {
+            Toast.makeText(this, "check mobile number", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential).addOnCompleteListener(OtpActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(Task<AuthResult> task) {
+                Log.i(TAG, "onComplete: "+task);
                 if (task.isSuccessful()) {
                     checkIfRegistered();
                 } else {
@@ -113,7 +135,7 @@ public class OtpActivity extends AppCompatActivity {
                     if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                         message = "Invalid code entered...";
                     }
-                    Toast.makeText(OtpActivity.this, "", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OtpActivity.this, ""+message, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -123,7 +145,6 @@ public class OtpActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences(PREFERENCE, PREFERENCE_PRIVATE);
         String token = prefs.getString(FCMTAG,"");
         Log.i(TAG, "onCreate: setFcmTag: gurunath token "+token);
-
 
         FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
         ApiClient.getClient2().create(ApiService.class).isRegistered(user.getUid(),user.getPhoneNumber(),token).enqueue(new Callback<User>() {
@@ -147,12 +168,12 @@ public class OtpActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }
-
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-
+                Log.i(TAG, "onFailure: "+t.getMessage());
+                Toast.makeText(OtpActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

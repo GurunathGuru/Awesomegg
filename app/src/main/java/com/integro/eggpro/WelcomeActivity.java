@@ -47,16 +47,13 @@ public class WelcomeActivity extends AppCompatActivity {
         messagingService = new MyFirebaseMessagingService();
 
         SharedPreferences prefs = getSharedPreferences(PREFERENCE, PREFERENCE_PRIVATE);
-        String token = prefs.getString(FCMTAG, "");
-        Log.i(TAG, "onCreate: setFcmTag: gurunath token " + token);
-
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
                 Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
                 return;
             }
             fcmTag = Objects.requireNonNull(task.getResult()).getToken();
-            Log.i(TAG, "setFcmTag: gurunath tag " + fcmTag);
+            Log.i(TAG, "setFcmTag: tag " + fcmTag);
         });
 
 
@@ -98,7 +95,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     });
                 }
             }
-        }, 1000);
+        }, 3000);
     }
 
     public boolean isInternetConnection() {

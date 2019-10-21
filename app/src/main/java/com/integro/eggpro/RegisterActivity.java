@@ -48,6 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
     SpinnerDialog spinnerDialog;
     ApiService apiService;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
     private String apartmentId;
     private String userId;
     private String name;
@@ -62,10 +63,9 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
+
         user.getPhoneNumber();
         emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-
-
         etSelectApartment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,7 +76,6 @@ public class RegisterActivity extends AppCompatActivity {
         tvSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 name = etName.getText().toString().trim();
                 email = etEmail.getText().toString().trim();
                 apartmentId = etSelectApartment.getText().toString().trim();
@@ -128,7 +127,7 @@ public class RegisterActivity extends AppCompatActivity {
         ArrayList<String> apartments = new ArrayList<>();
         for (Apartments apartment : apartmentsArrayList) {
             apartments.add(apartment.getApartmentName());
-           // apartments.add(apartment.getApartmentAddress());
+            // apartments.add(apartment.getApartmentAddress());
         }
         spinnerDialog = new SpinnerDialog(this, apartments, "Apartments");
         spinnerDialog.bindOnSpinerListener(new OnSpinerItemClick() {
@@ -145,30 +144,30 @@ public class RegisterActivity extends AppCompatActivity {
                 .create(ApiService.class)
                 .getUserDetailsList(apartmentId, userId, name, email, flatNo, mobile, blockNo)
                 .enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                Log.i(TAG, "onResponse: " + response);
-                if (!response.isSuccessful()) {
-                    Toast.makeText(RegisterActivity.this, "response is not Successful.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (response.body() == null) {
-                    Toast.makeText(RegisterActivity.this, "response.body is null", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (!response.body().contentEquals(user.getUid())) {
-                    Toast.makeText(RegisterActivity.this, "Something Went Wrong.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                Log.i(TAG, "onClick: " + name);
-                startActivity(intent);
-            }
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        Log.i(TAG, "onResponse: " + response);
+                        if (!response.isSuccessful()) {
+                            Toast.makeText(RegisterActivity.this, "response is not Successful.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if (response.body() == null) {
+                            Toast.makeText(RegisterActivity.this, "response.body is null", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if (!response.body().contentEquals(user.getUid())) {
+                            Toast.makeText(RegisterActivity.this, "Something Went Wrong.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        Log.i(TAG, "onClick: " + name);
+                        startActivity(intent);
+                    }
 
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
 
-            }
-        });
+                    }
+                });
     }
 }

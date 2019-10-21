@@ -13,19 +13,39 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".DeliveryStatusActivity" />
-        <activity android:name=".WalletStatementActivity" />
-        <activity android:name=".OrderDetailsActivity" />
-        <activity android:name=".MyOrdersActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".RegisterActivity" />
+
+        <activity
+            android:name=".DeliveryStatusActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity" />
+
+        <activity
+            android:name=".WalletStatementActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity" />
+
+        <activity
+            android:name=".OrderDetailsActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity" />
+
+        <activity
+            android:name=".MyOrdersActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity" />
 
         <activity
             android:name=".SubscribeActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".MainActivity" />
 
-        <activity android:name=".OneTimeOrdersActivity" />
+        <activity
+            android:name=".OneTimeOrdersActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity" />
+
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegisterActivity" />
         <activity android:name=".OtpActivity" />
         <activity android:name=".MainActivity" />
 
@@ -39,16 +59,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <meta-data
             android:name="com.razorpay.ApiKey"
             android:value="rzp_test_QHtbIyirXgQsXf" />
-
         <service android:name=".firebase.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
     </application>
-
 </manifest>

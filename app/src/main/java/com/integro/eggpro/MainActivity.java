@@ -51,6 +51,7 @@ import retrofit2.Response;
 
 import static android.Manifest.permission.CALL_PHONE;
 import static com.integro.eggpro.constants.GenralConstants.ARG_USER_DETAILS;
+import static com.integro.eggpro.constants.GenralConstants.MY_ORDER;
 import static com.integro.eggpro.constants.GenralConstants.REQUEST_CODE;
 import static com.integro.eggpro.constants.GenralConstants.RESULT_FAILED;
 
@@ -280,19 +281,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void makeACall() {
-        try {
-            Intent my_callIntent = new Intent(Intent.ACTION_CALL);
-            my_callIntent.setData(Uri.parse("tel:+91 91480 50344"));
-            if (ContextCompat.checkSelfPermission(getApplicationContext(), CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                startActivity(my_callIntent);
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    requestPermissions(new String[]{CALL_PHONE}, 1);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Are you sure,you wanted to Call");
+        alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                try {
+                    Intent my_callIntent = new Intent(Intent.ACTION_CALL);
+                    my_callIntent.setData(Uri.parse("tel:+91 91480 50344"));
+                    if (ContextCompat.checkSelfPermission(getApplicationContext(), CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                        startActivity(my_callIntent);
+                    } else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            requestPermissions(new String[]{CALL_PHONE}, 1);
+                        }
+                    }
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(getApplicationContext(), "Error in your phone call" + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(getApplicationContext(), "Error in your phone call" + e.getMessage(), Toast.LENGTH_LONG).show();
-        }
+        });
+
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     @Override
@@ -301,6 +317,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if((requestCode==REQUEST_CODE)&& resultCode==RESULT_OK) {
             initProducts();
             getCurrentBalance();
+            Log.i(TAG, "onActivityResult: "+RESULT_OK);
+            Intent intent=new Intent(getApplicationContext(),MyOrdersActivity.class);
+            startActivity(intent);
         }else if((requestCode==REQUEST_CODE) && (resultCode==RESULT_FAILED)) {
             initProducts();
             getCurrentBalance();

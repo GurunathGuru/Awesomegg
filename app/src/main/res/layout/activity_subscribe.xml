@@ -89,7 +89,6 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="13dp" />
 
-
                 <TextView
                     android:id="@+id/tvGrandTotal"
                     android:layout_width="0sp"
@@ -316,7 +315,7 @@
                     android:background="@color/colorAccent"
                     android:fontFamily="@string/font_H1"
                     android:gravity="center"
-                    android:text=" Proceed To Pay"
+                    android:text="Pay Farmer"
                     android:textColor="@color/colorWhite"
                     android:textSize="13dp" />
             </LinearLayout>

@@ -260,7 +260,7 @@
                 android:background="@color/colorAccent"
                 android:fontFamily="@string/font_H1"
                 android:gravity="center"
-                android:text=" Proceed To Pay"
+                android:text="Pay Farmer"
                 android:textColor="@color/colorWhite"
                 android:textSize="13dp" />
         </LinearLayout>

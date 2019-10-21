@@ -49,7 +49,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/opensans_light"
                 android:gravity="end"
-                android:textSize="10sp" />
+                android:textSize="13sp" />
         </LinearLayout>
 
         <LinearLayout
