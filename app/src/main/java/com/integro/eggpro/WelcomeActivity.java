@@ -27,7 +27,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.integro.eggpro.constants.GenralConstants.ARG_USER_DETAILS;
-import static com.integro.eggpro.constants.GenralConstants.FCMTAG;
 import static com.integro.eggpro.constants.GenralConstants.PREFERENCE;
 import static com.integro.eggpro.constants.GenralConstants.PREFERENCE_PRIVATE;
 
@@ -55,7 +54,6 @@ public class WelcomeActivity extends AppCompatActivity {
             fcmTag = Objects.requireNonNull(task.getResult()).getToken();
             Log.i(TAG, "setFcmTag: tag " + fcmTag);
         });
-
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -87,7 +85,6 @@ public class WelcomeActivity extends AppCompatActivity {
                                 finish();
                             }
                         }
-
                         @Override
                         public void onFailure(Call<User> call, Throwable t) {
 

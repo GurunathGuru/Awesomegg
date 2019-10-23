@@ -2,27 +2,11 @@
     <string name="app_name">AWESOMEGG</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_tools">Tools</string>
-    <string name="menu_share">Share</string>
-    <string name="menu_send">Send</string>
 
     <string name="font_H1">Montserrat-Bold.ttf</string>
-    <string name="font_H2">Montserrat-ExtraLight.ttf</string>
-    <string name="font_H3">Montserrat-Light.ttf</string>
-    <string name="font_H4">Montserrat-Regular.ttf</string>
     <string name="evr_fourteen">Every 14 Days</string>
     <string name="monthPlaceholder">%1$d/%2$d/%3$d</string>
-    <string name="ibeggx">ibEGGX</string>
 
-    <string name="strike_text">1. <strike>StrikeThrough</strike> Using strike</string>
     <string name="productQuantity">%1$d Eggs</string>
     <string name="productListingPrice">₹%1$s</string>
     <string name="monthTitlePlaceholder">&#xf073;</string>

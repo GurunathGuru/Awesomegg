@@ -24,11 +24,10 @@ public class LoginActivity extends AppCompatActivity {
 
         etMobilNumber = findViewById(R.id.etMobilNumber);
         tvContinue = findViewById(R.id.tvContinue);
-
         tvContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mobile = etMobilNumber.getText().toString().trim();
+                String mobile = etMobilNumber.getText().toString();
                 if (mobile.isEmpty() || mobile.length() < 10) {
                     etMobilNumber.setError("Enter a valid mobile");
                     etMobilNumber.requestFocus();
