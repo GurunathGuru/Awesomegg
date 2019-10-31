@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#A2A2A2"
     android:orientation="vertical"
     tools:context=".SubscribeActivity">
 
@@ -25,16 +24,6 @@
             android:layout_height="0sp"
             android:layout_weight="1.25">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/img2" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#A4FFFFFF" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -217,7 +206,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:gravity="center|start"
+            android:gravity="center|start|bottom"
             android:orientation="vertical"
             android:weightSum="5">
 

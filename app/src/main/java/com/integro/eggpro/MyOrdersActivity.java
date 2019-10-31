@@ -1,19 +1,22 @@
 package com.integro.eggpro;
 
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.integro.eggpro.adapters.MyOrdersAdapter;
 import com.integro.eggpro.apis.ApiClient;
 import com.integro.eggpro.apis.ApiService;
+import com.integro.eggpro.interfaces.BalanceCallBack;
 import com.integro.eggpro.model.MyOrderList;
-import com.integro.eggpro.adapters.MyOrdersAdapter;
 
 import java.util.ArrayList;
 
@@ -25,14 +28,21 @@ import retrofit2.Response;
 
 public class MyOrdersActivity extends AppCompatActivity {
 
+    private static final String TAG = "MyOrdersActivity";
     @BindView(R.id.rvMyOrders)
     RecyclerView rvMyOrder;
+    @BindView(R.id.tvNoOrders)
+    TextView tvNoOrders;
 
-    private static final String TAG = "MyOrdersActivity";
     MyOrdersAdapter myOrdersAdapter;
-
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser firebaseUser = mAuth.getCurrentUser();
+    private BalanceCallBack balanceCallBack = new BalanceCallBack() {
+        @Override
+        public void onBalanceRetrieved(Double balance) {
+            getMyOrdersList(balance);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,30 +53,55 @@ public class MyOrdersActivity extends AppCompatActivity {
         rvMyOrder.setLayoutManager(new LinearLayoutManager(MyOrdersActivity.this));
         myOrdersAdapter = new MyOrdersAdapter(MyOrdersActivity.this);
         rvMyOrder.setAdapter(myOrdersAdapter);
-
-        getMyOrdersList();
+        getCurrentBalance(balanceCallBack);
     }
 
-    public void getMyOrdersList() {
+
+    public void getCurrentBalance(BalanceCallBack callBack) {
+        ApiClient.getClient2().create(ApiService.class).getCurrentBalance(firebaseUser.getUid()).enqueue(new Callback<Double>() {
+            @Override
+            public void onResponse(Call<Double> call, Response<Double> response) {
+                if (!response.isSuccessful()) {
+                    return;
+                }
+                if (response.body() == null) {
+                    return;
+                }
+                callBack.onBalanceRetrieved(response.body());
+                Log.i(TAG, "onResponse: 1 " + response.body());
+            }
+            @Override
+            public void onFailure(Call<Double> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getMyOrdersList(Double balance) {
         ApiClient.getClient2().create(ApiService.class).getMyOrderList(firebaseUser.getUid()).enqueue(new Callback<ArrayList<MyOrderList>>() {
             @Override
             public void onResponse(Call<ArrayList<MyOrderList>> call, Response<ArrayList<MyOrderList>> response) {
                 if (!response.isSuccessful()) {
-                    Log.i(TAG, "onResponse: " + response.errorBody());
+                    Log.i(TAG, "onResponse: 2 " + response.errorBody());
                     return;
                 }
                 if (response.body() == null) {
-                    Log.i(TAG, "onResponse: " + response.body());
+                    Log.i(TAG, "onResponse: 3 " + response.body());
                     return;
                 }
-                Log.i(TAG, "onResponse: " + response.body());
-
-                    myOrdersAdapter.setOrderList(response.body());
+                if (response.body().size() == 0) {
+                    Log.i(TAG, "onResponse: 3 " + response.body());
+                    rvMyOrder.setVisibility(View.GONE);
+                    tvNoOrders.setVisibility(View.VISIBLE);
+                }
+                Log.i(TAG, "onResponse:4 " + response.body().size());
+                myOrdersAdapter.setBalance(balance);
+                myOrdersAdapter.setOrderList(response.body());
             }
 
             @Override
             public void onFailure(Call<ArrayList<MyOrderList>> call, Throwable t) {
-                Toast.makeText(MyOrdersActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyOrdersActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

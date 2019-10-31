@@ -49,9 +49,15 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyView
     int additionalDiscount;
     int prodStock;
     int itemQty;
+    Double balance = 0.00;
 
     public MyOrdersAdapter(Context context) {
         this.context = context;
+    }
+
+    public void setBalance(Double balance) {
+        this.balance = balance;
+        notifyDataSetChanged();
     }
 
     public void setOrderList(ArrayList<MyOrderList> orderList) {
@@ -71,27 +77,30 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyView
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         String getDate = orderList.get(position).getStartDate();
+        String[] dateArray = getDate.split("-");
 
-        String[] timeStampArray = getDate.split(" ");
-        String[] dateArray = timeStampArray[0].split("-");
-        String[] timeArray = timeStampArray[1].split(":");
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, Integer.parseInt(dateArray[0]));
-        calendar.set(Calendar.MONTH, Integer.parseInt(dateArray[1]));
+        calendar.set(Calendar.MONTH, Integer.parseInt(dateArray[1])-1);
         calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateArray[2]));
 
-        calendar.set(Calendar.HOUR, Integer.parseInt(timeArray[0]));
-        calendar.set(Calendar.MINUTE, Integer.parseInt(timeArray[1]));
-        calendar.set(Calendar.SECOND, Integer.parseInt(timeArray[2]));
 
-        SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy, hh.mm a");
+        SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy");
         Log.i(TAG, "onBindViewHolder: " + format.format(calendar.getTime()));
 
         holder.orderId.setText(orderList.get(position).getId());
         holder.orderDate.setText(format.format(calendar.getTime()));
         holder.orderType.setText(orderList.get(position).getOrderType());
         holder.orderPrice.setText("\u20B9" + orderList.get(position).getOrderPrice());
+
+        if (balance < 500) {
+            holder.tvRecharge.setEnabled(true);
+            holder.tvRecharge.setVisibility(View.VISIBLE);
+        }else {
+            holder.tvRecharge.setEnabled(false);
+            holder.tvRecharge.setVisibility(View.GONE);
+        }
 
         holder.tvOrderDetails.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +122,7 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyView
 
         holder.tvRecharge.setOnClickListener(new View.OnClickListener() {
             CartViewModel cartViewModel;
+
             @Override
             public void onClick(View v) {
                 items = orderList.get(position).getItems();
@@ -127,12 +137,13 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyView
                     additionalDiscount = Integer.parseInt(items.get(i).getAdditionalDiscount());
                     prodStock = Integer.parseInt(items.get(i).getProdStock());
                     itemQty = Integer.parseInt(items.get(i).getItemQty());
-
                     Product product = new Product(id, productImage, prodSellingPrice, prodName, prodDescription, prodQty, prodListingPrice, additionalDiscount, prodStock, itemQty);
                     cartViewModel = ViewModelProviders.of((FragmentActivity) context).get(CartViewModel.class);
+                    cartViewModel.clearCart();
                     cartViewModel.addItem(ParseObjects.toCartItem(product));
                 }
                 Intent intent = new Intent(context, SubscribeActivity.class);
+                intent.putExtra(ORDER_ID, Integer.parseInt(orderList.get(position).getId()));
                 context.startActivity(intent);
             }
         });

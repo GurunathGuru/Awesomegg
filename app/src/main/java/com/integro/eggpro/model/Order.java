@@ -1,7 +1,5 @@
 package com.integro.eggpro.model;
 
-import androidx.navigation.NavType;
-
 import java.io.Serializable;
 
 public class Order implements Serializable {

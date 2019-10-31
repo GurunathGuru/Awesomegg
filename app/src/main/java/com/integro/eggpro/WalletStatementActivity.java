@@ -1,20 +1,18 @@
 package com.integro.eggpro;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.integro.eggpro.adapters.MyOrdersAdapter;
 import com.integro.eggpro.adapters.WalletStatementAdapter;
 import com.integro.eggpro.apis.ApiClient;
 import com.integro.eggpro.apis.ApiService;
-import com.integro.eggpro.model.MyOrderList;
 import com.integro.eggpro.model.WalletStatement;
 
 import java.util.ArrayList;

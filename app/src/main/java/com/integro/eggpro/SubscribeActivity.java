@@ -27,7 +27,7 @@ import com.integro.eggpro.interfaces.CreateOrder;
 import com.integro.eggpro.interfaces.OnDateSelected;
 import com.integro.eggpro.model.CustomCalender;
 import com.integro.eggpro.model.CustomDate;
-import com.integro.eggpro.model.Order;
+import com.integro.eggpro.model.RechargeResponse;
 import com.integro.eggpro.model.User;
 import com.integro.eggpro.utility.entity.CartItem;
 import com.integro.eggpro.utility.viewmodels.CartViewModel;
@@ -54,6 +54,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.integro.eggpro.constants.GenralConstants.ORDER_ID;
 import static com.integro.eggpro.constants.GenralConstants.RESULT_FAILED;
 
 public class SubscribeActivity extends AppCompatActivity implements PaymentResultListener {
@@ -99,18 +100,18 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
     private Double finalPrice = null;
     private CartViewModel cartViewModel;
     private Map<String, String> params;
-    private Order order;
+    private RechargeResponse response;
     private DecimalFormat decimalFormat = new DecimalFormat("0.00");
     private User user;
     private ArrayList<CartItem> cart = new ArrayList<>();
     private CreateOrder createOrderCallbackListner = new CreateOrder() {
         @Override
-        public void onOrderCreated(Order localOrder) {
-            if (localOrder == null) {
+        public void onOrderCreated(RechargeResponse localResponse) {
+            if (localResponse == null) {
                 Toast.makeText(SubscribeActivity.this, "Something Not Right", Toast.LENGTH_SHORT).show();
                 return;
             }
-            order = localOrder;
+            response = localResponse;
             procedeWithPayment();
         }
     };
@@ -150,6 +151,11 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
         ButterKnife.bind(this);
         Checkout.preload(getApplicationContext());
 
+        if (getIntent().hasExtra(ORDER_ID)){
+            tvAddItem.setVisibility(View.GONE);
+            tvAddItem.setEnabled(false);
+            Log.i(TAG, "onCreate: "+getIntent().getIntExtra(ORDER_ID,-1));
+        }
 
         radioButtons.get(0).setChecked(true);
 
@@ -344,15 +350,69 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
     @OnClick(R.id.tvProceedToPay)
     public void makePayment() {
         if (radioButtons.get(0).isChecked() || radioButtons.get(1).isChecked()) {
-            getResponseList(createOrderCallbackListner);
+            if (getIntent().hasExtra(ORDER_ID)) {
+                rechargeOrder(createOrderCallbackListner);
+                Log.i(TAG, "makePayment: recharge order");
+            } else {
+                Log.i(TAG, "makePayment: new order");
+                getResponseList(createOrderCallbackListner);
+            }
         } else {
             Toast.makeText(this, "Not selected any option", Toast.LENGTH_SHORT).show();
         }
     }
 
+    private void rechargeOrder(CreateOrder callback) {
+        if (response != null) {
+            procedeWithPayment();
+            return;
+        }
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+        Log.i(TAG, "getResponseList: " + finalPrice);
+        int period = 1;
+        int frequecy = 7;
+        Double startDate = (primaryCalendar.getTimeInMillis() / 1000.00);
+        int startDateTimeStamp = startDate.intValue();
+        String orderType = "Subscriprion";
+        Double orderPrice = finalPrice;
+
+        ApiClient.getClient2().create(ApiService.class).rechargeOrder(
+                getIntent().getIntExtra(ORDER_ID,-1),
+                period,
+                frequecy,
+                startDateTimeStamp,
+                orderPrice,
+                uid
+        ).enqueue(new Callback<RechargeResponse>() {
+            @Override
+            public void onResponse(Call<RechargeResponse> call, Response<RechargeResponse> response) {
+                Log.i(TAG, "onResponse: " + response.body());
+
+                if (!response.isSuccessful()) {
+                    Toast.makeText(SubscribeActivity.this, "Something Not rignt is success", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (response.body() == null) {
+                    Toast.makeText(SubscribeActivity.this, "Something Not rignt body null", Toast.LENGTH_SHORT).show();
+                    callback.onOrderCreated(null);
+                    return;
+                }
+                callback.onOrderCreated(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<RechargeResponse> call, Throwable t) {
+                Toast.makeText(SubscribeActivity.this, "Something Not rignt" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                //callback.onOrderCreated(null);
+            }
+        });
+    }
+
     @Override
     public void onPaymentSuccess(String paymentId) {
         Toast.makeText(this, "Payment Success " + paymentId, Toast.LENGTH_SHORT).show();
+        Log.i(TAG, "onPaymentSuccess: "+paymentId);
         finalPrice = finalPrice / 100;
         paymentComplete(paymentId);
     }
@@ -367,7 +427,7 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
     }
 
     private void getResponseList(CreateOrder callback) {
-        if (order != null) {
+        if (response != null) {
             procedeWithPayment();
             return;
         }
@@ -377,6 +437,7 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
         int period = 1;
         int frequecy = 7;
         Double startDate = (primaryCalendar.getTimeInMillis() / 1000.00);
+        Log.i(TAG, "getResponseList: "+startDate);
         int startDateTimeStamp = startDate.intValue();
         String orderType = "Subscriprion";
         Double orderPrice = finalPrice;
@@ -390,17 +451,17 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
                 orderPrice,
                 size,
                 params
-        ).enqueue(new Callback<Order>() {
+        ).enqueue(new Callback<RechargeResponse>() {
             @Override
-            public void onResponse(Call<Order> call, Response<Order> response) {
+            public void onResponse(Call<RechargeResponse> call, Response<RechargeResponse> response) {
                 Log.i(TAG, "onResponse: " + response.body());
 
                 if (!response.isSuccessful()) {
-                    Toast.makeText(SubscribeActivity.this, "Something Not rignt", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SubscribeActivity.this, "Something Not right is success", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (response.body() == null) {
-                    Toast.makeText(SubscribeActivity.this, "Something Not rignt", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SubscribeActivity.this, "Something Not right body null", Toast.LENGTH_SHORT).show();
                     callback.onOrderCreated(null);
                     return;
                 }
@@ -408,8 +469,8 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
             }
 
             @Override
-            public void onFailure(Call<Order> call, Throwable t) {
-                Toast.makeText(SubscribeActivity.this, "Something Not rignt" + t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<RechargeResponse> call, Throwable t) {
+                Toast.makeText(SubscribeActivity.this, "Something Not right" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 callback.onOrderCreated(null);
             }
         });
@@ -424,8 +485,8 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
         try {
             JSONObject options = new JSONObject();
             options.put("name", "AWESOMEGG");
-            options.put("description", "Reference No. " + order.getId());
-            options.put("order_id", order.getOrderId());
+            options.put("description", "Reference No. " + response.getId());
+            options.put("order_id", response.getIpgOrderId());
             options.put("currency", "INR");
             options.put("amount", totalinpaisa);
             checkout.open(activity, options);
@@ -437,7 +498,7 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
     private void paymentComplete(String paymentId) {
         ApiClient.getClient2()
                 .create(ApiService.class)
-                .paymentComplete(order.getUid(), order.getOrderId(), Integer.parseInt(order.getId()), paymentId, finalPrice)
+                .paymentComplete(response.getId(), paymentId)
                 .enqueue(new Callback<Integer>() {
                     @Override
                     public void onResponse(Call<Integer> call, Response<Integer> response) {
@@ -461,6 +522,4 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
                     }
                 });
     }
-
-
 }

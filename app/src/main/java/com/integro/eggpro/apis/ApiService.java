@@ -6,6 +6,7 @@ import com.integro.eggpro.model.DeliveryStatus;
 import com.integro.eggpro.model.MyOrderList;
 import com.integro.eggpro.model.Order;
 import com.integro.eggpro.model.Products;
+import com.integro.eggpro.model.RechargeResponse;
 import com.integro.eggpro.model.User;
 import com.integro.eggpro.model.WalletStatement;
 
@@ -53,7 +54,7 @@ public interface ApiService {
 
     @FormUrlEncoded
     @POST("placeOrder")
-    Call<Order> createOrder(
+    Call<RechargeResponse> createOrder(
             @Field("uid") String uid,
             @Field("period") int period,
             @Field("frequecy") int frequecy,
@@ -65,6 +66,30 @@ public interface ApiService {
     );
 
     @FormUrlEncoded
+    @POST("placeOrder")
+    Call<Order> createOrder(
+            @Field("uid") String uid,
+            @Field("period") int period,
+            @Field("frequecy") String frequecy,
+            @Field("startDate") int startDate,
+            @Field("orderType") String orderType,
+            @Field("orderPrice") Double orderPrice,
+            @Field("size") int size,
+            @FieldMap Map<String, String> param
+    );
+
+    @FormUrlEncoded
+    @POST("rechargeOrder")
+    Call<RechargeResponse> rechargeOrder(
+            @Field("orderId")int orderId,
+            @Field("period") int period,
+            @Field("frequecy") int frequecy,
+            @Field("startDate") int startDate,
+            @Field("orderPrice") Double orderPrice,
+            @Field("uid")String uid
+    );
+
+    @FormUrlEncoded
     @POST("getCurrentBalance")
     Call<Double> getCurrentBalance(
             @Field("uid") String uid);
@@ -72,11 +97,8 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("paymentComplete")
     Call<Integer> paymentComplete(
-            @Field("uid") String uid,
-            @Field("orderId") String orderId,
             @Field("id") int id,
-            @Field("paymentId") String paymentId,
-            @Field("amount") Double amount
+            @Field("paymentId") String paymentId
     );
 
     @FormUrlEncoded

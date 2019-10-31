@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MyOrdersActivity">
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMyOrders"
@@ -11,4 +13,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tvNoOrders"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fontFamily="@font/opensans_bold"
+        android:gravity="center"
+        android:text="No Orders Found..!"
+        android:visibility="gone"
+        android:textColor="@color/colorAccent" />
+
+</RelativeLayout>

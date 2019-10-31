@@ -1,14 +1,14 @@
 package com.integro.eggpro;
 
+import android.os.Bundle;
+import android.util.Log;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-import android.util.Log;
-
-import com.integro.eggpro.model.Items;
 import com.integro.eggpro.adapters.OrderItemListAdapter;
+import com.integro.eggpro.model.Items;
 
 import java.util.ArrayList;
 

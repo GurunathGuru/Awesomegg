@@ -89,6 +89,7 @@ public class OtpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String code = pinView.getText().toString();
+                Log.i(TAG, "onClick: "+code);
                 if (code.isEmpty() || code.length() < 6) {
                     pinView.setError("Enter valid code");
                     pinView.requestFocus();
@@ -118,6 +119,7 @@ public class OtpActivity extends AppCompatActivity {
     public void reSend(){
         if (mobile!=""){
         sendVerificationCode(mobile);
+            Toast.makeText(this, "check mobile number", Toast.LENGTH_SHORT).show();
         }else {
             Toast.makeText(this, "check mobile number", Toast.LENGTH_SHORT).show();
         }

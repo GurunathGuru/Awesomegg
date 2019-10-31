@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +26,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -51,7 +49,6 @@ import retrofit2.Response;
 
 import static android.Manifest.permission.CALL_PHONE;
 import static com.integro.eggpro.constants.GenralConstants.ARG_USER_DETAILS;
-import static com.integro.eggpro.constants.GenralConstants.MY_ORDER;
 import static com.integro.eggpro.constants.GenralConstants.REQUEST_CODE;
 import static com.integro.eggpro.constants.GenralConstants.RESULT_FAILED;
 
@@ -203,6 +200,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Log.i(TAG, "onResponse: " + response.body());
                 tvWallet.setText(String.valueOf(response.body()));
             }
+
             @Override
             public void onFailure(Call<Double> call, Throwable t) {
 
@@ -213,13 +211,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @OnClick(R.id.tvSubscribe)
     public void subscribe() {
         Intent subscribeIntent = new Intent(MainActivity.this, SubscribeActivity.class);
-        startActivityForResult(subscribeIntent,REQUEST_CODE);
+        startActivityForResult(subscribeIntent, REQUEST_CODE);
     }
 
     @OnClick(R.id.tvOrderNow)
     public void oneTimeOrder() {
         Intent oneTimeOrderIntent = new Intent(MainActivity.this, OneTimeOrdersActivity.class);
-        startActivityForResult(oneTimeOrderIntent,REQUEST_CODE );
+        startActivityForResult(oneTimeOrderIntent, REQUEST_CODE);
     }
 
     @OnClick(R.id.tvMyOrders)
@@ -314,13 +312,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if((requestCode==REQUEST_CODE)&& resultCode==RESULT_OK) {
+        if ((requestCode == REQUEST_CODE) && resultCode == RESULT_OK) {
             initProducts();
             getCurrentBalance();
-            Log.i(TAG, "onActivityResult: "+RESULT_OK);
-            Intent intent=new Intent(getApplicationContext(),MyOrdersActivity.class);
+            Log.i(TAG, "onActivityResult: " + RESULT_OK);
+            Intent intent = new Intent(getApplicationContext(), MyOrdersActivity.class);
             startActivity(intent);
-        }else if((requestCode==REQUEST_CODE) && (resultCode==RESULT_FAILED)) {
+        } else if ((requestCode == REQUEST_CODE) && (resultCode == RESULT_FAILED)) {
             initProducts();
             getCurrentBalance();
         }

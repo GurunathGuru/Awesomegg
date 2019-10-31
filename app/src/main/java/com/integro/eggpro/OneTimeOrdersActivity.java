@@ -2,7 +2,6 @@ package com.integro.eggpro;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +26,7 @@ import com.integro.eggpro.interfaces.OnDateSelected;
 import com.integro.eggpro.model.CustomCalender;
 import com.integro.eggpro.model.CustomDate;
 import com.integro.eggpro.model.Order;
+import com.integro.eggpro.model.RechargeResponse;
 import com.integro.eggpro.utility.entity.CartItem;
 import com.integro.eggpro.utility.viewmodels.CartViewModel;
 import com.razorpay.Checkout;
@@ -59,10 +59,10 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
     private Double total = null;
     private Double savedPrice = null;
     private Double finalPrice = null;
+    private RechargeResponse response;
 
     private CartViewModel cartViewModel;
     private CustomCalenderAdapter customCalenderAdapter = new CustomCalenderAdapter();
-    private Order order;
     private SubscribeAdapter adapter;
     private DecimalFormat decimalFormat = new DecimalFormat("0.00");
     private OnDateSelected onDateSelected = new OnDateSelected() {
@@ -75,12 +75,12 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
     };
     private CreateOrder createOrderCallbackListner = new CreateOrder() {
         @Override
-        public void onOrderCreated(Order localOrder) {
-            if (localOrder == null) {
+        public void onOrderCreated(RechargeResponse localResponse) {
+            if (localResponse == null) {
                 Toast.makeText(OneTimeOrdersActivity.this, "Something Not Right", Toast.LENGTH_SHORT).show();
                 return;
             }
-            order = localOrder;
+            response = localResponse;
             procedeWithPayment();
         }
     };
@@ -237,10 +237,11 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
 
     public void onPaymentError(int i, String s) {
         Toast.makeText(this, "" + i + " Payment Fail " + s, Toast.LENGTH_SHORT).show();
+        Log.i(TAG, "onPaymentError: " + s + " " + i);
     }
 
     private void getResponseList(CreateOrder callback) {
-        if (order != null) {
+        if (response != null) {
             procedeWithPayment();
             return;
         }
@@ -263,16 +264,17 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
                 orderPrice,
                 size,
                 params
-        ).enqueue(new Callback<Order>() {
+        ).enqueue(new Callback<RechargeResponse>() {
             @Override
-            public void onResponse(Call<Order> call, Response<Order> response) {
+            public void onResponse(Call<RechargeResponse> call, Response<RechargeResponse> response) {
                 Log.i(TAG, "onResponse: " + response.body());
+
                 if (!response.isSuccessful()) {
-                    Toast.makeText(OneTimeOrdersActivity.this, "Add at least one item", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OneTimeOrdersActivity.this, "Something Not right is success", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (response.body() == null) {
-                    Toast.makeText(OneTimeOrdersActivity.this, "Something Not rignt", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OneTimeOrdersActivity.this, "Something Not right body null", Toast.LENGTH_SHORT).show();
                     callback.onOrderCreated(null);
                     return;
                 }
@@ -280,8 +282,8 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Order> call, Throwable t) {
-                Toast.makeText(OneTimeOrdersActivity.this, "Something Not rignt" + t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<RechargeResponse> call, Throwable t) {
+                Toast.makeText(OneTimeOrdersActivity.this, "Something Not right" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 callback.onOrderCreated(null);
             }
         });
@@ -297,7 +299,7 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
             JSONObject options = new JSONObject();
             options.put("name", "Integro Infotech");
             options.put("description", "Reference No. #123456");
-            options.put("order_id", order.getOrderId());
+            options.put("order_id", response.getIpgOrderId());
             options.put("currency", "INR");
             options.put("amount", totalinpaisa);
             checkout.open(activity, options);
@@ -309,7 +311,7 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
     private void paymentComplete(String paymentId) {
         ApiClient.getClient2()
                 .create(ApiService.class)
-                .paymentComplete(order.getUid(), order.getOrderId(), Integer.parseInt(order.getId()), paymentId, finalPrice)
+                .paymentComplete(response.getId(), paymentId)
                 .enqueue(new Callback<Integer>() {
                     @Override
                     public void onResponse(Call<Integer> call, Response<Integer> response) {
@@ -326,10 +328,10 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
                         setResult(RESULT_OK);
                         finish();
                     }
-
                     @Override
                     public void onFailure(Call<Integer> call, Throwable t) {
-
+                        Toast.makeText(OneTimeOrdersActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.i(TAG, "onFailure: "+t.toString());
                     }
                 });
     }

@@ -139,7 +139,6 @@
                 android:fontFamily="@font/opensans_bold"
                 android:gravity="center"
                 android:text="Recharge "
-                android:visibility="gone"
                 android:textSize="10sp" />
         </LinearLayout>
     </LinearLayout>

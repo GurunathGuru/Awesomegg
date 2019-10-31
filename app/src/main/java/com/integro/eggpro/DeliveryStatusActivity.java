@@ -1,12 +1,12 @@
 package com.integro.eggpro;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -14,7 +14,6 @@ import com.integro.eggpro.adapters.DeliveryStatusAdapter;
 import com.integro.eggpro.apis.ApiClient;
 import com.integro.eggpro.apis.ApiService;
 import com.integro.eggpro.model.DeliveryStatus;
-import com.integro.eggpro.model.WalletStatement;
 
 import java.util.ArrayList;
 
@@ -24,7 +23,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.integro.eggpro.constants.GenralConstants.ITEM_LIST;
 import static com.integro.eggpro.constants.GenralConstants.ORDER_ID;
 
 public class DeliveryStatusActivity extends AppCompatActivity {
@@ -55,7 +53,6 @@ public class DeliveryStatusActivity extends AppCompatActivity {
         rvDeliveryStatus.setLayoutManager(new LinearLayoutManager(this));
         rvDeliveryStatus.setAdapter(deliveryStatusAdapter);
         getDeliveryStatus();
-
     }
 
     public void getDeliveryStatus() {
@@ -71,10 +68,8 @@ public class DeliveryStatusActivity extends AppCompatActivity {
                     return;
                 }
                 Log.i(TAG, "onResponse: " + response.body());
-
                 deliveryStatusAdapter.setDeliveryStatus(response.body());
             }
-
             @Override
             public void onFailure(Call<ArrayList<DeliveryStatus>> call, Throwable t) {
                 Toast.makeText(DeliveryStatusActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();

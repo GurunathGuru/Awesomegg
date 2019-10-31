@@ -17,40 +17,54 @@
         <activity
             android:name=".DeliveryStatusActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity" />
 
         <activity
             android:name=".WalletStatementActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity" />
 
         <activity
             android:name=".OrderDetailsActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity" />
 
         <activity
             android:name=".MyOrdersActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity" />
 
         <activity
             android:name=".SubscribeActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity" />
 
         <activity
             android:name=".OneTimeOrdersActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity" />
 
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".OtpActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".LoginActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".RegisterActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".OtpActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".WelcomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

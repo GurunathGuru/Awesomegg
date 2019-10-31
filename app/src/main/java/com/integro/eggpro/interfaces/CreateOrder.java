@@ -1,7 +1,7 @@
 package com.integro.eggpro.interfaces;
 
-import com.integro.eggpro.model.Order;
+import com.integro.eggpro.model.RechargeResponse;
 
 public interface CreateOrder {
-    void onOrderCreated(Order order);
+    void onOrderCreated(RechargeResponse response);
 }

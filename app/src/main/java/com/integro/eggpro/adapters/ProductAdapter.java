@@ -24,7 +24,6 @@ import com.integro.eggpro.utility.entity.CartItem;
 import com.integro.eggpro.utility.entity.Product;
 import com.integro.eggpro.utility.viewmodels.CartViewModel;
 import com.integro.eggpro.utility.viewmodels.ProductsViewModel;
-import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -98,6 +97,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         myViewHolder.tvQuantity.setText(context.getResources().getString(R.string.productQuantity,product.getProdQty()));
         myViewHolder.tvListingPrice.setText(context.getResources().getString(R.string.productListingPrice,decimalFormat.format((product.getProdListingPrice()))));
         myViewHolder.itemQty.setNumber(""+product.getItemQty());
+        myViewHolder.itemQty.setRange(0,product.getProdStock());
         final Double price = Double.valueOf(product.getProdSellingPrice());
 
         Glide.with(context)
@@ -143,7 +143,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         ImageView ivImage;
         TextView tvQuantity;
         TextView tvListingPrice;
-
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);

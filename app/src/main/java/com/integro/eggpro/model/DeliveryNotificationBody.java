@@ -1,9 +1,6 @@
 package com.integro.eggpro.model;
 
-import com.google.gson.Gson;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class DeliveryNotificationBody implements Serializable {
     private String message;

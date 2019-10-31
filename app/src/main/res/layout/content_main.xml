@@ -9,18 +9,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_main">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="530dp"
-        android:layout_marginTop="150dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/img005" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="530dp"
-        android:layout_marginTop="150dp"
-        android:background="#A8D5D5D5"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,51 +22,38 @@
             android:layout_height="0sp"
             android:layout_weight="1.5"
             android:scaleType="centerCrop"
-            android:src="@drawable/img002" />
-
-        <androidx.cardview.widget.CardView
+            android:src="@drawable/img002"
+            android:padding="1dp"
+            android:background="@color/colorAccent"
+            tools:ignore="ContentDescription" />
+        <View
             android:layout_width="match_parent"
-            android:layout_height="0sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="100dp"
-            android:layout_weight="0.5"
-            app:cardCornerRadius="10dp"
-            app:cardBackgroundColor="#e9eae5">
-
-            <TextView
-                android:id="@+id/tvDailyOffers"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center|start|top"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:text="Offers..!"
-                android:textColor="@color/colorAccent" />
-        </androidx.cardview.widget.CardView>
+            android:layout_height="1sp"
+            android:background="@color/colorAccent"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="15sp"
             android:gravity="center|start"
             android:text="SALE"
+            android:fontFamily="@font/opensans_bold"
             android:textColor="@color/colorAccent"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvItems"
             android:layout_width="match_parent"
             android:layout_height="0sp"
-            android:layout_weight="1.5" />
+            android:layout_weight="2" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0sp"
             android:layout_weight="0.5"
             android:gravity="center"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:paddingLeft="5sp"
+            android:paddingRight="5sp"
             android:orientation="horizontal"
             android:weightSum="2">
 
@@ -85,19 +61,20 @@
                 android:id="@+id/tvOrderNow"
                 android:layout_width="0sp"
                 android:layout_height="match_parent"
-                android:layout_margin="5dp"
+                android:layout_margin="5sp"
                 android:layout_weight="1"
                 android:background="@drawable/ic_border7"
                 android:gravity="center"
                 android:minLines="2"
-                android:text="One Time Trail"
-                android:textColor="@color/colorWhite" />
+                android:text="One Time Trial"
+                android:textColor="@color/colorWhite"
+                tools:ignore="NestedWeights" />
 
             <TextView
                 android:id="@+id/tvSubscribe"
                 android:layout_width="0sp"
                 android:layout_height="match_parent"
-                android:layout_margin="5dp"
+                android:layout_margin="5sp"
                 android:layout_weight="1"
                 android:background="@drawable/ic_border7"
                 android:gravity="center"
@@ -115,13 +92,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/img3" />
+                android:src="@drawable/img3"
+                tools:ignore="ContentDescription" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="2"
+                tools:ignore="DisableBaselineAlignment">
 
                 <LinearLayout
                     android:layout_width="0sp"
@@ -129,7 +108,8 @@
                     android:layout_weight="1.2"
                     android:gravity="start"
                     android:orientation="vertical"
-                    android:weightSum="3">
+                    android:weightSum="3"
+                    tools:ignore="UselessParent">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -137,31 +117,32 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/montserrat_bold"
                         android:gravity="start|center"
-                        android:padding="5dp"
+                        android:padding="5sp"
                         android:text="How does it Work"
                         android:textColor="@color/colorWhite"
-                        android:textSize="15dp" />
+                        android:textSize="15sp"
+                        tools:ignore="NestedWeights" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="0sp"
                         android:layout_weight="1.3"
-                        android:padding="5dp"
-                        android:paddingTop="25dp"
+                        android:padding="5sp"
+                        android:paddingTop="25sp"
                         android:text="@string/howItWorks"
                         android:textColor="@color/colorWhite"
-                        android:textSize="12dp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/tvWebsite"
                         android:layout_width="match_parent"
                         android:layout_height="0sp"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5sp"
                         android:layout_weight="0.7"
                         android:gravity="center|start|bottom"
                         android:text="www.awesomeegg.com"
                         android:textColor="@color/colorWhite"
-                        android:textSize="15dp" />
+                        android:textSize="15sp" />
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
