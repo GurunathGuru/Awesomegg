@@ -91,15 +91,32 @@
             android:padding="5dp"
             android:weightSum="2">
 
-            <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
-                android:id="@+id/itemQty"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0sp"
-                android:layout_weight="1"
-                android:background="@drawable/ic_border4"
-                android:padding="1dp"
-                android:layout_marginBottom="10dp"
-                app:textColor="@color/colorAccent" />
+                android:layout_weight="1">
+
+                <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
+                    android:id="@+id/itemQty"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_marginBottom="10dp"
+                    android:padding="1dp"
+                    android:background="@drawable/ic_border4"
+                    app:textColor="@color/colorAccent" />
+
+                <TextView
+                    android:id="@+id/tvOutOfStock"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:gravity="center"
+                    android:background="@drawable/ic_border4"
+                    android:fontFamily="@font/opensans_light"
+                    android:text="Out of Stock"
+                    android:textSize="13dp"
+                    android:textColor="@color/cardview_dark_background" />
+            </RelativeLayout>
+
 
             <TextView
                 android:id="@+id/tvTotalPrice"

@@ -100,6 +100,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         myViewHolder.itemQty.setRange(0,product.getProdStock());
         final Double price = Double.valueOf(product.getProdSellingPrice());
 
+        if (product.getProdStock()>0){
+            myViewHolder.itemQty.setVisibility(View.VISIBLE);
+            myViewHolder.tvOutOfStock.setVisibility(View.GONE);
+        }else {
+            myViewHolder.itemQty.setVisibility(View.GONE);
+            myViewHolder.tvOutOfStock.setVisibility(View.VISIBLE);
+        }
+
         Glide.with(context)
                 .load(product.getProductImage())
                 .into(myViewHolder.ivImage);
@@ -143,6 +151,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         ImageView ivImage;
         TextView tvQuantity;
         TextView tvListingPrice;
+        TextView tvOutOfStock;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -153,6 +162,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             ivImage = itemView.findViewById(R.id.ivImage);
             tvQuantity=itemView.findViewById(R.id.tvQuantity);
             tvListingPrice=itemView.findViewById(R.id.tvListingPrice);
+            tvOutOfStock=itemView.findViewById(R.id.tvOutOfStock);
         }
     }
 }

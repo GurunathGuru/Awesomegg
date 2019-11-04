@@ -7,7 +7,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    private static final String BASE_URL ="http://192.168.1.16/ibeggx/index.php/Android/";
+    private static final String BASE_URL ="http://malavalli.in/ibeggx/index.php/Android/";
 
     public static Retrofit retrofit2=null;
 

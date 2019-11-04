@@ -79,6 +79,20 @@ public interface ApiService {
     );
 
     @FormUrlEncoded
+    @POST("cashOnDelivery")
+    Call<Integer> cashOnDelivery(
+            @Field("uid") String uid,
+            @Field("period") int period,
+            @Field("frequecy") int frequecy,
+            @Field("startDate") int startDate,
+            @Field("orderType") String orderType,
+            @Field("orderPrice") Double orderPrice,
+            @Field("size") int size,
+            @FieldMap Map<String, String> param
+    );
+
+
+    @FormUrlEncoded
     @POST("rechargeOrder")
     Call<RechargeResponse> rechargeOrder(
             @Field("orderId")int orderId,

@@ -36,20 +36,20 @@ import static com.integro.eggpro.constants.GenralConstants.ORDER_ID;
 public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyViewHolder> {
 
     private static final String TAG = "MyOrdersAdapter";
-    Context context;
-    ArrayList<MyOrderList> orderList = new ArrayList<>();
-    ArrayList<Items> items = new ArrayList<>();
-    int id;
-    String productImage;
-    Double prodSellingPrice;
-    String prodName;
-    String prodDescription;
-    int prodQty;
-    Double prodListingPrice;
-    int additionalDiscount;
-    int prodStock;
-    int itemQty;
-    Double balance = 0.00;
+    private Context context;
+    private ArrayList<MyOrderList> orderList = new ArrayList<>();
+    private ArrayList<Items> items = new ArrayList<>();
+    private int id;
+    private String productImage;
+    private Double prodSellingPrice;
+    private String prodName;
+    private String prodDescription;
+    private int prodQty;
+    private Double prodListingPrice;
+    private int additionalDiscount;
+    private int prodStock;
+    private int itemQty;
+    private Double balance = 0.00;
 
     public MyOrdersAdapter(Context context) {
         this.context = context;
@@ -65,7 +65,6 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyView
         notifyDataSetChanged();
     }
 
-
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -75,16 +74,12 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-
         String getDate = orderList.get(position).getStartDate();
         String[] dateArray = getDate.split("-");
-
-
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, Integer.parseInt(dateArray[0]));
         calendar.set(Calendar.MONTH, Integer.parseInt(dateArray[1])-1);
         calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateArray[2]));
-
 
         SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy");
         Log.i(TAG, "onBindViewHolder: " + format.format(calendar.getTime()));
@@ -94,12 +89,21 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyView
         holder.orderType.setText(orderList.get(position).getOrderType());
         holder.orderPrice.setText("\u20B9" + orderList.get(position).getOrderPrice());
 
-        if (balance < 500) {
+        if (balance < 500 ) {
             holder.tvRecharge.setEnabled(true);
             holder.tvRecharge.setVisibility(View.VISIBLE);
         }else {
             holder.tvRecharge.setEnabled(false);
             holder.tvRecharge.setVisibility(View.GONE);
+        }
+        if (orderList.get(position).getOrderType().equals("Cash on Delivery Subscription")
+                ||orderList.get(position).getOrderType().equals("One Time Trial")
+                ||orderList.get(position).getOrderType().equals("One Time Cash on Delivery")){
+            holder.tvRecharge.setEnabled(false);
+            holder.tvRecharge.setVisibility(View.GONE);
+        }else {
+            holder.tvRecharge.setEnabled(true);
+            holder.tvRecharge.setVisibility(View.VISIBLE);
         }
 
         holder.tvOrderDetails.setOnClickListener(new View.OnClickListener() {

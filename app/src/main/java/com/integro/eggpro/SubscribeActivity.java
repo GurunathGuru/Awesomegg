@@ -80,6 +80,7 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
 
     @BindView(R.id.rvSubscribe)
     RecyclerView rvSubscribe;
+
     @BindView(R.id.rvCalender)
     RecyclerView rvCalender;
 
@@ -362,6 +363,15 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
         }
     }
 
+    @OnClick(R.id.tvCashOnDelivery)
+    public void CashOnDelivery() {
+        if (radioButtons.get(0).isChecked() || radioButtons.get(1).isChecked()) {
+            getResponseList2();
+        } else {
+            Toast.makeText(this, "Not selected any option", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void rechargeOrder(CreateOrder callback) {
         if (response != null) {
             procedeWithPayment();
@@ -439,7 +449,7 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
         Double startDate = (primaryCalendar.getTimeInMillis() / 1000.00);
         Log.i(TAG, "getResponseList: "+startDate);
         int startDateTimeStamp = startDate.intValue();
-        String orderType = "Subscriprion";
+        String orderType = "Subscription";
         Double orderPrice = finalPrice;
 
         ApiClient.getClient2().create(ApiService.class).createOrder(
@@ -521,5 +531,56 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
 
                     }
                 });
+    }
+
+
+    private void getResponseList2() {
+        if (response != null) {
+            procedeWithPayment();
+            return;
+        }
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+        Log.i(TAG, "getResponseList: " + finalPrice);
+        int period = 1;
+        int frequecy = 7;
+        Double startDate = (primaryCalendar.getTimeInMillis() / 1000.00);
+        Log.i(TAG, "getResponseList: "+startDate);
+        int startDateTimeStamp = startDate.intValue();
+        String orderType = "Cash on Delivery Subscription";
+        Double orderPrice = finalPrice;
+
+        ApiClient.getClient2().create(ApiService.class).cashOnDelivery(
+                uid,
+                period,
+                frequecy,
+                startDateTimeStamp,
+                orderType,
+                orderPrice,
+                size,
+                params
+        ).enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                Log.i(TAG, "onResponse: " + response.body());
+
+                if (!response.isSuccessful()) {
+                    Toast.makeText(SubscribeActivity.this, "Something Not right is success", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (response.body() == null) {
+                    Toast.makeText(SubscribeActivity.this, "Something Not right body null", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Log.i(TAG, "onResponse: "+response.body());
+                setResult(RESULT_OK);
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+                Toast.makeText(SubscribeActivity.this, "Something Not right" + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

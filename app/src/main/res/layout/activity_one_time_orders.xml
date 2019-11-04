@@ -244,7 +244,7 @@
             <TextView
                 android:id="@+id/tvProceedToPay"
                 android:layout_width="match_parent"
-                android:layout_height="50sp"
+                android:layout_height="30sp"
                 android:layout_marginTop="5dp"
                 android:background="@color/colorAccent"
                 android:fontFamily="@string/font_H1"
@@ -252,6 +252,19 @@
                 android:text="Pay Farmer"
                 android:textColor="@color/colorWhite"
                 android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/tvCashOnDelivery"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorAccent"
+                android:fontFamily="@string/font_H1"
+                android:gravity="center"
+                android:text="Cash On Delivery"
+                android:textColor="@color/colorWhite"
+                android:textSize="13dp"
+                android:layout_marginBottom="10dp"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

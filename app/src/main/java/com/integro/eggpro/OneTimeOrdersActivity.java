@@ -228,7 +228,10 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
     public void makePayment() {
         getResponseList(createOrderCallbackListner);
     }
-
+    @OnClick(R.id.tvCashOnDelivery)
+    public void CashOnDelivery() {
+        getResponseList2();
+    }
     public void onPaymentSuccess(String paymentId) {
         Toast.makeText(this, "Payment Success " + paymentId, Toast.LENGTH_SHORT).show();
         finalPrice = finalPrice / 100;
@@ -253,7 +256,7 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
 
         Double startDate = (primaryCalendar.getTimeInMillis() / 1000.00);
         int startDateTimeStamp = startDate.intValue();
-        String orderType = "One Time Trail";
+        String orderType = "One Time Trial";
         Double orderPrice = finalPrice;
         ApiClient.getClient2().create(ApiService.class).createOrder(
                 uid,
@@ -285,6 +288,55 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
             public void onFailure(Call<RechargeResponse> call, Throwable t) {
                 Toast.makeText(OneTimeOrdersActivity.this, "Something Not right" + t.getMessage(), Toast.LENGTH_SHORT).show();
                 callback.onOrderCreated(null);
+            }
+        });
+    }
+
+    private void getResponseList2() {
+        if (response != null) {
+            procedeWithPayment();
+            return;
+        }
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+        Log.i(TAG, "getResponseList: " + finalPrice);
+        int period = 1;
+        int frequecy = 7;
+        Double startDate = (primaryCalendar.getTimeInMillis() / 1000.00);
+        Log.i(TAG, "getResponseList: "+startDate);
+        int startDateTimeStamp = startDate.intValue();
+        String orderType = "One Time Cash on Delivery";
+        Double orderPrice = finalPrice;
+
+        ApiClient.getClient2().create(ApiService.class).cashOnDelivery(
+                uid,
+                period,
+                frequecy,
+                startDateTimeStamp,
+                orderType,
+                orderPrice,
+                size,
+                params
+        ).enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                Log.i(TAG, "onResponse: " + response.body());
+
+                if (!response.isSuccessful()) {
+                    Toast.makeText(OneTimeOrdersActivity.this, "Something Not right is success", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (response.body() == null) {
+                    Toast.makeText(OneTimeOrdersActivity.this, "Something Not right body null", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                setResult(RESULT_OK);
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+                Toast.makeText(OneTimeOrdersActivity.this, "Something Not right" + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

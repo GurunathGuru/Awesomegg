@@ -111,8 +111,12 @@ public class OtpActivity extends AppCompatActivity {
     }
 
     private void verifyVerificationCode(String code) {
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, code);
-        signInWithPhoneAuthCredential(credential);
+        try {
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, code);
+            signInWithPhoneAuthCredential(credential);
+        } catch (Exception e) {
+            Toast.makeText(this, "Something not Right. Please try After sometime.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @OnClick(R.id.tvResendOTP)
@@ -142,7 +146,6 @@ public class OtpActivity extends AppCompatActivity {
             }
         });
     }
-
     private void checkIfRegistered() {
         SharedPreferences prefs = getSharedPreferences(PREFERENCE, PREFERENCE_PRIVATE);
         String token = prefs.getString(FCMTAG,"");
