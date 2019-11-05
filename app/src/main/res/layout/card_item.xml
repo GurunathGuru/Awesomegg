@@ -8,10 +8,10 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="75dp"
-        android:layout_marginTop="2.5dp"
-        android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"
+        android:layout_marginTop="2.5dp"
         android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
         app:cardBackgroundColor="@color/colorWhite"
         app:cardCornerRadius="5dp">
 
@@ -19,19 +19,19 @@
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:orientation="horizontal"
-            android:weightSum="3">
+            android:weightSum="2">
 
             <ImageView
                 android:id="@+id/ivImage"
                 android:layout_width="0sp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.6"
+                android:layout_weight="0.4"
                 android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:layout_width="0sp"
                 android:layout_height="match_parent"
-                android:layout_weight="1.4"
+                android:layout_weight="1.6"
                 android:orientation="vertical"
                 android:paddingLeft="10dp"
                 android:weightSum="3">
@@ -47,93 +47,99 @@
                     android:textColor="@color/colorAccent"
                     android:textSize="15dp" />
 
-                <TextView
-                    android:id="@+id/tvQuantity"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0sp"
                     android:layout_weight="1"
-                    android:fontFamily="@string/font_H1"
-                    android:gravity="center|start"
-                    android:text="@string/productQuantity"
-                    android:textColor="#A8000000"
-                    android:textSize="10dp" />
+                    android:orientation="horizontal"
+                    android:paddingRight="10dp"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/tvQuantity"
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.2"
+                        android:fontFamily="@string/font_H1"
+                        android:gravity="center|start"
+                        android:text="@string/productQuantity"
+                        android:textColor="#A8000000"
+                        android:textSize="10dp" />
+
+                    <RelativeLayout
+                        android:layout_width="0sp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.8">
+
+                        <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
+                            android:id="@+id/itemQty"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/ic_border4"
+                            android:padding="1dp"
+                            app:textColor="@color/colorAccent" />
+
+                        <TextView
+                            android:id="@+id/tvOutOfStock"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/ic_border4"
+                            android:fontFamily="@font/opensans_light"
+                            android:gravity="center"
+                            android:text="Out of Stock"
+                            android:textColor="@color/cardview_dark_background"
+                            android:textSize="13dp" />
+                    </RelativeLayout>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0sp"
                     android:layout_weight="1"
                     android:orientation="horizontal"
-                    android:weightSum="3">
+                    android:weightSum="2">
 
-                    <TextView
-                        android:id="@+id/tvListingPrice"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="0sp"
                         android:layout_height="match_parent"
-                        android:background="@drawable/strikethrough_shape"
-                        android:gravity="start|center"
-                        android:text="₹"
-                        android:textColor="#A8000000"
-                        android:textSize="10dp" />
+                        android:layout_weight="1.2"
+                        android:gravity="start"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/tvListingPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/strikethrough_shape"
+                            android:gravity="start|center"
+                            android:text="₹"
+                            android:textColor="#A8000000"
+                            android:textSize="10dp" />
+
+                        <TextView
+                            android:id="@+id/tvSellingPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="start|center"
+                            android:paddingLeft="10dp"
+                            android:text=""
+                            android:textColor="@color/colorBlack"
+                            android:textSize="13dp" />
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/tvSellingPrice"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tvTotalPrice"
+                        android:layout_width="0sp"
                         android:layout_height="match_parent"
-                        android:gravity="start|center"
-                        android:paddingLeft="10dp"
-                        android:text=""
-                        android:textColor="@color/colorBlack"
-                        android:textSize="13dp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0sp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:orientation="vertical"
-                android:padding="5dp"
-                android:weightSum="2">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0sp"
-                    android:layout_weight="1">
-
-                    <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
-                        android:id="@+id/itemQty"
-                        android:layout_width="match_parent"
-                        android:layout_height="25dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/ic_border4"
-                        android:padding="1dp"
-                        app:textColor="@color/colorAccent" />
-
-                    <TextView
-                        android:id="@+id/tvOutOfStock"
-                        android:layout_width="match_parent"
-                        android:layout_height="25dp"
-                        android:background="@drawable/ic_border4"
+                        android:layout_weight="0.8"
                         android:fontFamily="@font/opensans_light"
-                        android:gravity="center"
-                        android:text="Out of Stock"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="13dp" />
-                </RelativeLayout>
-
-
-                <TextView
-                    android:id="@+id/tvTotalPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="0sp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/opensans_light"
-                    android:gravity="center|start"
-                    android:paddingRight="5dp"
-                    android:text="\u20B9 0.0"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="15dp" />
+                        android:gravity="center|start"
+                        android:paddingRight="5dp"
+                        android:text="\u20B9 0.0"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="15dp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
