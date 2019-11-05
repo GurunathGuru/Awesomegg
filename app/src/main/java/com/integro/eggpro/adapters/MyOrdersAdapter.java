@@ -34,7 +34,6 @@ import static com.integro.eggpro.constants.GenralConstants.ITEM_LIST;
 import static com.integro.eggpro.constants.GenralConstants.ORDER_ID;
 
 public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyViewHolder> {
-
     private static final String TAG = "MyOrdersAdapter";
     private Context context;
     private ArrayList<MyOrderList> orderList = new ArrayList<>();
@@ -78,7 +77,7 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyView
         String[] dateArray = getDate.split("-");
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, Integer.parseInt(dateArray[0]));
-        calendar.set(Calendar.MONTH, Integer.parseInt(dateArray[1])-1);
+        calendar.set(Calendar.MONTH, Integer.parseInt(dateArray[1]) - 1);
         calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateArray[2]));
 
         SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy");
@@ -89,21 +88,12 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyView
         holder.orderType.setText(orderList.get(position).getOrderType());
         holder.orderPrice.setText("\u20B9" + orderList.get(position).getOrderPrice());
 
-        if (balance < 500 ) {
+        if (balance < 500 && orderList.get(position).getOrderType().equals("Subscription")) {
             holder.tvRecharge.setEnabled(true);
             holder.tvRecharge.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             holder.tvRecharge.setEnabled(false);
             holder.tvRecharge.setVisibility(View.GONE);
-        }
-        if (orderList.get(position).getOrderType().equals("Cash on Delivery Subscription")
-                ||orderList.get(position).getOrderType().equals("One Time Trial")
-                ||orderList.get(position).getOrderType().equals("One Time Cash on Delivery")){
-            holder.tvRecharge.setEnabled(false);
-            holder.tvRecharge.setVisibility(View.GONE);
-        }else {
-            holder.tvRecharge.setEnabled(true);
-            holder.tvRecharge.setVisibility(View.VISIBLE);
         }
 
         holder.tvOrderDetails.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +116,6 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyView
 
         holder.tvRecharge.setOnClickListener(new View.OnClickListener() {
             CartViewModel cartViewModel;
-
             @Override
             public void onClick(View v) {
                 items = orderList.get(position).getItems();

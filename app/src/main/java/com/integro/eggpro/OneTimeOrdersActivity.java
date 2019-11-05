@@ -141,7 +141,6 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
                     total += item.getItemQty() * item.getProdSellingPrice();
                     savedPrice = item.getProdListingPrice() - item.getProdSellingPrice();
                     finalPrice = total;
-
                     params.put("productId[" + i + "]", String.valueOf(item.getId()));
                     params.put("itemQty[" + i + "]", String.valueOf(item.getItemQty()));
                     params.put("itemPrice[" + i + "]", decimalFormat.format(item.getProdSellingPrice()));
@@ -300,8 +299,8 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
         Log.i(TAG, "getResponseList: " + finalPrice);
-        int period = 1;
-        int frequecy = 7;
+        int period = 0;
+        int frequecy = 1;
         Double startDate = (primaryCalendar.getTimeInMillis() / 1000.00);
         Log.i(TAG, "getResponseList: "+startDate);
         int startDateTimeStamp = startDate.intValue();

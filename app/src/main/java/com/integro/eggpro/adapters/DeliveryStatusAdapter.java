@@ -24,11 +24,12 @@ public class DeliveryStatusAdapter extends RecyclerView.Adapter<DeliveryStatusAd
     ArrayList<DeliveryStatus> deliveryStatus =new ArrayList<>();
     String uid;
     Context context;
-
+    String orderId;
     private static final String TAG = "DeliveryStatusAdapter";
-    public DeliveryStatusAdapter(Context context, String uid) {
+    public DeliveryStatusAdapter(Context context, String uid, String orderId) {
         this.uid = uid;
         this.context = context;
+        this.orderId=orderId;
     }
 
     public void setDeliveryStatus(ArrayList<DeliveryStatus> deliveryStatus) {
@@ -45,7 +46,7 @@ public class DeliveryStatusAdapter extends RecyclerView.Adapter<DeliveryStatusAd
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.orderId.setText("order Id: "+deliveryStatus.get(position).getId());
+        holder.orderId.setText("order Id: "+orderId);
         holder.orderDate.setText(deliveryStatus.get(position).getServeDate());
         holder.orderName.setText(deliveryStatus.get(position).getProdName());
         holder.itemQty.setText(deliveryStatus.get(position).getItemQty());

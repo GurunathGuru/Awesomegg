@@ -8,9 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
     private static final String BASE_URL ="http://malavalli.in/ibeggx/index.php/Android/";
-
     public static Retrofit retrofit2=null;
-
     public static final Retrofit getClient2(){
         if (retrofit2==null) {
             Gson gson =new GsonBuilder().setLenient().create();

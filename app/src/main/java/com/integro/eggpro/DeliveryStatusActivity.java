@@ -49,7 +49,7 @@ public class DeliveryStatusActivity extends AppCompatActivity {
         Log.i(TAG, "onCreate: orderId "+orderId);
         uid=firebaseUser.getUid();
         Log.i(TAG, "onCreate: uid "+uid);
-        deliveryStatusAdapter = new DeliveryStatusAdapter(this,uid);
+        deliveryStatusAdapter = new DeliveryStatusAdapter(this,uid,orderId);
         rvDeliveryStatus.setLayoutManager(new LinearLayoutManager(this));
         rvDeliveryStatus.setAdapter(deliveryStatusAdapter);
         getDeliveryStatus();
