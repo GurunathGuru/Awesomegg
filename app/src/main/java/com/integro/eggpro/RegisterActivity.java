@@ -1,6 +1,7 @@
 package com.integro.eggpro;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,6 +27,11 @@ import in.galaxyofandroid.spinerdialog.SpinnerDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.integro.eggpro.constants.GenralConstants.ARG_USER_DETAILS;
+import static com.integro.eggpro.constants.GenralConstants.FCMTAG;
+import static com.integro.eggpro.constants.GenralConstants.PREFERENCE;
+import static com.integro.eggpro.constants.GenralConstants.PREFERENCE_PRIVATE;
 
 public class RegisterActivity extends AppCompatActivity {
 

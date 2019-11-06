@@ -97,7 +97,7 @@
                     android:id="@+id/tvSignIn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@id/etMobilNumber"
+                    android:layout_below="@id/etFlatNo"
                     android:layout_centerHorizontal="true"
                     android:fontFamily="@font/montserrat_bold"
                     android:gravity="center"
