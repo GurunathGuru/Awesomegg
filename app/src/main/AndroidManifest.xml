@@ -4,9 +4,6 @@
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_SMS" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:allowBackup="true"
@@ -78,7 +75,7 @@
         </activity>
         <meta-data
             android:name="com.razorpay.ApiKey"
-            android:value="rzp_test_QHtbIyirXgQsXf" />
+            android:value="rzp_live_AE7rYCO242Criu" />
         <service android:name=".firebase.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

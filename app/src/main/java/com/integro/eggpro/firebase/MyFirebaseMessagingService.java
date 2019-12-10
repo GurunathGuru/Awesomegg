@@ -77,6 +77,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 DeliveryNotificationBody deliveryNotificationBody = new Gson().fromJson(body, DeliveryNotificationBody.class);
                 intent = new Intent(getApplicationContext(), DeliveryStatusActivity.class);
                 description = deliveryNotificationBody.getMessage();
+                //img=deliveryNotificationBody.
                 intent.putExtra(ORDER_ID, deliveryNotificationBody.getOrderId());
             } else if (type.equals("update")) {
                 UpdateNotificationBody updateNotificationBody = (UpdateNotificationBody) new Gson().fromJson(body, UpdateNotificationBody.class);
@@ -109,8 +110,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             mBuilder.setContentTitle(data.get(title));
             mBuilder.setChannelId(NOTIFICATION_CHANNEL_ID);
             mBuilder.setContentText(description);
+            mBuilder.setStyle(new NotificationCompat.BigTextStyle()
+                    .bigText(description));
             mBuilder.setSmallIcon(R.drawable.ic_launcher);
             mBuilder.setAutoCancel(true);
+            mBuilder.setLargeIcon(((BitmapDrawable)getResources().getDrawable(R.drawable.ic_launcher)).getBitmap());
             mBuilder.setPriority(android.app.Notification.PRIORITY_HIGH);
             mBuilder.setBadgeIconType(NotificationCompat.BADGE_ICON_LARGE);
             mBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);

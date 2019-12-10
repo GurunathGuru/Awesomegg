@@ -59,7 +59,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/phonenumber"
+                    android:id="@+id/etPhoneNum"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="40dp"
@@ -80,7 +80,7 @@
                 android:textAlignment="center" />
 
             <Button
-                android:id="@+id/submit1"
+                android:id="@+id/btnNext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -92,93 +92,98 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/layout2"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/first">
+            android:layout_height="wrap_content">
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/layout2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Enter the code that was send to"
-                android:textAlignment="center"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/phonenumberText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="+91 9535259019"
-                android:textAlignment="center"
-                android:textColor="#019b77"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <com.chaos.view.PinView
-                android:id="@+id/pinView"
-                style="@style/PinWidget.PinView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:cursorVisible="true"
-                android:inputType="number"
-                android:padding="10dp"
-                android:textColor="@color/colorAccent"
-                android:textSize="18sp"
-                app:cursorColor="@color/colorAccent"
-                app:cursorWidth="2dp"
-                app:itemCount="6"
-                app:itemHeight="48dp"
-                app:itemRadius="4dp"
-                app:itemSpacing="5dp"
-                app:itemWidth="36dp"
-                app:lineColor="@color/colorAccent"
-                app:lineWidth="2dp"
-                app:viewType="rectangle" />
-
-            <Button
-                android:id="@+id/submit2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/ic_border7"
-                android:text="continue"
-                android:textColor="@color/colorWhite"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="20dp"
-                android:text="I didn't get a code"
-                android:textAlignment="center"
-                android:textColor="#019b77"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/first">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="10dp"
-                android:text="Tap Continue to accept our Terms,Data Policy, cookie use and the Privacy Policy and Terms of Service..."
-                android:textAlignment="center" />
-        </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Enter the code that was send to"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvphoneNumberText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="+91 9535259019"
+                    android:textAlignment="center"
+                    android:textColor="#019b77"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <com.chaos.view.PinView
+                    android:id="@+id/pinView"
+                    style="@style/PinWidget.PinView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:cursorVisible="true"
+                    android:inputType="number"
+                    android:padding="10dp"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp"
+                    app:cursorColor="@color/colorAccent"
+                    app:cursorWidth="2dp"
+                    app:itemCount="6"
+                    app:itemHeight="48dp"
+                    app:itemRadius="4dp"
+                    app:itemSpacing="5dp"
+                    app:itemWidth="36dp"
+                    app:lineColor="@color/colorAccent"
+                    app:lineWidth="2dp"
+                    app:viewType="rectangle" />
+
+                <Button
+                    android:id="@+id/btnContinue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/ic_border7"
+                    android:text="continue"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="I didn't get a code"
+                    android:textAlignment="center"
+                    android:textColor="#019b77"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="Tap Continue to accept our Terms,Data Policy, cookie use and the Privacy Policy and Terms of Service..."
+                    android:textAlignment="center" />
+            </LinearLayout>
+        </ScrollView>
 
         <LinearLayout
             android:id="@+id/layout3"
@@ -200,7 +205,7 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/submit3"
+                android:id="@+id/btnContinue2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"

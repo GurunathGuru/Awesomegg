@@ -1,6 +1,5 @@
 package com.integro.eggpro;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,7 +7,6 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,26 +48,20 @@ public class LoginActivity extends AppCompatActivity {
    /* private EditText etMobilNumber;
     private TextView tvContinue;*/
 
-    private static final String UNIQUE_ID = "UNIQUE_ID";
-    private static final long ONE_HOUR_MILLI = 60 * 60 * 1000;
     private static final String TAG = "FirebasePhoneNumAuth";
-    private static String uniqueIdentifier = null;
     LinearLayout layout1, layout2, layout3;
     StepView stepView;
     private int currentStep = 0;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
-    private String phoneNumber;
-    private Button submit1;
-    private Button submit2;
-    private Button button3;
-    private Button signOutButton;
-    private EditText phoneNum;
-    private PinView verifyCodeET;
-    private TextView phonenumberText;
+    private Button btnNext;
+    private Button btnContinue;
+    private Button btnContinue2;
+    private EditText etPhoneNum;
+    private PinView pinView;
+    private TextView tvphoneNumberText;
     private String mVerificationId;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
     private FirebaseAuth mAuth;
-
 
     @Override
     protected void onStart() {
@@ -81,44 +73,42 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
-
         layout1 = (LinearLayout) findViewById(R.id.layout1);
         layout2 = (LinearLayout) findViewById(R.id.layout2);
         layout3 = (LinearLayout) findViewById(R.id.layout3);
 
-        submit1 = (Button) findViewById(R.id.submit1);
-        submit2 = (Button) findViewById(R.id.submit2);
-        button3 = (Button) findViewById(R.id.submit3);
+        btnNext = (Button) findViewById(R.id.btnNext);
+        btnContinue = (Button) findViewById(R.id.btnContinue);
+        btnContinue2 = (Button) findViewById(R.id.btnContinue2);
 
-        phoneNum = (EditText) findViewById(R.id.phonenumber);
-        verifyCodeET = (PinView) findViewById(R.id.pinView);
-        phonenumberText = (TextView) findViewById(R.id.phonenumberText);
+        etPhoneNum = (EditText) findViewById(R.id.etPhoneNum);
+        pinView = (PinView) findViewById(R.id.pinView);
+        tvphoneNumberText = (TextView) findViewById(R.id.tvphoneNumberText);
 
         stepView = findViewById(R.id.step_view);
         stepView.setStepsNumber(3);
         stepView.go(0, true);
         layout1.setVisibility(View.VISIBLE);
 
-        submit1.setOnClickListener(new View.OnClickListener() {
+        btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                String phoneNumber = phoneNum.getText().toString();
-                phonenumberText.setText(phoneNumber);
+                String phoneNumber = etPhoneNum.getText().toString();
+                tvphoneNumberText.setText(phoneNumber);
 
                 if (TextUtils.isEmpty(phoneNumber)) {
-                    phoneNum.setError("Enter a Phone Number");
-                    phoneNum.requestFocus();
+                    etPhoneNum.setError("Enter a Phone Number");
+                    etPhoneNum.requestFocus();
                 } else if (phoneNumber.length() < 10) {
-                    phoneNum.setError("Please enter a valid phone");
-                    phoneNum.requestFocus();
+                    etPhoneNum.setError("Please enter a valid phone");
+                    etPhoneNum.requestFocus();
                 } else {
 
                     if (currentStep < stepView.getStepCount() - 1) {
@@ -130,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
                     layout1.setVisibility(View.GONE);
                     layout2.setVisibility(View.VISIBLE);
                     PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                            phoneNumber,        // Phone number to verify
+                            "+91"+phoneNumber,        // Phone number to verify
                             60,                 // Timeout duration
                             TimeUnit.SECONDS,   // Unit of timeout
                             LoginActivity.this,               // Activity (for callback binding)
@@ -160,23 +150,23 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
-        submit2.setOnClickListener(new View.OnClickListener() {
+        btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String verificationCode = verifyCodeET.getText().toString();
+                String verificationCode = pinView.getText().toString();
                 Log.i(TAG, "onClick: "+verificationCode);
                 if (verificationCode.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "Enter verification code", Toast.LENGTH_SHORT).show();
                 } else {
                     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, verificationCode);
-                    //verifyCodeET.setText(verificationCode);
+                    //pinView.setText(verificationCode);
                     signInWithPhoneAuthCredential(credential);
                     Log.i(TAG, "onClick: credential : "+credential);
                 }
             }
         });
 
-        button3.setOnClickListener(new View.OnClickListener() {
+        btnContinue2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (currentStep < stepView.getStepCount() - 1) {

@@ -312,6 +312,7 @@
                     android:background="@color/colorAccent"
                     android:fontFamily="@string/font_H1"
                     android:gravity="center"
+                    android:visibility="gone"
                     android:text="Cash On Delivery"
                     android:textColor="@color/colorWhite"
                     android:textSize="13dp" />

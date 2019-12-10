@@ -15,4 +15,8 @@
     <string name="cardDiscountsTotal">Subscription \nSavings \u0020\u0020\u0020\u0020\u20B9 %1$s</string>
     <string name="cardSavedTotal">Discount\u0020\u0020\u20B9 %1$s</string>
     <string name="howItWorks">Subscribe for discount price and get delivery by next roster </string>
+    <string name="menuDetails">Click here to check your \nOrder details,\nand\nWallet details.</string>
+    <string name="customer">Click here to connect with\n our customer care.</string>
+    <string name="notification">Click here to check \nUPDATES</string>
+    <string name="subscribe">Click here and SUBSCRIBE.</string>
 </resources>

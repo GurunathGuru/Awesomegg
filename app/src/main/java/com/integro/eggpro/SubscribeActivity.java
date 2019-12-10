@@ -104,6 +104,7 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
     private RechargeResponse response;
     private DecimalFormat decimalFormat = new DecimalFormat("0.00");
     private User user;
+
     private ArrayList<CartItem> cart = new ArrayList<>();
     private CreateOrder createOrderCallbackListner = new CreateOrder() {
         @Override
@@ -132,6 +133,7 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
             }
             radioButton = findViewById(radioId);
             if (radioButton.getText().toString().contentEquals(getString(R.string.evr_fourteen))) {
+
                 primaryCalendar.set(Calendar.YEAR, date.getCalendar().get(Calendar.YEAR));
                 primaryCalendar.set(Calendar.MONTH, date.getCalendar().get(Calendar.MONTH));
                 primaryCalendar.set(Calendar.DAY_OF_MONTH, date.getCalendar().get(Calendar.DAY_OF_MONTH));
@@ -159,7 +161,6 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
         }
 
         radioButtons.get(0).setChecked(true);
-
         tvAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,9 +206,11 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
                 if (null != rb && checkedId > -1) {
                     if (rb.getText().toString().contentEquals(getString(R.string.evr_fourteen))) {
                         frequncy = 2;
+                        Log.i(TAG, "onCheckedChanged: " + frequncy);
                         everyFourteenDays();
                     } else {
                         frequncy = 4;
+                        Log.i(TAG, "onCheckedChanged: " + frequncy);
                         everySevenDays();
                     }
                 }
@@ -381,16 +384,16 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
         String uid = user.getUid();
         Log.i(TAG, "getResponseList: " + finalPrice);
         int period = 1;
-        int frequecy = 7;
+        int freq = (frequncy==4) ? 7 : 14;
         Double startDate = (primaryCalendar.getTimeInMillis() / 1000.00);
         int startDateTimeStamp = startDate.intValue();
         String orderType = "Subscriprion";
-        Double orderPrice = finalPrice;
+        Double orderPrice = Double.valueOf(decimalFormat.format(finalPrice)) ;
 
         ApiClient.getClient2().create(ApiService.class).rechargeOrder(
                 getIntent().getIntExtra(ORDER_ID,-1),
                 period,
-                frequecy,
+                freq,
                 startDateTimeStamp,
                 orderPrice,
                 uid
@@ -445,7 +448,7 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
         String uid = user.getUid();
         Log.i(TAG, "getResponseList: " + finalPrice);
         int period = 1;
-        int frequecy = 7;
+        int freq = frequncy==4? 7 :14;
         Double startDate = (primaryCalendar.getTimeInMillis() / 1000.00);
         Log.i(TAG, "getResponseList: "+startDate);
         int startDateTimeStamp = startDate.intValue();
@@ -455,7 +458,7 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
         ApiClient.getClient2().create(ApiService.class).createOrder(
                 uid,
                 period,
-                frequecy,
+                freq,
                 startDateTimeStamp,
                 orderType,
                 orderPrice,
@@ -488,7 +491,6 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
 
     public void procedeWithPayment() {
         Checkout checkout = new Checkout();
-        checkout.setImage(R.mipmap.ic_launcher);
         final Activity activity = SubscribeActivity.this;
         finalPrice = finalPrice * 100;
         int totalinpaisa = finalPrice.intValue();

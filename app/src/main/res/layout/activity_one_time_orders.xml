@@ -263,6 +263,7 @@
                 android:text="Cash On Delivery"
                 android:textColor="@color/colorWhite"
                 android:textSize="13dp"
+                android:visibility="gone"
                 android:layout_marginBottom="10dp"/>
         </LinearLayout>
     </LinearLayout>

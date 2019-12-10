@@ -1,15 +1,24 @@
 package com.integro.eggpro;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -39,6 +49,7 @@ import com.integro.eggpro.utility.viewmodels.CartViewModel;
 import com.integro.eggpro.utility.viewmodels.ProductsViewModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -88,13 +99,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ProductsViewModel productsViewModel;
     private CartViewModel cartViewModel;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         ButterKnife.bind(this);
+        //onCoachMark();
 
+        if (Utils.isFirstTimeNews(MainActivity.this)) {
+            onCoachMark();
+        }
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -122,6 +137,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 tvEmail.setText(user.getEmail());
                 tvPhone.setText(user.getMobile());
                 tvAddress.setText(user.getFloorNo() + "," + user.getFlatNo() + ",\n" + user.getApartmentId());
+                String appartmentName = user.getApartmentId();
+                String[] subtopicArr = appartmentName.split(" ");
+                String topic = "com.integro.eggpro." + TextUtils.join("_", Arrays.asList(subtopicArr));
+
+                FirebaseMessaging.getInstance().subscribeToTopic(topic);
+
             }
         }
         ApiClient.getClient2().create(ApiService.class);
@@ -253,7 +274,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @OnClick(R.id.tvAboutUs)
     public void AboutUs() {
-        Toast.makeText(this, "coming Soon", Toast.LENGTH_SHORT).show();
+        String url = "http://www.awesomegg.com/";
+        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+        builder.setToolbarColor(getResources().getColor(R.color.colorBackground));
+        CustomTabsIntent customTabsIntent = builder.build();
+        customTabsIntent.launchUrl(this, Uri.parse(url));
     }
 
     @OnClick(R.id.tvLogOut)
@@ -325,6 +350,48 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if ((requestCode == REQUEST_CODE) && (resultCode == RESULT_FAILED)) {
             initProducts();
             getCurrentBalance();
+        }
+    }
+
+    public void onCoachMark() {
+        final Dialog dialog = new Dialog(this, android.R.style.Theme_Light);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.coach_mark_master_view);
+        dialog.setCanceledOnTouchOutside(false);
+        //for dismissing anywhere you touch
+        Button masterView = dialog.findViewById(R.id.button);
+        final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
+        masterView.startAnimation(myAnim);
+        masterView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences preferences = getApplicationContext().getSharedPreferences("WELCOME", MODE_PRIVATE);
+                boolean ranBefore = preferences.getBoolean("WELCOME", false);
+                if (!ranBefore) {
+                    // first time
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean("WELCOME", true);
+                    editor.commit();
+                }
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    class MyBounceInterpolator implements android.view.animation.Interpolator {
+        private double mAmplitude = 1;
+        private double mFrequency = 10;
+
+        MyBounceInterpolator(double amplitude, double frequency) {
+            mAmplitude = amplitude;
+            mFrequency = frequency;
+        }
+
+        public float getInterpolation(float time) {
+            return (float) (-1 * Math.pow(Math.E, -time / mAmplitude) *
+                    Math.cos(mFrequency * time) + 1);
         }
     }
 }

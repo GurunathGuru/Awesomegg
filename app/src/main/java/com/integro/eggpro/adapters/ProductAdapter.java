@@ -1,5 +1,6 @@
 package com.integro.eggpro.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -31,14 +33,14 @@ import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHolder> {
 
+    private static final String TAG = "ProductAdapter";
     public SubscribeClickListener clickListener;
     public QuantityChangedListener quantityChangedListener;
-    private static final String TAG = "ProductAdapter";
-    private ProductsViewModel productsViewModel;
-    private CartViewModel cartViewModel;
-    private DecimalFormat decimalFormat=new DecimalFormat("0.00");
     ArrayList<Product> productsList = new ArrayList<>();
     ArrayList<CartItem> cart = new ArrayList<>();
+    private ProductsViewModel productsViewModel;
+    private CartViewModel cartViewModel;
+    private DecimalFormat decimalFormat = new DecimalFormat("0.00");
     private Context context;
 
     public ProductAdapter(Context context) {
@@ -91,19 +93,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, final int i) {
 
         final Product product = productsList.get(i);
-
         myViewHolder.tvName.setText(product.getProdName());
-        myViewHolder.tvPrice.setText("\u20B9 "+(product.getProdSellingPrice()));
-        myViewHolder.tvQuantity.setText(context.getResources().getString(R.string.productQuantity,product.getProdQty()));
-        myViewHolder.tvListingPrice.setText(context.getResources().getString(R.string.productListingPrice,decimalFormat.format((product.getProdListingPrice()))));
-        myViewHolder.itemQty.setNumber(""+product.getItemQty());
-        myViewHolder.itemQty.setRange(0,product.getProdStock());
+        myViewHolder.tvPrice.setText("\u20B9 " + (product.getProdSellingPrice()));
+        myViewHolder.tvQuantity.setText(context.getResources().getString(R.string.productQuantity, product.getProdQty()));
+        myViewHolder.tvListingPrice.setText(context.getResources().getString(R.string.productListingPrice, decimalFormat.format((product.getProdListingPrice()))));
+        myViewHolder.itemQty.setNumber("" + product.getItemQty());
+        myViewHolder.itemQty.setRange(0, product.getProdStock());
         final Double price = Double.valueOf(product.getProdSellingPrice());
 
-        if (product.getProdStock()>0){
+        if (product.getProdStock() > 0) {
             myViewHolder.itemQty.setVisibility(View.VISIBLE);
             myViewHolder.tvOutOfStock.setVisibility(View.GONE);
-        }else {
+        } else {
             myViewHolder.itemQty.setVisibility(View.GONE);
             myViewHolder.tvOutOfStock.setVisibility(View.VISIBLE);
         }
@@ -113,14 +114,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                 .into(myViewHolder.ivImage);
 
         myViewHolder.tvTotalPrice.setText(context.getResources().getString(R.string.itemPrice, decimalFormat.format((product.getProdSellingPrice() * product.getItemQty()))));
-
         myViewHolder.itemQty.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
             @Override
             public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
                 boolean flag = false;
-                for (CartItem item: cart) {
+                for (CartItem item : cart) {
                     if (item.getId() == product.getId()) {
-                        flag =true;
+                        flag = true;
                         break;
                     }
                 }
@@ -130,10 +130,37 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                     cartViewModel.addItem(ParseObjects.toCartItem(product));
                 } else {
                     cartViewModel.updateItem(ParseObjects.toCartItem(product));
-                    if (newValue==0) {
+                    if (newValue == 0) {
                         cartViewModel.removeItem(ParseObjects.toCartItem(product));
                     }
                 }
+            }
+        });
+
+        myViewHolder.cardProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                View view = LayoutInflater.from(context).inflate(R.layout.card_dailog, null);
+                alertDialogBuilder.setView(view);
+                final AlertDialog alertDialog = alertDialogBuilder.create();
+
+                ImageView ivImage= view.findViewById(R.id.ivImage);
+                TextView tvTitle = view.findViewById(R.id.tvName);
+                TextView tvListingPrice = view.findViewById(R.id.tvListingPrice);
+                TextView tvSellingPrice = view.findViewById(R.id.tvSellingPrice);
+                TextView tvDescription = view.findViewById(R.id.tvDescription);
+
+                tvTitle.setText(product.getProdName());
+                tvListingPrice.setText("MRP :\u20B9 " + product.getProdListingPrice());
+                tvSellingPrice.setText("\u20B9 " + product.getProdSellingPrice());
+                tvDescription.setText(product.getProdDescription());
+
+                Glide.with(context)
+                        .load(product.getProductImage())
+                        .into(ivImage);
+
+                alertDialog.show();
             }
         });
     }
@@ -152,6 +179,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         TextView tvQuantity;
         TextView tvListingPrice;
         TextView tvOutOfStock;
+        CardView cardProduct;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -160,9 +188,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             tvPrice = itemView.findViewById(R.id.tvSellingPrice);
             tvTotalPrice = itemView.findViewById(R.id.tvTotalPrice);
             ivImage = itemView.findViewById(R.id.ivImage);
-            tvQuantity=itemView.findViewById(R.id.tvQuantity);
-            tvListingPrice=itemView.findViewById(R.id.tvListingPrice);
-            tvOutOfStock=itemView.findViewById(R.id.tvOutOfStock);
+            tvQuantity = itemView.findViewById(R.id.tvQuantity);
+            tvListingPrice = itemView.findViewById(R.id.tvListingPrice);
+            tvOutOfStock = itemView.findViewById(R.id.tvOutOfStock);
+            cardProduct = itemView.findViewById(R.id.cardProduct);
         }
     }
 }
