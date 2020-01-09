@@ -6,7 +6,7 @@ android {
         applicationId "com.integro.eggpro"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 11
+        versionCode 13
         versionName "1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
