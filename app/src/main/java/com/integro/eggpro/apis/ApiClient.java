@@ -7,7 +7,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    private static final String BASE_URL ="http://www.awesomegg.com/awesomegg/mobileapp/index.php/Android/";
+    private static final String BASE_URL ="http://www.awesomegg.com/app/index.php/Android/";
     public static Retrofit retrofit2=null;
     public static final Retrofit getClient2(){
         if (retrofit2==null) {

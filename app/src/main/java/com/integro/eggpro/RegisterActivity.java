@@ -168,6 +168,7 @@ public class RegisterActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         Log.i(TAG, "onClick: " + name);
                         startActivity(intent);
+                        finish();
                     }
 
                     @Override
