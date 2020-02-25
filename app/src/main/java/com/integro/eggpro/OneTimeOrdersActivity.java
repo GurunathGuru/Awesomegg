@@ -160,10 +160,10 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
 
     @SuppressLint("StringFormatMatches")
     private void setTotalView() {
-        tvDiscountPrice.setText("Subscription \nSavings \u0020\u0020\u0020 \u20B9 0.00");
-        tvSavedPrice.setText(getString(R.string.cardSavedTotal, decimalFormat.format(savedPrice)));
-        tvTotalPrice.setText(getString(R.string.cardTotal, decimalFormat.format(finalPrice)));
-        tvGrandTotal.setText(getString(R.string.cardTotal, decimalFormat.format(total)));
+        tvDiscountPrice.setText("Subscription \nSavings \u0020\u0020\u0020 \u20B9 0.00/ord");
+        tvSavedPrice.setText(getString(R.string.cardSavedTotal, decimalFormat.format(savedPrice))+ "/ord");
+        tvTotalPrice.setText(getString(R.string.net, decimalFormat.format(finalPrice))+ "/ord");
+        tvGrandTotal.setText(getString(R.string.net, decimalFormat.format(total)));
     }
 
     @Override
@@ -194,7 +194,14 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
                         for (int i = 0; i < response.body().size(); i++) {
                             int month = response.body().get(i).getMonth();
                             for (int j = 0; j < response.body().get(i).getDates().length; j++) {
-                                customDates.add(new CustomDate(month, response.body().get(i).getDates()[j]));
+                                CustomDate customDate =new CustomDate(month, response.body().get(i).getDates()[j]);
+                                if (customDate.getCalendar().get(Calendar.DAY_OF_MONTH)==Calendar.getInstance().get(Calendar.DAY_OF_MONTH)&&
+                                        customDate.getCalendar().get(Calendar.MONTH)==Calendar.getInstance().get(Calendar.MONTH)&&
+                                        customDate.getCalendar().get(Calendar.YEAR)==Calendar.getInstance().get(Calendar.YEAR)){
+                                    continue;
+                                }
+                                customDates.add(customDate);
+
                             }
                         }
                         Log.i(TAG, "onResponse: " + response.body());

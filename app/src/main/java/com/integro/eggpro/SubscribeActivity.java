@@ -242,11 +242,11 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
 
     @SuppressLint("StringFormatMatches")
     private void setTotalView() {
-        tvGrandTotal.setText(getString(R.string.cardTotal, decimalFormat.format(total)));
-        tvDiscountPrice.setText(getString(R.string.cardDiscountsTotal, decimalFormat.format(discountTotal)));
-        tvSavedPrice.setText(getString(R.string.cardSavedTotal, decimalFormat.format(savedPrice)));
-        tvTotalPrice.setText(getString(R.string.cardTotal, decimalFormat.format(total - discountTotal) + "/ or"));
-        tvTotalPrice2.setText(getString(R.string.cardTotal, decimalFormat.format(finalPrice) + "/mo"));
+        tvGrandTotal.setText(getString(R.string.total, decimalFormat.format(total)));
+        tvDiscountPrice.setText(getString(R.string.cardDiscountsTotal, decimalFormat.format(discountTotal))+ "/ord");
+        tvSavedPrice.setText( getString(R.string.cardSavedTotal, decimalFormat.format(savedPrice))+ "/ord");
+        tvTotalPrice.setText(getString(R.string.net, decimalFormat.format(total - discountTotal) + "/ord"));
+        tvTotalPrice2.setText(getString(R.string.total, decimalFormat.format(finalPrice) + "/mnt"));
     }
 
     @SuppressLint("WrongConstant")
@@ -319,7 +319,14 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
                         for (int i = 0; i < response.body().size(); i++) {
                             int month = response.body().get(i).getMonth();
                             for (int j = 0; j < response.body().get(i).getDates().length; j++) {
-                                customDates.add(new CustomDate(month, response.body().get(i).getDates()[j]));
+                                CustomDate customDate =new CustomDate(month, response.body().get(i).getDates()[j]);
+                                if (customDate.getCalendar().get(Calendar.DAY_OF_MONTH)==Calendar.getInstance().get(Calendar.DAY_OF_MONTH)&&
+                                        customDate.getCalendar().get(Calendar.MONTH)==Calendar.getInstance().get(Calendar.MONTH)&&
+                                        customDate.getCalendar().get(Calendar.YEAR)==Calendar.getInstance().get(Calendar.YEAR)){
+                                    continue;
+                                }
+                                customDates.add(customDate);
+
                             }
                         }
                         Log.i(TAG, "onResponse: " + response.body());

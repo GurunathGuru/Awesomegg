@@ -55,8 +55,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0sp"
                 android:layout_weight="0.6"
-                android:gravity="end"
                 android:background="@color/colorAccent"
+                android:gravity="end"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
@@ -243,66 +243,75 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="0.9"
-                android:gravity="bottom"
+                android:weightSum="2"
+                android:gravity="center|top"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tvDiscountPrice"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:fontFamily="@font/opensans_bold"
-                    android:gravity="center|start"
-                    android:text=""
-                    android:textColor="@color/colorBlack"
-                    android:textSize="10dp" />
+                    android:layout_height="0dp"
+                    android:layout_weight="1.5"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tvSavedPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:fontFamily="@font/opensans_bold"
-                    android:gravity="center|start"
-                    android:text=""
-                    android:textColor="@color/colorBlack"
-                    android:textSize="10dp" />
+                    <TextView
+                        android:id="@+id/tvDiscountPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15sp"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/opensans_bold"
+                        android:gravity="center|start"
+                        android:text=""
+                        android:textColor="@color/colorBlack"
+                        android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/tvTotalPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:fontFamily="@font/opensans_bold"
-                    android:gravity="center|start"
-                    android:text=""
-                    android:textColor="@color/colorAccent"
-                    android:textSize="14dp" />
+                    <TextView
+                        android:id="@+id/tvSavedPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/opensans_bold"
+                        android:gravity="center|start"
+                        android:text=""
+                        android:textColor="@color/colorBlack"
+                        android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/tvTotalPrice2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:fontFamily="@font/opensans_bold"
-                    android:gravity="center|start"
-                    android:text=""
-                    android:textColor="@color/colorAccent"
-                    android:textSize="14dp" />
+                    <TextView
+                        android:id="@+id/tvTotalPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:fontFamily="@font/opensans_bold"
+                        android:gravity="center|start"
+                        android:text=""
+                        android:textColor="@color/colorAccent"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tvTotalPrice2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:fontFamily="@font/opensans_bold"
+                        android:gravity="center|start"
+                        android:text=""
+                        android:textColor="@color/colorAccent"
+                        android:textSize="15sp" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tvProceedToPay"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
                     android:background="@color/colorAccent"
                     android:fontFamily="@string/font_H1"
                     android:gravity="center"
                     android:text="Pay Farmer"
                     android:textColor="@color/colorWhite"
-                    android:textSize="13dp" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tvCashOnDelivery"
@@ -312,10 +321,10 @@
                     android:background="@color/colorAccent"
                     android:fontFamily="@string/font_H1"
                     android:gravity="center"
-                    android:visibility="gone"
                     android:text="Cash On Delivery"
                     android:textColor="@color/colorWhite"
-                    android:textSize="13dp" />
+                    android:textSize="13dp"
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

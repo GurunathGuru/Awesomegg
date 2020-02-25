@@ -11,7 +11,8 @@
     <string name="productListingPrice">₹%1$s</string>
     <string name="monthTitlePlaceholder">&#xf073;</string>
     <string name="itemPrice">\u20B9 %1$s</string>
-    <string name="cardTotal">Total \u0020\u0020\u20B9 %1$s</string>
+    <string name="net">Net \u0020\u0020\u0020\u0020\u0020\u20B9 %1$s</string>
+    <string name="total">Total \u0020\u0020\u20B9 %1$s</string>
     <string name="cardDiscountsTotal">Subscription \nSavings \u0020\u0020\u0020\u0020\u20B9 %1$s</string>
     <string name="cardSavedTotal">Discount\u0020\u0020\u20B9 %1$s</string>
     <string name="howItWorks">Subscribe for discount price and get delivery by next roster </string>

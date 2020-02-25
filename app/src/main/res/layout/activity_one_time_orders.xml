@@ -49,7 +49,7 @@
                 android:gravity="center|start"
                 android:paddingLeft="15dp"
                 android:text="Confirm The Order"
-                 android:textColor="@color/colorAccent"
+                android:textColor="@color/colorAccent"
                 android:textSize="15dp" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -75,7 +75,7 @@
                     android:background="@drawable/ic_border3"
                     android:gravity="center"
                     android:text="Add Item"
-                     android:textColor="@color/colorBlack"
+                    android:textColor="@color/colorBlack"
                     android:textSize="13dp" />
 
                 <TextView
@@ -107,30 +107,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="0sp"
                 android:layout_weight="0.8"
-                android:padding="2dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="2dp">
 
                 <TextView
                     android:layout_width="0sp"
                     android:layout_height="match_parent"
                     android:layout_weight="1.5"
+                    android:fontFamily="@font/montserrat_bold"
                     android:gravity="center"
                     android:text="One Time Order"
-                    android:fontFamily="@font/montserrat_bold"
-                     android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorAccent"
                     android:textSize="13sp" />
 
                 <EditText
                     android:id="@+id/tvDate"
                     android:layout_width="0sp"
                     android:layout_height="match_parent"
+                    android:layout_margin="1dp"
                     android:layout_weight="0.5"
                     android:background="@drawable/ic_border4"
                     android:focusableInTouchMode="false"
                     android:gravity="center"
-                    android:layout_margin="1dp"
                     android:text="Date"
-                     android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorAccent"
                     android:textSize="13dp" />
             </LinearLayout>
 
@@ -214,57 +214,59 @@
                 android:id="@+id/tvDiscountPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
+                android:fontFamily="@font/opensans_bold"
                 android:gravity="center|start"
-                android:text=""
                 android:paddingLeft="130dp"
+                android:text=""
                 android:textColor="@color/colorBlack"
-                android:textSize="10dp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tvSavedPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/opensans_bold"
                 android:gravity="center|start"
-                android:text=""
                 android:paddingLeft="130dp"
+                android:text=""
                 android:textColor="@color/colorBlack"
-                android:textSize="10dp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tvTotalPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:gravity="center|start"
-                android:text=""
                 android:fontFamily="@font/montserrat_bold"
+                android:gravity="center|start"
                 android:paddingLeft="130dp"
-                 android:textColor="@color/colorAccent"
+                android:text=""
+                android:textColor="@color/colorAccent"
                 android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/tvProceedToPay"
                 android:layout_width="match_parent"
-                android:layout_height="30sp"
+                android:layout_height="50sp"
                 android:background="@color/colorAccent"
                 android:fontFamily="@string/font_H1"
                 android:gravity="center"
                 android:text="Pay Farmer"
                 android:textColor="@color/colorWhite"
-                android:textSize="13dp" />
+                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/tvCashOnDelivery"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
                 android:background="@color/colorAccent"
                 android:fontFamily="@string/font_H1"
                 android:gravity="center"
                 android:text="Cash On Delivery"
                 android:textColor="@color/colorWhite"
                 android:textSize="13dp"
-                android:visibility="gone"
-                android:layout_marginBottom="10dp"/>
+                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
