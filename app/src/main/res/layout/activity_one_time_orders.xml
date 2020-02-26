@@ -206,42 +206,48 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:gravity="center|start|bottom"
-            android:orientation="vertical"
-            android:weightSum="5">
+            android:gravity="center|bottom"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvDiscountPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:fontFamily="@font/opensans_bold"
-                android:gravity="center|start"
-                android:paddingLeft="130dp"
-                android:text=""
-                android:textColor="@color/colorBlack"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/tvSavedPrice"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/opensans_bold"
-                android:gravity="center|start"
-                android:paddingLeft="130dp"
-                android:text=""
-                android:textColor="@color/colorBlack"
-                android:textSize="15sp" />
+                android:gravity="center|bottom"
+                android:padding="15sp"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvTotalPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:fontFamily="@font/montserrat_bold"
-                android:gravity="center|start"
-                android:paddingLeft="130dp"
-                android:text=""
-                android:textColor="@color/colorAccent"
-                android:textSize="15dp" />
+                <TextView
+                    android:id="@+id/tvDiscountPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/opensans_bold"
+                    android:gravity="center|start"
+                    android:text="saving"
+                    android:paddingBottom="15sp"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tvSavedPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/opensans_bold"
+                    android:gravity="center|start"
+                    android:text="discount"
+                    android:paddingBottom="10sp"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tvTotalPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:gravity="center|start"
+                    android:text="total"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15dp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tvProceedToPay"
@@ -253,20 +259,6 @@
                 android:text="Pay Farmer"
                 android:textColor="@color/colorWhite"
                 android:textSize="15dp" />
-
-            <TextView
-                android:id="@+id/tvCashOnDelivery"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="10dp"
-                android:background="@color/colorAccent"
-                android:fontFamily="@string/font_H1"
-                android:gravity="center"
-                android:text="Cash On Delivery"
-                android:textColor="@color/colorWhite"
-                android:textSize="13dp"
-                android:visibility="gone" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

@@ -234,10 +234,7 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
     public void makePayment() {
         getResponseList(createOrderCallbackListner);
     }
-    @OnClick(R.id.tvCashOnDelivery)
-    public void CashOnDelivery() {
-        getResponseList2();
-    }
+
     public void onPaymentSuccess(String paymentId) {
         Toast.makeText(this, "Payment Success " + paymentId, Toast.LENGTH_SHORT).show();
         finalPrice = finalPrice / 100;
