@@ -17,17 +17,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.integro.eggpro.adapters.CustomCalenderAdapter;
 import com.integro.eggpro.adapters.SubscribeAdapter;
 import com.integro.eggpro.apis.ApiClient;
 import com.integro.eggpro.apis.ApiService;
 import com.integro.eggpro.interfaces.CreateOrder;
-import com.integro.eggpro.interfaces.OnDateSelected;
-import com.integro.eggpro.model.CustomDate;
 import com.integro.eggpro.model.RechargeResponse;
 import com.integro.eggpro.utility.entity.CartItem;
 import com.integro.eggpro.utility.viewmodels.CartViewModel;
 import com.razorpay.Checkout;
+import com.razorpay.PaymentResultListener;
 
 import org.json.JSONObject;
 
@@ -44,28 +42,20 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OneTimeOrdersActivity extends AppCompatActivity {
+public class OneTimeOrdersActivity extends AppCompatActivity implements PaymentResultListener {
 
     private static final String TAG = "OneTimeOrdersActivity";
     private TextView tvGrandTotal;
     private TextView tvDiscountPrice;
     private TextView tvTotalPrice;
     private TextView tvSavedPrice;
-    private Calendar primaryCalendar = Calendar.getInstance();
+    private EditText tvDate;
     private Double total = null;
     private Double savedPrice = null;
     private Double finalPrice = null;
     private RechargeResponse response;
 
-    private CustomCalenderAdapter customCalenderAdapter = new CustomCalenderAdapter();
     private DecimalFormat decimalFormat = new DecimalFormat("0.00");
-    private OnDateSelected onDateSelected = new OnDateSelected() {
-        @SuppressLint("SimpleDateFormat")
-        @Override
-        public void onDateSelected(CustomDate date) {
-            primaryCalendar = (Calendar) date.getCalendar().clone();
-        }
-    };
     private CreateOrder createOrderCallbackListner = new CreateOrder() {
         @Override
         public void onOrderCreated(RechargeResponse localResponse) {
@@ -81,12 +71,10 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
     private ArrayList<Integer> productId;
     private ArrayList<Double> itemPrice;
     private ArrayList<Integer> quantity;
+
     private int size;
     private Map<String, String> params;
     private Calendar deliveryDate;
-
-    public OneTimeOrdersActivity() {
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,13 +96,17 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
         });
 
         deliveryDate = Calendar.getInstance();
-        deliveryDate.add(Calendar.DAY_OF_MONTH, 1);
-
-        EditText tvDate = findViewById(R.id.tvDate);
+        deliveryDate.add(Calendar.DAY_OF_MONTH,1);
+        tvDate = findViewById(R.id.tvDate);
         tvDate.setText(getString(R.string.monthPlaceholder, deliveryDate.get(Calendar.DAY_OF_MONTH),
                 deliveryDate.get(Calendar.MONTH) + 1, deliveryDate.get(Calendar.YEAR)));
 
+        //Cart Recycler View
+        RecyclerView rvOneTime = findViewById(R.id.rvOneTime);
         SubscribeAdapter adapter = new SubscribeAdapter(this);
+        rvOneTime.setLayoutManager(new LinearLayoutManager(this));
+        rvOneTime.setAdapter(adapter);
+
         CartViewModel cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
         cartViewModel.getCart().observe(this, new Observer<List<CartItem>>() {
             @Override
@@ -155,10 +147,6 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
         finish();
     }
 
-    public void getDate(View view) {
-        Toast.makeText(this, "" + customCalenderAdapter.getSelectedDate().getCalendar().getTime(), Toast.LENGTH_SHORT).show();
-    }
-
     @OnClick(R.id.tvProceedToPay)
     public void makePayment() {
         getResponseList(createOrderCallbackListner);
@@ -176,8 +164,6 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
     }
 
     private void getResponseList(CreateOrder callback) {
-
-
         if (response != null) {
             procedeWithPayment();
             return;
@@ -226,55 +212,6 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
         });
     }
 
-    private void getResponseList2() {
-        if (response != null) {
-            procedeWithPayment();
-            return;
-        }
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String uid = user.getUid();
-        Log.i(TAG, "getResponseList: " + finalPrice);
-        int period = 0;
-        int frequecy = 1;
-        Double startDate = (primaryCalendar.getTimeInMillis() / 1000.00);
-        Log.i(TAG, "getResponseList: " + startDate);
-        int startDateTimeStamp = startDate.intValue();
-        String orderType = "One Time Cash on Delivery";
-        Double orderPrice = finalPrice;
-
-        ApiClient.getClient2().create(ApiService.class).cashOnDelivery(
-                uid,
-                period,
-                frequecy,
-                startDateTimeStamp,
-                orderType,
-                orderPrice,
-                size,
-                params
-        ).enqueue(new Callback<Integer>() {
-            @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
-                Log.i(TAG, "onResponse: " + response.body());
-
-                if (!response.isSuccessful()) {
-                    Toast.makeText(OneTimeOrdersActivity.this, "Something Not right is success", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (response.body() == null) {
-                    Toast.makeText(OneTimeOrdersActivity.this, "Something Not right body null", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                setResult(RESULT_OK);
-                finish();
-            }
-
-            @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
-                Toast.makeText(OneTimeOrdersActivity.this, "Something Not right" + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     public void procedeWithPayment() {
         Checkout checkout = new Checkout();
         checkout.setImage(R.mipmap.ic_launcher);
@@ -283,8 +220,8 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
         int totalinpaisa = finalPrice.intValue();
         try {
             JSONObject options = new JSONObject();
-            options.put("name", "AWESOMEGG");
-            options.put("description", "Reference No. " + response.getId());
+            options.put("name", "Integro Infotech");
+            options.put("description", "Reference No. #123456");
             options.put("order_id", response.getIpgOrderId());
             options.put("currency", "INR");
             options.put("amount", totalinpaisa);
