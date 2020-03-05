@@ -13,21 +13,6 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/first"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorAccent">
-
-            <com.shuhart.stepview.StepView
-                android:id="@+id/step_view"
-                android:layout_width="209dp"
-                android:layout_height="37dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:padding="16dp" />
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/layout1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

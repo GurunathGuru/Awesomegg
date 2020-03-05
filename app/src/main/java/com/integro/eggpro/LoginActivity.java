@@ -30,7 +30,6 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.integro.eggpro.apis.ApiClient;
 import com.integro.eggpro.apis.ApiService;
 import com.integro.eggpro.model.User;
-import com.shuhart.stepview.StepView;
 
 import java.util.concurrent.TimeUnit;
 
@@ -45,20 +44,12 @@ import static com.integro.eggpro.constants.GenralConstants.PREFERENCE_PRIVATE;
 
 public class LoginActivity extends AppCompatActivity {
 
-   /* private EditText etMobilNumber;
-    private TextView tvContinue;*/
-
     private static final String TAG = "FirebasePhoneNumAuth";
     LinearLayout layout1, layout2, layout3;
-    StepView stepView;
-    private int currentStep = 0;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
-    private Button btnNext;
-    private Button btnContinue;
-    private Button btnContinue2;
     private EditText etPhoneNum;
     private PinView pinView;
-    private TextView tvphoneNumberText;
+    private TextView tvPhoneNumberText;
     private String mVerificationId;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
     private FirebaseAuth mAuth;
@@ -79,29 +70,24 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
-        layout1 = (LinearLayout) findViewById(R.id.layout1);
-        layout2 = (LinearLayout) findViewById(R.id.layout2);
-        layout3 = (LinearLayout) findViewById(R.id.layout3);
+        layout1 =  findViewById(R.id.layout1);
+        layout2 =  findViewById(R.id.layout2);
+        layout3 =  findViewById(R.id.layout3);
 
-        btnNext = (Button) findViewById(R.id.btnNext);
-        btnContinue = (Button) findViewById(R.id.btnContinue);
-        btnContinue2 = (Button) findViewById(R.id.btnContinue2);
+        Button btnNext =  findViewById(R.id.btnNext);
+        Button btnContinue =  findViewById(R.id.btnContinue);
+        Button btnContinue2 =  findViewById(R.id.btnContinue2);
 
-        etPhoneNum = (EditText) findViewById(R.id.etPhoneNum);
-        pinView = (PinView) findViewById(R.id.pinView);
-        tvphoneNumberText = (TextView) findViewById(R.id.tvphoneNumberText);
-
-        stepView = findViewById(R.id.step_view);
-        stepView.setStepsNumber(3);
-        stepView.go(0, true);
+        etPhoneNum =  findViewById(R.id.etPhoneNum);
+        pinView =  findViewById(R.id.pinView);
+        tvPhoneNumberText = findViewById(R.id.tvphoneNumberText);
         layout1.setVisibility(View.VISIBLE);
-
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 String phoneNumber = etPhoneNum.getText().toString();
-                tvphoneNumberText.setText(phoneNumber);
+                tvPhoneNumberText.setText(phoneNumber);
 
                 if (TextUtils.isEmpty(phoneNumber)) {
                     etPhoneNum.setError("Enter a Phone Number");
@@ -110,13 +96,6 @@ public class LoginActivity extends AppCompatActivity {
                     etPhoneNum.setError("Please enter a valid phone");
                     etPhoneNum.requestFocus();
                 } else {
-
-                    if (currentStep < stepView.getStepCount() - 1) {
-                        currentStep++;
-                        stepView.go(currentStep, true);
-                    } else {
-                        stepView.done(true);
-                    }
                     layout1.setVisibility(View.GONE);
                     layout2.setVisibility(View.VISIBLE);
                     PhoneAuthProvider.getInstance().verifyPhoneNumber(
@@ -159,7 +138,6 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Enter verification code", Toast.LENGTH_SHORT).show();
                 } else {
                     PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, verificationCode);
-                    //pinView.setText(verificationCode);
                     signInWithPhoneAuthCredential(credential);
                     Log.i(TAG, "onClick: credential : "+credential);
                 }
@@ -169,13 +147,6 @@ public class LoginActivity extends AppCompatActivity {
         btnContinue2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (currentStep < stepView.getStepCount() - 1) {
-                    currentStep++;
-                    stepView.go(currentStep, true);
-                } else {
-                    stepView.done(true);
-                }
-
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -198,17 +169,10 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            if (currentStep < stepView.getStepCount() - 1) {
-                                currentStep++;
-                                stepView.go(currentStep, true);
-                            } else {
-                                stepView.done(true);
-                            }
                             checkIfRegistered();
                             layout1.setVisibility(View.GONE);
                             layout2.setVisibility(View.GONE);
                             layout3.setVisibility(View.VISIBLE);
-                            // ...
                         } else {
                             Toast.makeText(LoginActivity.this, "Something wrong", Toast.LENGTH_SHORT).show();
                             Log.w(TAG, "signInWithCredential:failure", task.getException());

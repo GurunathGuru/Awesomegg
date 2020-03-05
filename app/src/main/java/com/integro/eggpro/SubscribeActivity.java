@@ -372,16 +372,6 @@ public class SubscribeActivity extends AppCompatActivity implements PaymentResul
             Toast.makeText(this, "Not selected any option", Toast.LENGTH_SHORT).show();
         }
     }
-
-   /* @OnClick(R.id.tvCashOnDelivery)
-    public void CashOnDelivery() {
-        if (radioButtons.get(0).isChecked() || radioButtons.get(1).isChecked()) {
-            getResponseList2();
-        } else {
-            Toast.makeText(this, "Not selected any option", Toast.LENGTH_SHORT).show();
-        }
-    }*/
-
     private void rechargeOrder(CreateOrder callback) {
         if (response != null) {
             procedeWithPayment();

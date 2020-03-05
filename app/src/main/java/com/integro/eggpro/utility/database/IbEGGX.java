@@ -16,7 +16,8 @@ import com.integro.eggpro.utility.entity.Product;
 
 @Database(
         entities = {CartItem.class, Product.class},
-        version = 1
+        version = 1,
+        exportSchema = false
 )
 public abstract class IbEGGX extends RoomDatabase {
 

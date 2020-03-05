@@ -45,7 +45,6 @@ public class OtpActivity extends AppCompatActivity {
     private String mVerificationId;
     private PinView pinView;
     private FirebaseAuth mAuth;
-    private TextView tvSignIn;
     private String mobile ="";
 
     @BindView(R.id.tvResendOTP)
@@ -84,7 +83,7 @@ public class OtpActivity extends AppCompatActivity {
         mobile = intent.getStringExtra("mobile");
         sendVerificationCode(mobile);
 
-        tvSignIn=findViewById(R.id.tvSignIn);
+        TextView tvSignIn = findViewById(R.id.tvSignIn);
         tvSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

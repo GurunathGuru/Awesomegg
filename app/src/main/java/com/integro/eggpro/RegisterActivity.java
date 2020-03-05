@@ -50,7 +50,6 @@ public class RegisterActivity extends AppCompatActivity {
     EditText etFlatNo;
 
     ArrayList<Apartments> apartmentsArrayList;
-    ArrayList<User> userArrayList;
     SpinnerDialog spinnerDialog;
     ApiService apiService;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

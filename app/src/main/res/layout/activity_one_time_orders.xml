@@ -116,7 +116,7 @@
                     android:layout_weight="1.5"
                     android:fontFamily="@font/montserrat_bold"
                     android:gravity="center"
-                    android:text="One Time Order"
+                    android:text="Delivery Date"
                     android:textColor="@color/colorAccent"
                     android:textSize="13sp" />
 
@@ -155,36 +155,24 @@
                         android:gravity="center"
                         android:orientation="vertical"
                         android:weightSum="2">
-
-                        <TextView
-                            android:id="@+id/monthName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="month"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="13sp" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/fontawesome_webfont"
-                            android:gravity="center"
-                            android:text="@string/monthTitlePlaceholder"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="25sp"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
                     </LinearLayout>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvCalender"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_weight="1.2"
-                        android:orientation="horizontal"
-                        tools:listitem="@layout/layout_date" />
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/fontawesome_webfont"
+                            android:gravity="center"
+                            android:text="Order delivery expected tomorrow"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="20sp"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </RelativeLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -213,8 +201,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center|bottom"
-                android:padding="15sp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="15sp">
 
                 <TextView
                     android:id="@+id/tvDiscountPrice"
@@ -222,8 +210,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/opensans_bold"
                     android:gravity="center|start"
-                    android:text="saving"
                     android:paddingBottom="15sp"
+                    android:text="saving"
                     android:textColor="@color/colorBlack"
                     android:textSize="15sp" />
 
@@ -233,8 +221,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/opensans_bold"
                     android:gravity="center|start"
-                    android:text="discount"
                     android:paddingBottom="10sp"
+                    android:text="discount"
                     android:textColor="@color/colorBlack"
                     android:textSize="15sp" />
 
@@ -254,9 +242,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="50sp"
                 android:background="@color/colorAccent"
-                android:fontFamily="@string/font_H1"
                 android:gravity="center"
                 android:text="Pay Farmer"
+                android:fontFamily="@font/montserrat_bold"
                 android:textColor="@color/colorWhite"
                 android:textSize="15dp" />
         </LinearLayout>

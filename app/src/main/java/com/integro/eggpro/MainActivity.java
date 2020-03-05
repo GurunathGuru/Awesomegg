@@ -94,8 +94,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser firebaseUser = mAuth.getCurrentUser();
-    private ProductAdapter productAdapter;
-    private User user;
     private ProductsViewModel productsViewModel;
     private CartViewModel cartViewModel;
 
@@ -131,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (getIntent().hasExtra(ARG_USER_DETAILS)) {
             Bundle bundle = getIntent().getBundleExtra(ARG_USER_DETAILS);
-            user = (User) bundle.getSerializable(ARG_USER_DETAILS);
+            User user = (User) bundle.getSerializable(ARG_USER_DETAILS);
             if (bundle != null) {
                 tvName.setText(user.getName().toUpperCase());
                 tvEmail.setText(user.getEmail());
@@ -147,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         ApiClient.getClient2().create(ApiService.class);
         rvItems.setLayoutManager(new LinearLayoutManager(this));
-        productAdapter = new ProductAdapter(this);
+        ProductAdapter productAdapter = new ProductAdapter(this);
         rvItems.setAdapter(productAdapter);
 
         initProducts();

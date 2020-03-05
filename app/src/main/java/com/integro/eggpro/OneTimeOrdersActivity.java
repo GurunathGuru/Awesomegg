@@ -23,9 +23,7 @@ import com.integro.eggpro.apis.ApiClient;
 import com.integro.eggpro.apis.ApiService;
 import com.integro.eggpro.interfaces.CreateOrder;
 import com.integro.eggpro.interfaces.OnDateSelected;
-import com.integro.eggpro.model.CustomCalender;
 import com.integro.eggpro.model.CustomDate;
-import com.integro.eggpro.model.Order;
 import com.integro.eggpro.model.RechargeResponse;
 import com.integro.eggpro.utility.entity.CartItem;
 import com.integro.eggpro.utility.viewmodels.CartViewModel;
@@ -34,7 +32,6 @@ import com.razorpay.Checkout;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -50,27 +47,23 @@ import retrofit2.Response;
 public class OneTimeOrdersActivity extends AppCompatActivity {
 
     private static final String TAG = "OneTimeOrdersActivity";
-    private TextView tvGrandTotal, tvDiscountPrice, tvTotalPrice, tvSavedPrice, tvAddItem;
-    private RecyclerView rvOneTime;
-    private TextView monthView, tvProceedToPay;
-    private EditText tvDate;
-    private RecyclerView recyclerView;
+    private TextView tvGrandTotal;
+    private TextView tvDiscountPrice;
+    private TextView tvTotalPrice;
+    private TextView tvSavedPrice;
     private Calendar primaryCalendar = Calendar.getInstance();
     private Double total = null;
     private Double savedPrice = null;
     private Double finalPrice = null;
     private RechargeResponse response;
 
-    private CartViewModel cartViewModel;
     private CustomCalenderAdapter customCalenderAdapter = new CustomCalenderAdapter();
-    private SubscribeAdapter adapter;
     private DecimalFormat decimalFormat = new DecimalFormat("0.00");
     private OnDateSelected onDateSelected = new OnDateSelected() {
+        @SuppressLint("SimpleDateFormat")
         @Override
         public void onDateSelected(CustomDate date) {
-            monthView.setText(new SimpleDateFormat("MMM").format(date.getCalendar().getTime()));
             primaryCalendar = (Calendar) date.getCalendar().clone();
-            initializeCalendar();
         }
     };
     private CreateOrder createOrderCallbackListner = new CreateOrder() {
@@ -90,6 +83,10 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
     private ArrayList<Integer> quantity;
     private int size;
     private Map<String, String> params;
+    private Calendar deliveryDate;
+
+    public OneTimeOrdersActivity() {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +98,7 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
         tvSavedPrice = findViewById(R.id.tvSavedPrice);
         tvTotalPrice = findViewById(R.id.tvTotalPrice);
         tvGrandTotal = findViewById(R.id.tvGrandTotal);
-        tvAddItem = findViewById(R.id.tvAddItem);
+        TextView tvAddItem = findViewById(R.id.tvAddItem);
 
         tvAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,21 +107,15 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
             }
         });
 
-        tvDate = findViewById(R.id.tvDate);
-        rvOneTime = findViewById(R.id.rvOneTime);
-        adapter = new SubscribeAdapter(this);
-        rvOneTime.setLayoutManager(new LinearLayoutManager(this));
-        rvOneTime.setAdapter(adapter);
-        recyclerView = findViewById(R.id.rvCalender);
-        monthView = findViewById(R.id.monthName);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(customCalenderAdapter);
-        customCalenderAdapter.setOnDateSelected(onDateSelected);
-        loadDates();
+        deliveryDate = Calendar.getInstance();
+        deliveryDate.add(Calendar.DAY_OF_MONTH, 1);
 
-        cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
+        EditText tvDate = findViewById(R.id.tvDate);
+        tvDate.setText(getString(R.string.monthPlaceholder, deliveryDate.get(Calendar.DAY_OF_MONTH),
+                deliveryDate.get(Calendar.MONTH) + 1, deliveryDate.get(Calendar.YEAR)));
+
+        SubscribeAdapter adapter = new SubscribeAdapter(this);
+        CartViewModel cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
         cartViewModel.getCart().observe(this, new Observer<List<CartItem>>() {
             @Override
             public void onChanged(List<CartItem> cartItems) {
@@ -150,19 +141,11 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
         });
     }
 
-    private Calendar initializeCalendar() {
-        Calendar cal = Calendar.getInstance();
-        cal = (Calendar) primaryCalendar.clone();
-        tvDate.setText(getString(R.string.monthPlaceholder, cal.get(Calendar.DAY_OF_MONTH),
-                cal.get(Calendar.MONTH) + 1, cal.get(Calendar.YEAR)));
-        return cal;
-    }
-
     @SuppressLint("StringFormatMatches")
     private void setTotalView() {
         tvDiscountPrice.setText("Subscription \nSavings \u0020\u0020\u0020 \u20B9 0.00/ord");
-        tvSavedPrice.setText(getString(R.string.cardSavedTotal, decimalFormat.format(savedPrice))+ "/ord");
-        tvTotalPrice.setText(getString(R.string.net, decimalFormat.format(finalPrice))+ "/ord");
+        tvSavedPrice.setText(getString(R.string.cardSavedTotal, decimalFormat.format(savedPrice)) + "/ord");
+        tvTotalPrice.setText(getString(R.string.net, decimalFormat.format(finalPrice)) + "/ord");
         tvGrandTotal.setText(getString(R.string.net, decimalFormat.format(total)));
     }
 
@@ -170,60 +153,6 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-    }
-
-    private void loadDates() {
-        ApiClient.getClient2()
-                .create(ApiService.class)
-                .getCalender("Prestige Royale Gardens")
-                .enqueue(new Callback<ArrayList<CustomCalender>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<CustomCalender>> call, Response<ArrayList<CustomCalender>> response) {
-                        Log.i(TAG, "onResponse: " + response.body());
-                        if (!response.isSuccessful()) {
-                            Log.i(TAG, "onResponse: " + response.body());
-                            Toast.makeText(OneTimeOrdersActivity.this, "Something not right", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-
-                        if (response.body() == null) {
-                            Toast.makeText(OneTimeOrdersActivity.this, "Something not right", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        ArrayList<CustomDate> customDates = new ArrayList<>();
-                        for (int i = 0; i < response.body().size(); i++) {
-                            int month = response.body().get(i).getMonth();
-                            for (int j = 0; j < response.body().get(i).getDates().length; j++) {
-                                CustomDate customDate =new CustomDate(month, response.body().get(i).getDates()[j]);
-                                if (customDate.getCalendar().get(Calendar.DAY_OF_MONTH)==Calendar.getInstance().get(Calendar.DAY_OF_MONTH)&&
-                                        customDate.getCalendar().get(Calendar.MONTH)==Calendar.getInstance().get(Calendar.MONTH)&&
-                                        customDate.getCalendar().get(Calendar.YEAR)==Calendar.getInstance().get(Calendar.YEAR)){
-                                    continue;
-                                }
-                                customDates.add(customDate);
-
-                            }
-                        }
-                        Log.i(TAG, "onResponse: " + response.body());
-
-                        customCalenderAdapter.setCustomDates(customDates);
-                        customCalenderAdapter.initialize();
-
-                        if (customCalenderAdapter.getFirstDate() != null) {
-                            primaryCalendar = (Calendar) customCalenderAdapter.getFirstDate().getCalendar().clone();
-                            initializeCalendar();
-                        } else {
-                            primaryCalendar = Calendar.getInstance();
-                            initializeCalendar();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<CustomCalender>> call, Throwable t) {
-                        Log.i(TAG, "onFailure: " + t.toString());
-                        Toast.makeText(OneTimeOrdersActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
     }
 
     public void getDate(View view) {
@@ -247,6 +176,8 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
     }
 
     private void getResponseList(CreateOrder callback) {
+
+
         if (response != null) {
             procedeWithPayment();
             return;
@@ -257,7 +188,7 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
         int period = 0;
         int frequecy = 1;
 
-        Double startDate = (primaryCalendar.getTimeInMillis() / 1000.00);
+        Double startDate = (deliveryDate.getTimeInMillis() / 1000.00);
         int startDateTimeStamp = startDate.intValue();
         String orderType = "One Time Trial";
         Double orderPrice = finalPrice;
@@ -306,7 +237,7 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
         int period = 0;
         int frequecy = 1;
         Double startDate = (primaryCalendar.getTimeInMillis() / 1000.00);
-        Log.i(TAG, "getResponseList: "+startDate);
+        Log.i(TAG, "getResponseList: " + startDate);
         int startDateTimeStamp = startDate.intValue();
         String orderType = "One Time Cash on Delivery";
         Double orderPrice = finalPrice;
@@ -352,8 +283,8 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
         int totalinpaisa = finalPrice.intValue();
         try {
             JSONObject options = new JSONObject();
-            options.put("name", "Integro Infotech");
-            options.put("description", "Reference No. #123456");
+            options.put("name", "AWESOMEGG");
+            options.put("description", "Reference No. " + response.getId());
             options.put("order_id", response.getIpgOrderId());
             options.put("currency", "INR");
             options.put("amount", totalinpaisa);
@@ -383,10 +314,11 @@ public class OneTimeOrdersActivity extends AppCompatActivity {
                         setResult(RESULT_OK);
                         finish();
                     }
+
                     @Override
                     public void onFailure(Call<Integer> call, Throwable t) {
-                        Toast.makeText(OneTimeOrdersActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.i(TAG, "onFailure: "+t.toString());
+                        Toast.makeText(OneTimeOrdersActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.i(TAG, "onFailure: " + t.toString());
                     }
                 });
     }
