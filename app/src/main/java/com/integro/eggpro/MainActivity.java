@@ -43,6 +43,7 @@ import com.integro.eggpro.adapters.ProductAdapter;
 import com.integro.eggpro.apis.ApiClient;
 import com.integro.eggpro.apis.ApiService;
 import com.integro.eggpro.model.Products;
+import com.integro.eggpro.model.Recipes;
 import com.integro.eggpro.model.User;
 import com.integro.eggpro.utility.entity.Product;
 import com.integro.eggpro.utility.viewmodels.CartViewModel;
@@ -242,6 +243,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent oneTimeOrderIntent = new Intent(MainActivity.this, OneTimeOrdersActivity.class);
         startActivityForResult(oneTimeOrderIntent, REQUEST_CODE);
     }
+
+
+    @OnClick(R.id.tvRecipe)
+    public void getRecipe() {
+        Intent intent = new Intent(getApplicationContext(), RecipesActivity.class);
+        startActivity(intent);
+    }
+
 
     @OnClick(R.id.tvMyOrders)
     public void getMyOders() {

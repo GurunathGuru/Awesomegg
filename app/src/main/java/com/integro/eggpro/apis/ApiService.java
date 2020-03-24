@@ -1,5 +1,6 @@
 package com.integro.eggpro.apis;
 
+import com.google.android.gms.common.internal.safeparcel.SafeParcelable;
 import com.integro.eggpro.model.Apartments;
 import com.integro.eggpro.model.CustomCalender;
 import com.integro.eggpro.model.DeliveryStatus;
@@ -7,6 +8,7 @@ import com.integro.eggpro.model.MyOrderList;
 import com.integro.eggpro.model.Order;
 import com.integro.eggpro.model.Products;
 import com.integro.eggpro.model.RechargeResponse;
+import com.integro.eggpro.model.Recipes;
 import com.integro.eggpro.model.User;
 import com.integro.eggpro.model.WalletStatement;
 
@@ -130,4 +132,7 @@ public interface ApiService {
     Call<ArrayList<DeliveryStatus>> getDeliveryStatus(
             @Field("uid") String uid,
             @Field("orderId")String orderId );
+
+    @GET("getRecipes")
+    Call<ArrayList<Recipes>> getRecipe();
 }
