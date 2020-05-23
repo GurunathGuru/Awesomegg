@@ -42,7 +42,7 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        isInternetConnection();
+        //isInternetConnection();
         messagingService = new MyFirebaseMessagingService();
 
         SharedPreferences prefs = getSharedPreferences(PREFERENCE, PREFERENCE_PRIVATE);
@@ -95,7 +95,7 @@ public class WelcomeActivity extends AppCompatActivity {
         }, 1000);
     }
 
-    public boolean isInternetConnection() {
+    /*public boolean isInternetConnection() {
         boolean connected = false;
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
@@ -107,5 +107,5 @@ public class WelcomeActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please turn on your internet/wifi connection", Toast.LENGTH_LONG).show();
         }
         return connected;
-    }
+    }*/
 }

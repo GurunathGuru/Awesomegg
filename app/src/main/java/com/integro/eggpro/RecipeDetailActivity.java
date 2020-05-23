@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
-
 import com.github.demono.AutoScrollViewPager;
 import com.integro.eggpro.adapters.RecipesImagesAdapter;
 import com.integro.eggpro.apis.ApiClient;
@@ -21,7 +20,6 @@ import retrofit2.Response;
 public class RecipeDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "RecipeDetailActivity";
-
     String itemId;
     AutoScrollViewPager autoScrollViewPager;
     TextView tvTitle;
@@ -60,10 +58,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
     }
 
     public void getRecipeMethod() {
-        Call<ArrayList<Recipes>> recipe = ApiClient.getClient2().create(ApiService.class).getRecipe(itemId);
-        recipe.enqueue(new Callback<ArrayList<Recipes>>() {
+        Call<Recipes> recipe = ApiClient.getClient2().create(ApiService.class).getRecipe(itemId);
+        recipe.enqueue(new Callback<Recipes>() {
             @Override
-            public void onResponse(Call<ArrayList<Recipes>> call, Response<ArrayList<Recipes>> response) {
+            public void onResponse(Call<Recipes> call, Response<Recipes> response) {
                 if (!response.isSuccessful()) {
                     Log.i(TAG, "onResponse: fail");
                     return;
@@ -72,7 +70,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
                     Log.i(TAG, "onResponse: null");
                     return;
                 }
-
                 recipesArrayList = new ArrayList<>(response.body().getImagesList());
                 adapter = new RecipesImagesAdapter(getApplicationContext(), recipesArrayList);
                 viewPager.setAdapter(adapter);
@@ -80,10 +77,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ArrayList<Recipes>> call, Throwable t) {
+            public void onFailure(Call<Recipes> call, Throwable t) {
 
             }
         });
     }
-
 }

@@ -18,7 +18,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.viewpager.widget.ViewPager
+                <com.github.demono.AutoScrollViewPager
                     android:id="@+id/vpImages"
                     android:layout_width="match_parent"
                     android:layout_height="300sp"

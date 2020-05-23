@@ -36,7 +36,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final Notifications notifications=notificationsArrayList.get(position);
 
-        Glide.with(context).load(notifications.getImg()).into(holder.ivImage);
+        Glide.with(context)
+                .load(notifications.getImg())
+                .into(holder.ivImage);
 
         holder.tvTitle.setText(notifications.getTitle());
         holder.tvDescription.setText(notifications.getMessage());

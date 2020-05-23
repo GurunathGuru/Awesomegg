@@ -41,7 +41,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.MyViewHold
         Recipes recipes=recipesArrayList.get(position);
 
         Glide.with(context)
-                .load("http://www.awesomegg.com/app/uploads/"+recipes.getImagesList()[0])
+                .load("http://www.awesomegg.com/app/uploads/"+recipes.getImagesList().get(0))
                 .into(holder.ivImage);
 
         holder.tvTitle.setText(recipes.getTitle());

@@ -137,8 +137,8 @@ public interface ApiService {
     Call<ArrayList<Recipes>> getRecipe();
 
     @FormUrlEncoded
-    @POST("getRecipes")
-    Call<ArrayList<Recipes>> getRecipe(@Field("uid") String uid);
+    @POST("getRecipe")
+    Call<Recipes> getRecipe(@Field("id") String uid);
 
     @FormUrlEncoded
     @POST("getNotification")
