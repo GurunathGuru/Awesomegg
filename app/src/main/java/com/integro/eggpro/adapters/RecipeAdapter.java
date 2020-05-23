@@ -1,6 +1,7 @@
 package com.integro.eggpro.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,10 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.integro.eggpro.R;
+import com.integro.eggpro.RecipeDetailActivity;
 import com.integro.eggpro.model.Recipes;
 
 import java.util.ArrayList;
@@ -37,10 +40,22 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.MyViewHold
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Recipes recipes=recipesArrayList.get(position);
 
-        Glide.with(context).load(recipes.getImagesList()).into(holder.ivImage);
+        Glide.with(context)
+                .load("http://www.awesomegg.com/app/uploads/"+recipes.getImagesList()[0])
+                .into(holder.ivImage);
 
         holder.tvTitle.setText(recipes.getTitle());
         holder.tvDescription.setText(recipes.getRecipemethod());
+
+        holder.cvRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(context, RecipeDetailActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("data",recipes);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -52,6 +67,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.MyViewHold
         ImageView ivImage;
         TextView tvTitle;
         TextView tvDescription;
+        CardView cvRecipe;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -59,6 +75,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.MyViewHold
             ivImage=itemView.findViewById(R.id.ivImage);
             tvTitle=itemView.findViewById(R.id.tvTitle);
             tvDescription=itemView.findViewById(R.id.tvDescription);
+            cvRecipe=itemView.findViewById(R.id.cvRecipe);
         }
     }
 }

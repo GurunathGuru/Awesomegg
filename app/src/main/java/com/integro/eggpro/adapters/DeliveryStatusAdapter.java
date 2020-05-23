@@ -25,7 +25,9 @@ public class DeliveryStatusAdapter extends RecyclerView.Adapter<DeliveryStatusAd
     String uid;
     Context context;
     String orderId;
+
     private static final String TAG = "DeliveryStatusAdapter";
+
     public DeliveryStatusAdapter(Context context, String uid, String orderId) {
         this.uid = uid;
         this.context = context;

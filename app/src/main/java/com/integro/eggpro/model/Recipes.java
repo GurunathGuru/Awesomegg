@@ -1,6 +1,7 @@
 package com.integro.eggpro.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Recipes implements Serializable {
 
@@ -8,7 +9,9 @@ public class Recipes implements Serializable {
 
     private String title;
 
-    private String[] imagesList;
+    //private String[] imagesList;
+
+    private ArrayList<String> imagesList;
 
     private String nutrients;
 
@@ -18,7 +21,7 @@ public class Recipes implements Serializable {
 
     private String ingredients;
 
-    public Recipes(String id, String title, String[] imagesList, String nutrients, String createdAt, String recipemethod, String ingredients) {
+    public Recipes(String id, String title, ArrayList<String> imagesList, String nutrients, String createdAt, String recipemethod, String ingredients) {
         this.id = id;
         this.title = title;
         this.imagesList = imagesList;
@@ -48,9 +51,10 @@ public class Recipes implements Serializable {
         return title;
     }
 
-    public String[] getImagesList() {
+    public ArrayList<String> getImagesList() {
         return imagesList;
     }
+
     public String getNutrients() {
         return nutrients;
     }

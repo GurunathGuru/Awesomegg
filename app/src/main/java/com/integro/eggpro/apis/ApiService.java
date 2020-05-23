@@ -5,6 +5,7 @@ import com.integro.eggpro.model.Apartments;
 import com.integro.eggpro.model.CustomCalender;
 import com.integro.eggpro.model.DeliveryStatus;
 import com.integro.eggpro.model.MyOrderList;
+import com.integro.eggpro.model.Notifications;
 import com.integro.eggpro.model.Order;
 import com.integro.eggpro.model.Products;
 import com.integro.eggpro.model.RechargeResponse;
@@ -93,7 +94,6 @@ public interface ApiService {
             @FieldMap Map<String, String> param
     );
 
-
     @FormUrlEncoded
     @POST("rechargeOrder")
     Call<RechargeResponse> rechargeOrder(
@@ -135,4 +135,12 @@ public interface ApiService {
 
     @GET("getRecipes")
     Call<ArrayList<Recipes>> getRecipe();
+
+    @FormUrlEncoded
+    @POST("getRecipes")
+    Call<ArrayList<Recipes>> getRecipe(@Field("uid") String uid);
+
+    @FormUrlEncoded
+    @POST("getNotification")
+    Call<ArrayList<Notifications>> getNotification(@Field("uid") String uid);
 }

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.integro.eggpro.adapters.RecipeAdapter;
+import com.integro.eggpro.adapters.RecipesImagesAdapter;
 import com.integro.eggpro.apis.ApiClient;
 import com.integro.eggpro.apis.ApiService;
 import com.integro.eggpro.model.Recipes;

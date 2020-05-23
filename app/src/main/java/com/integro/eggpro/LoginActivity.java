@@ -174,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
                             layout2.setVisibility(View.GONE);
                             layout3.setVisibility(View.VISIBLE);
                         } else {
-                            Toast.makeText(LoginActivity.this, "Something wrong", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Something wrong guru", Toast.LENGTH_SHORT).show();
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
 

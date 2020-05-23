@@ -39,6 +39,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.integro.eggpro.adapters.NotificationAdapter;
 import com.integro.eggpro.adapters.ProductAdapter;
 import com.integro.eggpro.apis.ApiClient;
 import com.integro.eggpro.apis.ApiService;
@@ -265,7 +266,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @OnClick(R.id.ivNotification)
     public void notification() {
-        Toast.makeText(this, "Coming Soon", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplicationContext(), NotificationActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.llWallet)
